@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 1.0 · March 2026**
+**Version 1.1 · March 2026**
 
 ---
 
@@ -133,6 +133,10 @@ Navigate to **Structured Trades** to see the Go/No-Go checklist for all 8 setups
 ## Trade Log
 
 Navigate to **Trade Log** to log and review trades.
+
+### Editing a Trade
+
+Click the **✎ Edit** button on any logged trade to load it back into the form. A gold banner appears showing which trade you're editing. Make your changes, then click **💾 Update Trade**. The trade is updated in place — same ID, same position in the log. Click **Cancel** to discard changes and return to new-trade mode.
 
 ### Logging a Trade
 

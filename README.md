@@ -4,7 +4,7 @@
 
 Single HTML file. Zero dependencies. Runs locally in your browser. Your data never leaves your computer.
 
-![Version](https://img.shields.io/badge/version-1.0-gold)
+![Version](https://img.shields.io/badge/version-1.1-gold)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-green)
 
@@ -30,7 +30,7 @@ That's it. No install. No server. No account. No subscription.
 
 ### Session Workflow
 - **Preflight Checklist** — 8 pre-session questions with completion tracking
-- **Pre-Market Levels** — manual entry, CSV file import, BMBridge auto-import, or Google Sheets
+- **Pre-Market Levels** — 3 import methods: BMBridge auto-import, CSV file upload, or Google Sheets (with paste fallback)
 - **Open Context Alignment** — statistical decision tree for all 5 open types (HOR, LOR, HIR, LIR, IR-IV)
 - **Bias Tracking** — Long/Short/Neutral with timestamped change log and reasons
 - **Live Price** — BMBridge real-time feed with auto-fallback to Yahoo Finance (~15 min delay)
@@ -44,7 +44,8 @@ That's it. No install. No server. No account. No subscription.
 - Process rating (A/B/C/F)
 - 12 execution error types with ideal exit and error cost calculation
 - Emotional state tagging (multi-select)
-- Per-instrument commission tracking
+- Per-instrument commission tracking (MES, ES, MNQ, NQ each have default rates)
+* Trade editing — click ✎ Edit to modify any logged trade
 - 11 toggleable, draggable stat cards
 
 ### Missed Trades
@@ -118,4 +119,4 @@ MIT License — free to use, modify, and distribute. See [LICENSE](LICENSE) for 
 
 ## Feedback
 
-This is v1.0 — the first public release. If you find bugs or have feature ideas, open an issue on this repo or reach out via the Traders Lab Discord.
+This is v1.1 — the first public release. If you find bugs or have feature ideas, open an issue on this repo or reach out via the Traders Lab Discord.

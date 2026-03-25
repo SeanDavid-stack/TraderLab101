@@ -1,6 +1,6 @@
 # TraderLab 101 — Quick Reference
 
-**v1.0 · Keep this open alongside the tool**
+**v1.1 · Keep this open alongside the tool**
 
 ---
 
@@ -26,6 +26,7 @@
 | Add custom setup | Type name → Enter (in Settings) |
 | Quick date nav | ◄ ► buttons in Journal |
 | Save trade | Click "Log Trade" button |
+| Edit trade | Click ✎ Edit on any trade → modify → Update Trade |
 
 ---
 

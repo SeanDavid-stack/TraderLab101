@@ -513,7 +513,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 .toast{position:fixed;bottom:20px;right:20px;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:10px 18px;border-radius:5px;font-size:12px;z-index:999;transition:all .3s;opacity:0;transform:translateY(8px);pointer-events:none;box-shadow:0 8px 40px rgba(0,0,0,.6);}
 .toast.on{opacity:1;transform:translateY(0);}
 .toast.ok{border-color:var(--green);}
-.disc{font-size:10px;color:var(--t3);border-top:1px solid var(--b1);padding:8px 20px;font-style:italic;}
+.disc{display:none;}
 
 @media(max-width:700px){.clgrid,.g4,.g3{grid-template-columns:1fr 1fr;}.g2{grid-template-columns:1fr;}}
 
@@ -553,7 +553,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v1.0</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v1.1</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -1680,23 +1680,29 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="panel" id="panel-trades">
       <div class="sh"><h1>Trade Log</h1><p>Log every trade · track scale-outs · build your edge</p></div>
 
-      <!-- Stats Row -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <span style="font-size:10px;color:var(--t3);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.1em;">Overview</span>
-        <span style="font-size:10px;color:var(--t3);font-family:var(--mono);cursor:pointer;" onclick="toggleTLCardPicker()">⚙ Toggle Cards · drag to reorder</span>
-      </div>
-      <div id="tlCardPicker" style="display:none;margin-bottom:10px;padding:10px 14px;background:var(--s3);border:1px solid var(--b1);border-radius:6px;flex-wrap:wrap;gap:5px;"></div>
-      <div class="tl-stats" id="tlStats"></div>
-      <div style="text-align:right;margin:-12px 0 16px;"><span class="an-link" onclick="var nv=document.querySelector('.ni[onclick*=analytics]');if(nv)nv.click();">📊 Full Analytics Dashboard →</span></div>
+      <!-- Overview (collapsible) -->
+      <details open style="margin-bottom:16px;">
+        <summary style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
+          <span style="font-size:10px;color:var(--t3);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.1em;">▸ Overview</span>
+          <span style="font-size:10px;color:var(--t3);font-family:var(--mono);cursor:pointer;" onclick="event.stopPropagation();toggleTLCardPicker()">⚙ Toggle Cards · drag to reorder</span>
+        </summary>
+        <div id="tlCardPicker" style="display:none;margin-bottom:10px;padding:10px 14px;background:var(--s3);border:1px solid var(--b1);border-radius:6px;flex-wrap:wrap;gap:5px;"></div>
+        <div class="tl-stats" id="tlStats"></div>
+        <div style="text-align:right;margin:-12px 0 6px;"><span class="an-link" onclick="var nv=document.querySelector('.ni[onclick*=analytics]');if(nv)nv.click();">📊 Full Analytics Dashboard →</span></div>
+      </details>
 
       <!-- Daily Goals Tracker -->
       <div id="tlGoalsTracker" style="display:none;margin-bottom:16px;padding:10px 14px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;"></div>
 
-      <!-- Setup breakdown -->
-      <div class="card" style="margin-bottom:16px;" id="tlSetupStats">
-        <div class="ct"><span class="dot" style="background:var(--gold)"></span>Stats by Setup</div>
-        <div id="tlSetupBreakdown" style="font-size:11px;color:var(--t3);font-style:italic;">No trades logged yet.</div>
-      </div>
+      <!-- Stats by Setup (collapsible) -->
+      <details open style="margin-bottom:16px;">
+        <summary style="cursor:pointer;padding:6px 0;">
+          <span style="font-size:10px;color:var(--t3);font-family:var(--mono);font-weight:600;text-transform:uppercase;letter-spacing:.1em;">▸ Stats by Setup</span>
+        </summary>
+        <div class="card" style="margin-top:8px;margin-bottom:0;" id="tlSetupStats">
+          <div id="tlSetupBreakdown" style="font-size:11px;color:var(--t3);font-style:italic;">No trades logged yet.</div>
+        </div>
+      </details>
 
       <!-- Log New Trade Form -->
       <div class="tl-form" id="tlForm">
@@ -1774,8 +1780,26 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         <div class="tl-calc" id="tl-risk-calc"></div>
 
         <!-- Scale-outs -->
-        <div style="margin-top:14px;margin-bottom:6px;font-size:10px;font-family:var(--mono);font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;">Scale-Outs</div>
+        <div style="margin-top:14px;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:10px;font-family:var(--mono);font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;">Scale-Outs</span>
+          <button class="btn-o" onclick="toggleFullStop()" id="tl-fullstop-btn" style="font-size:9px;padding:3px 10px;border-color:var(--red);color:var(--red);">✗ Full Stop</button>
+        </div>
 
+        <!-- Full Stop quick entry -->
+        <div id="tl-fullstop-panel" style="display:none;margin-bottom:12px;padding:12px;background:rgba(240,92,92,.06);border:1px solid rgba(240,92,92,.2);border-radius:6px;">
+          <div style="font-size:10px;color:var(--red);font-weight:700;font-family:var(--mono);margin-bottom:8px;">FULL STOP — All <span id="tl-fs-contracts">0</span> contracts stopped out at your stop loss</div>
+          <div style="display:flex;gap:10px;align-items:end;">
+            <div class="fg" style="flex:1;margin-bottom:0;">
+              <label>Exit Price <span style="font-weight:400;color:var(--t3);">— pre-filled with stop, adjust for slippage</span></label>
+              <input type="number" id="tl-fullstop-price" step="0.25" placeholder="Fill price" style="font-family:var(--mono);border-color:var(--red);" oninput="calcFullStop()">
+            </div>
+            <div id="tl-fullstop-calc" style="font-size:11px;font-family:var(--mono);color:var(--red);padding-bottom:8px;min-width:120px;"></div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:6px;">This logs a -1R loss (or worse with slippage). All scale fields are bypassed.</div>
+        </div>
+
+        <!-- Scale entries (hidden when full stop active) -->
+        <div id="tl-scales-panel">
         <div class="tl-scale">
           <div class="tl-scale-hdr"><span style="color:var(--green)">Scale 1 — Risk Neutral</span></div>
           <div class="tl-row r3">
@@ -1802,11 +1826,13 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
             <div class="fg"><label>R Achieved</label><input type="text" id="tl-s3-r" readonly style="color:var(--t3);background:var(--s3);"></div>
           </div>
         </div>
+        </div><!-- /tl-scales-panel -->
 
         <!-- Trade Targets — Plan vs Execution -->
-        <div class="fg" style="margin-bottom:12px;">
-          <label>Targets <span style="color:var(--t3);font-weight:400;">— click to add, set price, track outcome</span></label>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;" id="tlTargetChips">
+        <details id="tlTargetSection" style="margin-bottom:12px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Targets <span style="font-weight:400;color:var(--t4);">— optional · click to add, set price, track outcome</span></summary>
+          <div style="margin-top:8px;">
+          <div style="display:flex;flex-wrap:wrap;gap:4px;" id="tlTargetChips">
             <div class="setup-chip" onclick="addTargetRow('DVPOC')">DVPOC</div>
             <div class="setup-chip" onclick="addTargetRow('VWAP')">VWAP</div>
             <div class="setup-chip" onclick="addTargetRow('MID')">MID</div>
@@ -1831,7 +1857,8 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           </div>
           <!-- Active targets tracker -->
           <div id="tlTargetRows" style="margin-top:8px;"></div>
-        </div>
+          </div>
+        </details>
 
         <!-- Process + Exit Time + Result -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:4px;margin-bottom:12px;">
@@ -1861,13 +1888,14 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           </div>
         </div>
 
-        <div class="fg" style="margin-bottom:14px;"><label>Notes</label>
-          <textarea id="tl-notes" rows="2" placeholder="Entry reason, what you observed, what happened..."></textarea>
-        </div>
+        <details style="margin-bottom:14px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Notes <span style="font-weight:400;color:var(--t4);">— optional</span></summary>
+          <textarea id="tl-notes" rows="3" placeholder="Entry reason, what you observed, what happened..." style="margin-top:6px;width:100%;box-sizing:border-box;"></textarea>
+        </details>
 
         <!-- Execution Errors (collapsible) -->
         <details id="tlErrorSection" style="margin-bottom:14px;">
-          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">⚠ Execution Errors — tag mistakes on this trade</summary>
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">⚠ Execution Errors <span style="font-weight:400;color:var(--t4);">— optional · tag mistakes on this trade</span></summary>
           <div style="margin-top:8px;">
             <div style="font-size:10px;color:var(--t3);margin-bottom:8px;font-family:var(--mono);">Select all that apply — these feed into your Analytics error cost tracking.</div>
             <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;" id="tlErrorChips">
@@ -1896,9 +1924,9 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         </details>
 
         <!-- Emotional State -->
-        <div class="fg" style="margin-bottom:14px;">
-          <label>Emotional State <span style="color:var(--t3);font-weight:400;">— how did you feel during this trade?</span></label>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;" id="tlEmotionChips">
+        <details style="margin-bottom:14px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Emotional State <span style="font-weight:400;color:var(--t4);">— optional · how did you feel during this trade?</span></summary>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;" id="tlEmotionChips">
             <div class="setup-chip" onclick="togEmotion(this,'confident')">😎 Confident</div>
             <div class="setup-chip" onclick="togEmotion(this,'patient')">🧘 Patient</div>
             <div class="setup-chip" onclick="togEmotion(this,'focused')">🎯 Focused</div>
@@ -1910,7 +1938,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
             <div class="setup-chip" onclick="togEmotion(this,'bored')">😴 Bored</div>
             <div class="setup-chip" onclick="togEmotion(this,'neutral')">😐 Neutral</div>
           </div>
-        </div>
+        </details>
 
         <!-- Validation banner -->
         <div id="tl-validation-banner" class="tl-validation-banner"></div>
@@ -1920,7 +1948,8 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
         <!-- Sticky save bar -->
         <div class="tl-save-bar">
-          <button class="btn btn-g" onclick="saveTradeEntry()" style="flex:1;padding:10px;">💾 Save Trade</button>
+          <div id="tl-edit-banner" style="display:none;width:100%;padding:6px 12px;background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);border-radius:4px;margin-bottom:8px;font-size:11px;font-family:var(--mono);color:var(--gold);text-align:center;">✎ Editing trade — <span id="tl-edit-info"></span> · <span style="cursor:pointer;text-decoration:underline;" onclick="cancelEditTrade()">Cancel</span></div>
+          <button class="btn btn-g" onclick="saveTradeEntry()" id="tl-save-btn" style="flex:1;padding:10px;">💾 Save Trade</button>
           <button class="btn-o" onclick="clearTradeForm()">Clear</button>
         </div>
       </div>
@@ -2605,8 +2634,6 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
       </div><!-- /methList -->
     </div>
 
-    <div class="disc" style="margin-top:20px;">Created by SeanDavid · Based on Tom B.'s Traders Lab methodology · For educational purposes only · Context supersedes statistics — no exceptions.</div>
-
   </div><!-- /content -->
 </div><!-- /shell -->
 
@@ -3069,6 +3096,8 @@ var selectedTrigger='';
 var selectedErrors=[];
 var selectedEmotion=[];
 var selectedTargets=[];
+var editingTradeId=null;
+var fullStopMode=false;
 var INSTRUMENT_PRESETS={MES:{name:'MES',tickSize:0.25,tickValue:1.25,commission:0.62},ES:{name:'ES',tickSize:0.25,tickValue:12.50,commission:2.32},MNQ:{name:'MNQ',tickSize:0.25,tickValue:0.50,commission:0.62},NQ:{name:'NQ',tickSize:0.25,tickValue:5.00,commission:2.32}};
 var SETUP_LABELS={opening:'Opening Trade',cont:'IBC Continuation',mr:'Mean Reversion',ibf:'IBF',vpoc:'VPOC Shift',bar:'BAR',midvpoc:'MID>VWAP>VPOC',vhvn:'VHVN>VPOC'};
 var TRIGGER_LABELS={'1':'Type 1 — Break High ↑','2':'Type 2 — Break Low ↓','3':'Type 3 — Sweep Low → Long ↑','4':'Type 4 — Sweep High → Short ↓'};
@@ -3086,6 +3115,26 @@ var BM_FIELDS=[{id:'pHigh',label:'Prior High'},{id:'pLow',label:'Prior Low'},{id
 // ══════════ INIT ══════════
 (function(){
   document.getElementById('hdate').textContent=fd(new Date());
+  // Migrate existing data on startup (fix R calcs, normalize fields)
+  (function(){
+    var needsSave=false;
+    tradeLog.forEach(function(t){
+      if(!t.contracts) t.contracts=1;
+      if(typeof t.emotion==='string'&&t.emotion){t.emotion=[t.emotion];needsSave=true;}
+      if(!t.emotion) t.emotion=[];
+      if(!t.targets) t.targets=[];
+      if(!t.errors) t.errors=[];
+      if(t.contracts>1&&t.rPts>0){
+        var correctR=parseFloat((t.totalPnlPts/(t.rPts*t.contracts)).toFixed(2));
+        var oldR=parseFloat((t.totalPnlPts/t.rPts).toFixed(2));
+        if(Math.abs(t.totalR-oldR)<0.01&&Math.abs(t.totalR-correctR)>0.01){
+          t.totalR=correctR;needsSave=true;
+        }
+      }
+    });
+    if(needsSave) localStorage.setItem(KTL,JSON.stringify(tradeLog));
+  })();
+
   updateJLbl();renderBanner();renderSessions();loadPM();loadPreflight();
   syncTradeFormInstrument();
   // Load saved BMBridge URL into the input field
@@ -4591,6 +4640,70 @@ function calcErrorCost(){
   }
 }
 
+function toggleFullStop(){
+  fullStopMode=!fullStopMode;
+  var panel=document.getElementById('tl-fullstop-panel');
+  var scales=document.getElementById('tl-scales-panel');
+  var btn=document.getElementById('tl-fullstop-btn');
+  if(fullStopMode){
+    if(panel) panel.style.display='block';
+    if(scales) scales.style.display='none';
+    if(btn){btn.textContent='↩ Use Scales';btn.style.borderColor='var(--gold)';btn.style.color='var(--gold)';}
+    // Show contract count
+    var c=parseInt(document.getElementById('tl-contracts').value)||1;
+    var fsC=document.getElementById('tl-fs-contracts');
+    if(fsC) fsC.textContent=c;
+    // Pre-fill with stop price
+    var stopVal=document.getElementById('tl-stop').value;
+    var fsPrice=document.getElementById('tl-fullstop-price');
+    if(fsPrice&&stopVal) fsPrice.value=stopVal;
+    calcFullStop();
+  } else {
+    if(panel) panel.style.display='none';
+    if(scales) scales.style.display='';
+    if(btn){btn.textContent='✗ Full Stop';btn.style.borderColor='var(--red)';btn.style.color='var(--red)';}
+    var fsPrice=document.getElementById('tl-fullstop-price');
+    if(fsPrice) fsPrice.value='';
+    document.getElementById('tl-fullstop-calc').textContent='';
+    calcTrade();
+  }
+}
+
+function calcFullStop(){
+  var el=document.getElementById('tl-fullstop-calc');
+  if(!el) return;
+  var entry=parseFloat(document.getElementById('tl-entry').value);
+  var exitPrice=parseFloat(document.getElementById('tl-fullstop-price').value);
+  var contracts=parseInt(document.getElementById('tl-contracts').value)||1;
+  var dir=document.getElementById('tl-dir').value;
+  if(isNaN(entry)||isNaN(exitPrice)||!dir){el.textContent='';return;}
+
+  var isLong=(dir==='long'||dir==='Long');
+  var pnlPts=isLong?(exitPrice-entry):(entry-exitPrice);
+  var totalPts=pnlPts*contracts;
+  var ptVal=instrumentSettings.tickValue/(instrumentSettings.tickSize||0.25);
+  var dollars=totalPts*ptVal;
+  var stop=parseFloat(document.getElementById('tl-stop').value);
+  var rPts=!isNaN(stop)?Math.abs(entry-stop):0;
+  var totalR=rPts>0?totalPts/(rPts*contracts):0;
+  var slippage=!isNaN(stop)?Math.abs(exitPrice-stop):0;
+
+  el.innerHTML='<span style="color:var(--red);font-weight:700;">'+(totalPts>=0?'+':'')+totalPts.toFixed(2)+' pts · $'+dollars.toFixed(0)+' · '+(totalR>=0?'+':'')+totalR.toFixed(2)+'R</span>'+(slippage>0.01?' · <span style="color:var(--gold);">slip: '+slippage.toFixed(2)+' pts</span>':'');
+
+  // Also update the result display
+  var result=totalPts>0.01?'Win':totalPts<-0.01?'Loss':'Break Even';
+  var resEl=document.getElementById('tl-result-display');
+  if(resEl){
+    resEl.value=result+'  '+(totalR>=0?'+':'')+totalR.toFixed(2)+'R';
+    resEl.style.color=result==='Win'?'var(--green)':result==='Loss'?'var(--red)':'var(--t2)';
+  }
+  var sumEl=document.getElementById('tl-summary');
+  if(sumEl){
+    sumEl.style.display='block';
+    sumEl.innerHTML='Total P&L: <strong style="color:var(--red);">'+(totalPts>=0?'+':'')+totalPts.toFixed(2)+' pts / $'+(dollars>=0?'+':'')+dollars.toFixed(0)+'</strong> · <strong style="color:var(--red);">'+(totalR>=0?'+':'')+totalR.toFixed(2)+'R</strong> · <span style="color:var(--red);">✗ Full stop</span>';
+  }
+}
+
 function calcTrade(){
   var entry     = parseFloat(document.getElementById('tl-entry').value);
   var stop      = parseFloat(document.getElementById('tl-stop').value);
@@ -4641,7 +4754,7 @@ function calcTrade(){
   if(remaining > 0){ totalPnlPts += (isLong ? (stop-entry) : (entry-stop)) * remaining; }
 
   var totalPnlDollars = totalPnlPts * (instrumentSettings.tickValue / (instrumentSettings.tickSize||0.25));
-  var totalR = rPts > 0 ? totalPnlPts / rPts : 0;
+  var totalR = rPts > 0 ? totalPnlPts / (rPts * contracts) : 0;
   var result = totalPnlPts > 0.01 ? 'Win' : totalPnlPts < -0.01 ? 'Loss' : 'Break Even';
   var resColor = result==='Win'?'var(--green)':result==='Loss'?'var(--red)':'var(--t2)';
 
@@ -4707,6 +4820,19 @@ function saveTradeEntry(){
   var rPts = Math.abs(entry-stop);
   var scales = [], totalPnlPts = 0, totalExited = 0, gotRN = false;
 
+  if(fullStopMode){
+    // Full stop — all contracts exit at the full stop price
+    var fsExit=parseFloat(document.getElementById('tl-fullstop-price').value);
+    if(isNaN(fsExit)||!document.getElementById('tl-fullstop-price').value){
+      markError('tl-fullstop-price','Enter exit price'); errors.push('Full stop: exit price required');
+    } else {
+      var pnlPts=isLong?(fsExit-entry):(entry-fsExit);
+      var rMult=rPts>0?pnlPts/rPts:0;
+      scales.push({label:'Full Stop', price:fsExit, qty:contracts, pnlPts:pnlPts, r:rMult});
+      totalPnlPts=pnlPts*contracts;
+      totalExited=contracts;
+    }
+  } else {
   [[1,'Scale 1 (RN)'],[2,'Scale 2'],[3,'Runner']].forEach(function(sc){
     var n=sc[0], lbl=sc[1];
     var px  = parseFloat(document.getElementById('tl-s'+n+'-price').value);
@@ -4724,6 +4850,7 @@ function saveTradeEntry(){
     totalExited += qty;
     if(n===1 && rMult>=0.9) gotRN=true;
   });
+  } // end fullStopMode else
 
   // ── Outstanding contracts check ─────────────────────────────────────────
   var remaining = contracts - totalExited;
@@ -4756,11 +4883,11 @@ function saveTradeEntry(){
     totalPnlPts += (isLong?(stop-entry):(entry-stop))*remaining;
   }
 
-  var totalR = rPts>0?totalPnlPts/rPts:0;
+  var totalR = rPts>0?totalPnlPts/(rPts*contracts):0;
   var result = totalPnlPts>0.01?'Win':totalPnlPts<-0.01?'Loss':'Break Even';
 
   var trade = {
-    id: Date.now(),
+    id: editingTradeId||Date.now(),
     date: tradeDate,
     time: time||nowETStr(),
     setup, dir, entry, stop, contracts,
@@ -4783,13 +4910,21 @@ function saveTradeEntry(){
     targets: selectedTargets.slice()
   };
 
-  tradeLog.unshift(trade);
+  var wasEditing=!!editingTradeId;
+  if(editingTradeId){
+    var idx=tradeLog.findIndex(function(t){return t.id===editingTradeId;});
+    if(idx>=0) tradeLog[idx]=trade;
+    else tradeLog.unshift(trade);
+    editingTradeId=null;
+  } else {
+    tradeLog.unshift(trade);
+  }
   localStorage.setItem(KTL, JSON.stringify(tradeLog));
   clearTradeForm();
   renderTradeLog();
   updTBadge();
   checkGoals();
-  toast('Trade saved — '+result+' '+totalR.toFixed(2)+'R','ok');
+  toast((wasEditing?'Trade updated':'Trade saved')+' — '+result+' '+totalR.toFixed(2)+'R','ok');
   } catch(e){ console.error('saveTradeEntry error:',e); toast('Save failed: '+e.message,''); }
 }
 
@@ -4967,6 +5102,28 @@ function fmtDuration(mins){
 }
 
 function clearTradeForm(){
+  // Reset editing state
+  editingTradeId=null;
+  var editBanner=document.getElementById('tl-edit-banner');
+  if(editBanner) editBanner.style.display='none';
+  var saveBtn=document.getElementById('tl-save-btn');
+  if(saveBtn) saveBtn.textContent='💾 Save Trade';
+
+  // Reset full stop mode
+  if(fullStopMode){
+    fullStopMode=false;
+    var fsPanel=document.getElementById('tl-fullstop-panel');
+    var scPanel=document.getElementById('tl-scales-panel');
+    var fsBtn=document.getElementById('tl-fullstop-btn');
+    if(fsPanel) fsPanel.style.display='none';
+    if(scPanel) scPanel.style.display='';
+    if(fsBtn){fsBtn.textContent='✗ Full Stop';fsBtn.style.borderColor='var(--red)';fsBtn.style.color='var(--red)';}
+  }
+  var fsPrice=document.getElementById('tl-fullstop-price');
+  if(fsPrice) fsPrice.value='';
+  var fsCal=document.getElementById('tl-fullstop-calc');
+  if(fsCal) fsCal.textContent='';
+
   document.querySelectorAll('.tl-form .field-error').forEach(function(el){el.classList.remove('field-error');});
   document.querySelectorAll('.tl-form .field-error-msg').forEach(function(el){el.remove();});
   var banner=document.getElementById('tl-validation-banner');
@@ -5031,6 +5188,110 @@ function deleteTradeEntry(id){
   toast('Trade deleted','');
 }
 
+function editTradeEntry(id){
+  var t=tradeLog.find(function(tr){return tr.id===id;});
+  if(!t) return;
+
+  editingTradeId=id;
+  clearTradeForm();
+  editingTradeId=id; // restore after clear resets it
+
+  // Populate form fields
+  document.getElementById('tl-date').value=t.date||'';
+  document.getElementById('tl-setup').value=t.setup||'';
+  document.getElementById('tl-dir').value=t.dir==='Long'?'long':t.dir==='Short'?'short':'';
+  // Fix: dir stored as 'Long'/'Short' but select may use 'long'/'short' or 'Long'/'Short'
+  var dirEl=document.getElementById('tl-dir');
+  if(dirEl){dirEl.value=t.dir;if(!dirEl.value)dirEl.value=t.dir.toLowerCase();}
+  document.getElementById('tl-entry').value=t.entry||'';
+  document.getElementById('tl-stop').value=t.stop||'';
+  document.getElementById('tl-contracts').value=t.contracts||1;
+  var instrEl=document.getElementById('tl-instrument');
+  if(instrEl&&t.instrument) instrEl.value=t.instrument;
+  document.getElementById('tl-proc').value=t.proc||'';
+  document.getElementById('tl-notes').value=t.notes||'';
+
+  // Time dropdowns
+  if(t.time){
+    var tp=t.time.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if(tp){
+      var hEl=document.getElementById('tl-hour');
+      var mEl=document.getElementById('tl-min');
+      if(hEl) hEl.value=parseInt(tp[1])+' '+tp[3].toUpperCase();
+      if(mEl) mEl.value=tp[2];
+    }
+  }
+
+  // Exit time
+  if(t.exitTime){
+    var xp=t.exitTime.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if(xp){
+      var xhEl=document.getElementById('tl-exit-hour');
+      var xmEl=document.getElementById('tl-exit-min');
+      if(xhEl) xhEl.value=parseInt(xp[1])+' '+xp[3].toUpperCase();
+      if(xmEl) xmEl.value=xp[2];
+    }
+  }
+
+  // Trigger type
+  var trigEl=document.getElementById('tl-trigger');
+  if(trigEl&&t.triggerType) trigEl.value=t.triggerType;
+
+  // Scales
+  if(t.scales&&t.scales.length){
+    t.scales.forEach(function(s,i){
+      var n=i+1;
+      var pEl=document.getElementById('tl-s'+n+'-price');
+      var qEl=document.getElementById('tl-s'+n+'-qty');
+      if(pEl&&s.price) pEl.value=s.price;
+      if(qEl&&s.qty) qEl.value=s.qty;
+    });
+  }
+
+  // Execution errors
+  selectedErrors=(t.errors||[]).slice();
+  document.querySelectorAll('.err-chip').forEach(function(c){
+    if(selectedErrors.indexOf(c.dataset.err||c.textContent.trim().toLowerCase())>=0) c.classList.add('sel');
+  });
+  var idealEl=document.getElementById('tl-ideal-exit');
+  if(idealEl&&t.idealExit) idealEl.value=t.idealExit;
+
+  // Emotional state
+  selectedEmotion=(typeof t.emotion==='string'&&t.emotion)?[t.emotion]:(t.emotion||[]).slice();
+  document.querySelectorAll('#tlEmotionChips .setup-chip').forEach(function(c){
+    var emo=c.textContent.replace(/[^\w]/g,'').toLowerCase();
+    // match by checking if any selected emotion is in the chip text
+    selectedEmotion.forEach(function(e){
+      if(c.textContent.toLowerCase().indexOf(e)>=0) c.classList.add('sel');
+    });
+  });
+
+  // Targets
+  selectedTargets=(t.targets||[]).slice();
+  renderTargetRows();
+
+  // Trigger calc
+  calcTrade();
+
+  // Update UI to show editing state
+  var banner=document.getElementById('tl-edit-banner');
+  var info=document.getElementById('tl-edit-info');
+  var btn=document.getElementById('tl-save-btn');
+  if(banner) banner.style.display='block';
+  if(info) info.textContent=t.date+' '+t.dir+' '+(getAllSetupLabels()[t.setup]||t.setup);
+  if(btn) btn.textContent='💾 Update Trade';
+
+  // Scroll to form
+  document.querySelector('.tl-form').scrollIntoView({behavior:'smooth',block:'start'});
+  toast('Editing trade — make changes and click Update','ok');
+}
+
+function cancelEditTrade(){
+  editingTradeId=null;
+  clearTradeForm();
+  toast('Edit cancelled','');
+}
+
 function renderTradeLog(){
   renderTLStats();
   renderGoalsTracker();
@@ -5083,7 +5344,7 @@ function renderTradeLog(){
         }).join(' ')+'</div>':''}
         ${t.idealExit?'<div style="margin-top:4px;color:var(--red);"><strong>Ideal Exit:</strong> '+t.idealExit.toFixed(2)+' — error cost visible in Analytics</div>':''}
         ${t.notes?'<div style="margin-top:4px;color:var(--t2);">'+t.notes+'</div>':''}
-        <div style="margin-top:8px;"><button onclick="event.stopPropagation();deleteTradeEntry(${t.id})" style="font-size:10px;padding:3px 8px;border:1px solid var(--red);background:transparent;color:var(--red);border-radius:3px;cursor:pointer;">Delete</button></div>
+        <div style="margin-top:8px;display:flex;gap:8px;"><button onclick="event.stopPropagation();editTradeEntry(${t.id})" style="font-size:10px;padding:3px 8px;border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:3px;cursor:pointer;">✎ Edit</button><button onclick="event.stopPropagation();deleteTradeEntry(${t.id})" style="font-size:10px;padding:3px 8px;border:1px solid var(--red);background:transparent;color:var(--red);border-radius:3px;cursor:pointer;">Delete</button></div>
       </div>
     </div>`;
   }).join('');
@@ -7565,6 +7826,70 @@ function migrateImport(d){
       d.pmData.date = d.pmData.confirmedOT.date;
     }
     d.schemaVersion = 2;
+  }
+  // Normalize trades — patch missing fields and fix R calculation
+  if(d.tradeLog&&d.tradeLog.length){
+    d.tradeLog=d.tradeLog.map(function(t){
+      // Ensure required fields exist
+      t.contracts=t.contracts||1;
+      t.instrument=t.instrument||'MES';
+      t.targets=t.targets||[];
+      t.errors=t.errors||[];
+      t.exitTime=t.exitTime||'';
+      t.duration=t.duration||null;
+      t.proc=t.proc||'';
+      t.notes=t.notes||'';
+      t.gotRN=t.gotRN||false;
+      t.trendAlign=t.trendAlign||'';
+      t.triggerType=t.triggerType||'';
+      t.triggerLabel=t.triggerLabel||'';
+      t.idealExit=t.idealExit||null;
+      t.openType=t.openType||'';
+      t.bias=t.bias||'';
+      // Normalize emotion to array
+      if(typeof t.emotion==='string'&&t.emotion) t.emotion=[t.emotion];
+      if(!t.emotion) t.emotion=[];
+      // Fix R calculation if contracts > 1
+      if(t.contracts>1&&t.rPts>0){
+        var correctR=t.totalPnlPts/(t.rPts*t.contracts);
+        // Only fix if it looks wrong (old calc was totalPnlPts/rPts)
+        var oldR=t.totalPnlPts/t.rPts;
+        if(Math.abs(t.totalR-oldR)<0.01){
+          t.totalR=parseFloat(correctR.toFixed(2));
+        }
+      }
+      return t;
+    });
+  }
+  // Normalize missed trades
+  if(d.missedTrades&&d.missedTrades.length){
+    d.missedTrades=d.missedTrades.map(function(t){
+      t.contracts=t.contracts||1;
+      t.instrument=t.instrument||'MES';
+      t.reasons=t.reasons||[t.reason||'other'];
+      t.scales=t.scales||null;
+      return t;
+    });
+  }
+  // Normalize sessions
+  if(d.sessions&&d.sessions.length){
+    d.sessions=d.sessions.map(function(s){
+      s.hitsSnap=s.hitsSnap||[];
+      s.preflightSnap=s.preflightSnap||null;
+      s.levelSnap=s.levelSnap||null;
+      return s;
+    });
+  }
+  // Normalize dailyGoals
+  if(d.dailyGoals){
+    d.dailyGoals.maxLoss=d.dailyGoals.maxLoss||0;
+    d.dailyGoals.maxTrades=d.dailyGoals.maxTrades||0;
+    d.dailyGoals.minProc=d.dailyGoals.minProc||'';
+    d.dailyGoals.commission=d.dailyGoals.commission||0;
+  }
+  // Normalize instrumentSettings
+  if(d.instrumentSettings){
+    d.instrumentSettings.commission=d.instrumentSettings.commission||0;
   }
   return d;
 }
