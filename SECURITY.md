@@ -1,30 +1,31 @@
 # Security Policy
 
-## Architecture
+## Data Privacy
 
-TraderLab 101 is a single HTML file that runs entirely in your browser. There is no server, no database, no authentication, and no external data transmission. All data is stored in `localStorage` on your machine.
+TraderLab 101 is a client-side application. All data is stored in your browser's `localStorage` and never leaves your computer.
 
-## Supported Versions
-
-| Version | Supported |
-|---------|-----------|
-| 1.0     | ✅ Current |
+**No data is transmitted to any server**, with these optional exceptions:
+- **Google Fonts** — loaded on page open (font files only, no user data)
+- **Yahoo Finance** — price data fetched when BMBridge is not configured (no user data sent)
+- **BMBridge** — connects to YOUR local server (localhost) for price data
+- **Anthropic API** — only if YOU configure an API key and initiate an AI Coach call
 
 ## Reporting a Vulnerability
 
-If you find a security issue (e.g. XSS in user-entered data, data leakage, or malicious behavior in the code), please:
+1. **Do NOT open a public issue**
+2. Use GitHub's private security advisory feature
+3. Include: description, steps to reproduce, potential impact
+4. Allow 48 hours for response
 
-1. **Do not** open a public issue
-2. Open a private security advisory via GitHub's "Report a vulnerability" button on the Security tab
-3. Or reach out directly via the Traders Lab Discord
+## Known Considerations
 
-I'll review and respond as quickly as possible.
+- localStorage is not encrypted — physical access = data access
+- JSON exports are plaintext
+- API keys stored in plaintext in localStorage
+- No authentication — no user accounts or passwords
 
-## Data Safety
+## Recommendations
 
-- All data stays in your browser's `localStorage`
-- No data is sent to any server
-- The only outbound network requests are:
-  - **BMBridge** (localhost only) — for real-time price data from Sierra Chart
-  - **Yahoo Finance** — for delayed price quotes (fallback feed)
-- Export your data regularly via Settings → Export Backup
+- Don't use on shared/public computers
+- Store JSON backups securely
+- Treat API keys like passwords

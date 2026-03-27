@@ -1,39 +1,89 @@
 # Contributing to TraderLab 101
 
-Thanks for your interest in contributing. Here's how you can help.
+Thanks for your interest in contributing! TraderLab 101 is a community tool built for the Traders Lab methodology.
 
-## Reporting Bugs
+---
 
-Open an issue with:
-- What you did (steps to reproduce)
-- What you expected to happen
-- What actually happened
-- Browser and OS (e.g. Chrome 120, Windows 11)
-- Screenshot if relevant
+## How to Contribute
 
-## Feature Requests
+### Reporting Bugs
+1. Check [existing issues](../../issues) for duplicates
+2. Open a new issue with: what happened, steps to reproduce, expected behavior, browser, screenshot
 
-Open an issue with:
-- What you want and why it would be useful
-- How you'd expect it to work
-- Whether it fits the Auction Market Theory / Traders Lab methodology
+### Requesting Features
+Open an issue with the `enhancement` label. Describe the feature and which workflow step it relates to.
 
-## Code Contributions
+### Submitting Code
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/your-feature`
+3. Make changes to `TraderLab101.html`
+4. Test in Chrome + at least one other browser
+5. Submit a pull request
 
-TraderLab 101 is a single HTML file by design. If you want to submit a fix or feature:
+---
 
-1. Fork the repo
-2. Make your changes to `TraderLab101.html`
-3. Test thoroughly — open the file in Chrome, log some trades, check analytics
-4. Submit a pull request with a clear description of what changed and why
+## The SACRED Rule
 
-### Guidelines
+**User trade data and session data must NEVER be lost.**
 
-- Keep everything in the single file — no external dependencies, no build tools
-- All data stays in localStorage — no external API calls except BMBridge (localhost) and Yahoo Finance (price feed)
-- Match the existing code style (vanilla JS, no frameworks)
-- Test with the demo data file to make sure nothing breaks
+If your change modifies the data schema:
 
-## Questions
+1. **Increment `SCHEMA_VERSION`** (currently 3)
+2. **Add migration** in BOTH `migrateLocalStorage()` AND `migrateImport(d)`
+3. **ONLY add** fields with safe defaults
+4. **NEVER delete, rename, or overwrite** existing data
+5. **Migrations must be idempotent** (safe to run unlimited times)
+6. **Document** in the `DATA SCHEMA & MIGRATION` comment block
 
-Open an issue or reach out via the Traders Lab Discord.
+---
+
+## Code Style
+
+- Single-file HTML app — keep it that way
+- No external dependencies (except Google Fonts)
+- All data in `localStorage`
+- Use CSS variables for theming (`var(--green)`, `var(--text)`, etc.)
+- `function name(){}` syntax (hoistable)
+
+---
+
+## Key Conventions
+
+| Convention | Rule |
+|-----------|------|
+| "Tagged" | Level detection (price touched level) |
+| "Hit" | Trade target outcome |
+| `t.proc` | Process rating field (not `t.process`) |
+| `t.screenshots` | Array of URL strings |
+| Custom level keys | `custom_` + level name (not index) |
+| Fee toggle | Single source: `anShowFees` + `localStorage('tl_an_fees')` |
+
+---
+
+## Testing Checklist
+
+- [ ] No console errors on load
+- [ ] Existing data preserved (no loss)
+- [ ] Export → Import cycle works
+- [ ] New day rollover correct
+- [ ] Empty state (0 trades) works
+- [ ] Fees ON and OFF both work
+- [ ] Multiple instruments work
+- [ ] Analytics math correct
+- [ ] Chrome + one other browser
+
+---
+
+## Architecture
+
+Everything in `TraderLab101.html` (~12,100 lines):
+- HTML/CSS: lines 1–3450
+- State + migration: lines 3450–3550
+- Core JS: lines 3550–9300
+- Migration + export/import: lines 9300–9500
+- What-If Lab + AI: lines 9500–11000
+- Level tracker + session UI: lines 11000–12100
+
+### Key localStorage Keys
+
+`tl_sessions`, `tl_trades`, `tl_missed`, `tl_pm`, `tl_schema_version`, `tl_bmurl`, `tl_bmurl_price`, `tl_bmmap`, `tl_an_fees`, `tl_instrument`, `tl_goals`, `tl_hits`, `tl_preflight`

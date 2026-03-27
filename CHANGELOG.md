@@ -1,41 +1,92 @@
-# Changelog
+# TraderLab 101 — Changelog
 
-## v1.1 — March 25, 2026
+## v2.1 — Custom Levels, Screenshots, Migration System (March 2026)
 
-### Bugfixes
-- **CRITICAL: R-Multiple Calculation** — Fixed incorrect R on multi-contract trades. Old formula divided total P&L by per-contract risk; correct formula divides by total risk (rPts × contracts). A 2-contract full stop now shows -1R instead of -2R.
-- **Panel Layout Fix** — Removed extra `</div>` in trade form that caused panels to leak and display simultaneously.
-- **Full Stop Mode** — Form now resets to scale mode after saving. Previously stayed stuck in full stop mode.
-- **Full Stop Save** — Save function now correctly reads from full stop price field instead of empty scale fields.
-- **Notes Field** — Fixed textarea collapsing to minimum width. Now full-width with 3 rows.
+### NEW: Custom Levels
+Add any price level you want tracked — Weekly VPOC, VWAP, support/resistance, or anything else.
+- Add by name only (price later) or name + price
+- Fully integrated: level tracker, live detection, tag log, reconciliation, manual tag/untag
+- Saved in journal session snapshots, displayed as purple ★ pills in review
+- CSV import auto-adds unmapped labels as custom levels
+- Settings → CSV Column Mapping includes ★ Custom targets and ★ + New Custom Level
 
-### Data Migration (backward compatible)
-- **Startup migration** — Auto-patches existing localStorage data on load: recalculates R on multi-contract trades, converts emotion strings to arrays, adds missing fields.
-- **Import migration** — Patches incoming JSON files before applying. Old v1.0 exports import cleanly into v1.1.
+### NEW: Settlement Field
+Standard field in Prior Day Levels. Mappable via CSV (`Settle`, `SETL`, `Y/SETT`). Fully tracked.
 
-### New Features
-- **Trade Editing** — ✎ Edit button on every trade. Loads all data back into form, gold banner, Update Trade button. Trade ID preserved.
-- **Per-Instrument Commission** — Each preset carries its own commission rate (MES $0.62, ES $2.32, MNQ $0.62, NQ $2.32). Custom instruments also have a commission field. Global override available.
-- **Instrument Filter (Analytics)** — Filter entire dashboard by symbol when trading 2+ instruments. Combines with date range filter.
-- **Import Levels — 3 Sources** — BMBridge (URL), CSV File (upload), Google Sheets (published URL with paste fallback for CORS).
-- **Import Diagnostics** — Shows CSV headers, unmatched rows, and link to column mapping when 0 levels match.
-- **Google Sheets Paste Fallback** — Auto-opens paste section when fetch fails due to CORS.
-- **Collapsible Overview & Stats** — Overview cards and Stats by Setup are collapsible in Trade Log.
+### NEW: Trade Screenshots
+Attach multiple chart images per trade (URL-based, one per line).
+- Live thumbnail previews in trade form
+- Purple 📷 badge on trade cards showing count
+- Clickable thumbnails in expanded trade detail and journal review
+- Populated when editing trades
+- Migration adds `t.screenshots=[]` to all existing trades
 
-### UI/UX Improvements
-- Settings split: "Live Price Feed" and "CSV Column Mapping" are separate cards.
-- Commission moved from Daily Goals to Instrument & Contract section.
-- Full Stop panel shows contract count, red border, -1R help text.
-- All BMBridge-specific language removed from file/sheet import contexts.
+### NEW: Preflight Editing
+- ↺ Reset & Redo button after completing (keeps answers, unlocks form)
+- Editing answers no longer wipes completion state (was a bug)
+- 📋 Preflight Answers section in Journal form — editable, syncs bidirectionally
+- Edits in Journal sync back to Preflight tab + storage
+- Save Session captures preflight from journal form fields
 
-## v1.0 — March 25, 2026
+### NEW: Data Migration System
+Formal architecture to protect user data across version updates.
+- `migrateLocalStorage()` runs on every page load BEFORE data loads
+- `migrateImport(d)` runs on JSON backup import
+- SACRED rule: only ADD fields with safe defaults, never delete/rename/overwrite
+- All migrations are idempotent
+- SCHEMA_VERSION bumped to 3
 
-### Initial Public Release
-- Preflight Checklist, Pre-Market Levels, Open Context Alignment, Bias Tracking
-- Live Price Feed (BMBridge → Yahoo fallback)
-- Trade Log with 3 scale-outs, R-multiple, 8 setups + custom, targets, process rating, execution errors, emotional state
-- Missed Trades with What If? panel and reason breakdown
-- Journal with bias timeline, preflight snapshot, review mode
-- Analytics Dashboard with 13 cards, 15 chart sections, date range filter
-- Methodology Reference with 9 sections
-- Settings with instrument presets, goals, export/import
+### NEW: Missed Trades Instrument Filter
+Auto-appears with 2+ instruments. Period + instrument filters chain correctly.
+
+### IMPROVED: Fee Toggle Sync
+All four pages (Analytics, Trade Log, Missed Trades, What-If Lab) share one state. Daily goals tracker immune — always shows real fees.
+
+### IMPROVED: UI Consistency
+- Trade Log header matches wi-filter-bar style
+- ⚙ Sections dropdown has ✕ Close button
+- Custom levels in journal session review cards
+
+### BUG FIXES
+1. testBMBridge crash — null check on status element
+2. setAnPeriod/setAnInstr deselects fee toggle — added exclusion guard
+3. clearPM() missing settle and customPMLevels
+4. Custom level keys used array index — now uses name-based keys
+5. Custom level null price crash — explicit null guard
+6. getMTFilteredTrades fell back to unfiltered data — chains both filters
+7. What-If Lab fees independent from global — three sync fixes
+8. savePreflight wiped completion state on every keystroke
+
+---
+
+## v2.0 — What-If Lab + AI Coach (March 2026)
+
+### NEW: 🔬 What-If Lab — Performance Simulator
+10 simulation panels with Edge Optimizer, presets, fee toggle, period/instrument filters.
+
+### NEW: 🧠 AI Trade Coach
+Free mode (copy prompt) + API mode (Anthropic key). Three analysis types.
+
+### NEW: BMBridge Dual Feeds
+Separate level import + live price URLs. Auto-test on Settings open.
+
+### NEW: RTH Stale Data Protection
+Pre-RTH price tracking, configurable buffer, freshness detection.
+
+### NEW: Visual UI Enhancements
+7-step stepper, next-step prompts, nav badges, session strip, smart defaults, proximity gradient.
+
+### NEW: Visual Charts, Collapsible Analytics, Global Fee Toggle
+6 SVG charts. Reorderable sections. One fee button syncs everywhere.
+
+### NEW: Missed Trades Enhancements, CSV Analytics Export
+Period filter, top 3 costliest reasons, computed stats export.
+
+### BUG FIXES (12 fixes)
+FS+Error overwrite, fee 2x, per-instrument risk, slider drag, stat coloring, and more.
+
+---
+
+## v1.1 — Foundation (March 2026)
+
+Pre-market levels, preflight checklist, open context flowcharts, live price feed, trade log with scale-outs, 12 errors, 10 emotions, process ratings, triggers, missed trades, journal, analytics (15+ sections), custom setups, instrument presets, export/import.
