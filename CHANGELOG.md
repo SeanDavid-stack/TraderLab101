@@ -1,5 +1,60 @@
 # TraderLab 101 — Changelog
 
+## v2.1.1 — Opening Print, Custom Labels, Media, Missed Trade Edit (March 2026)
+
+### NEW: Opening Print System
+Complete rebuild of RTH open detection. No more manual entry required.
+- **Pre-RTH estimate:** ⚡ button sets a preliminary open from the live feed. Activates OT preview (gold border) without committing — estimate stored separately, never writes to the real field.
+- **Auto-confirm from feed:** When BMBridge or Yahoo delivers the real RTH open after 9:30, it replaces the estimate automatically. If the OT classification changes (e.g., HIR → HOR), you get an alert with both values.
+- **Manual capture:** During RTH, 📌 Set Opening Print captures the current live price as confirmed. Live Tracking header shows source badge — ⚡ live, 📌 captured, or manual.
+- **Layered button states:** Pre-RTH shows estimate workflow, post-RTH shows confirm workflow, auto-hides when real open is set.
+
+### NEW: Smart Trade Form Defaults
+- Entry price auto-fills from live feed (cyan, clears on first keystroke)
+- Direction auto-selects from current bias (overridable)
+
+### NEW: IB Auto-Fill
+IBH/IBL auto-populate from session high/low at 10:30 ET. 1.5× and 2.0× extensions calculate automatically. Manual override pauses auto-fill; Clear resumes.
+
+### NEW: Media Attachments (was Screenshots)
+Renamed from "Screenshots" to "Media." Now supports both image URLs and video replay links.
+- Image URLs (`.png/.jpg/.gif/.webp/.svg`, imgur) render as thumbnails
+- Video/other URLs render as clickable 🎬 links with truncated domain
+- Smart badge: "📷 2 🎬 1" for mixed media
+- Available on trades, missed trades, and journal sessions
+- Schema field stays `screenshots` (SACRED rule — never rename)
+
+### NEW: Missed Trade Editing
+Full edit support — click ✎ to load all fields back into form (scales, reasons, time, media). Gold edit banner with Cancel. Update saves in-place.
+
+### NEW: Customizable Labels
+All 4 chip categories now customizable in Settings → Custom Labels & Defaults:
+- **Execution errors** (12 defaults)
+- **Emotional states** (10 defaults)
+- **Missed trade reasons** (10 defaults)
+- **Trigger types** (4 defaults)
+- Hide defaults you don't use, add your own
+- Hidden items still show in analytics for historical data — nothing is ever deleted
+- Export/import includes `customLabels`
+- All analytics, What-If Lab, AI Coach, and CSV export use dynamic label lookups
+
+### NEW: Dual BMBridge Feeds
+Separate endpoints for levels (STATS.csv) and live price data. Configurable in Settings → BMBridge Connections. RTH stale data protection with configurable buffer (default 3 min).
+
+### IMPROVED: Data Migration
+SCHEMA_VERSION 3 → 4. Adds `screenshots: []` to all existing missed trades. Auto-migrates on page load and backup import.
+
+### BUG FIXES
+1. AI Coach stale label variables — custom labels showed raw IDs in prompts
+2. CSV export used raw IDs for errors/emotions instead of display names
+3. `<details>` sections stayed collapsed when editing trades/missed trades
+4. Fragile chip matching via querySelector in edit functions — replaced with rebuild approach
+
+### KNOWN ISSUE
+PM time parsing: `1:30 PM` parses as hour 1 in time-bucket analytics. Affects CSV export time breakdown, What-If cutoff hour, and ETH detection. Queued for v2.2.
+
+---
+
 ## v2.1 — Custom Levels, Screenshots, Migration System (March 2026)
 
 ### NEW: Custom Levels

@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 2.1 · March 2026**
+**Version 2.1.1 · March 2026**
 
 ---
 
@@ -10,19 +10,21 @@
 2. [Preflight Checklist](#preflight-checklist)
 3. [Pre-Market Levels](#pre-market-levels)
 4. [Custom Levels](#custom-levels)
-5. [Open Context Alignment](#open-context-alignment)
-6. [Level Tracking & Live Price](#level-tracking--live-price)
-7. [Trade Log](#trade-log)
-8. [Trade Screenshots](#trade-screenshots)
-9. [Missed Trades](#missed-trades)
-10. [Journal](#journal)
-11. [Analytics Dashboard](#analytics-dashboard)
-12. [What-If Lab](#what-if-lab)
-13. [AI Trade Coach](#ai-trade-coach)
-14. [CSV Import & Column Mapping](#csv-import--column-mapping)
-15. [Settings & Configuration](#settings--configuration)
-16. [Data Management & Migration](#data-management--migration)
-17. [Troubleshooting](#troubleshooting)
+5. [Opening Print & Open Type Detection](#opening-print--open-type-detection)
+6. [Open Context Alignment](#open-context-alignment)
+7. [Level Tracking & Live Price](#level-tracking--live-price)
+8. [Trade Log](#trade-log)
+9. [Media Attachments](#media-attachments)
+10. [Missed Trades](#missed-trades)
+11. [Journal](#journal)
+12. [Analytics Dashboard](#analytics-dashboard)
+13. [What-If Lab](#what-if-lab)
+14. [AI Trade Coach](#ai-trade-coach)
+15. [Custom Labels & Defaults](#custom-labels--defaults)
+16. [CSV Import & Column Mapping](#csv-import--column-mapping)
+17. [Settings & Configuration](#settings--configuration)
+18. [Data Management & Migration](#data-management--migration)
+19. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -145,6 +147,55 @@ In Settings → CSV Column Mapping, every dropdown includes:
 
 Once Today's Open, pHigh, and pLow are entered, TraderLab auto-detects the open type (HOR/LOR/HIR/LIR/IR-IV) and shows a decision tree. Click **Confirm** to lock it.
 
+The Opening Print system (below) handles getting that value into the field — you rarely need to type it manually.
+
+---
+
+## Opening Print & Open Type Detection
+
+TraderLab uses a layered system to get the RTH opening print without manual entry.
+
+### Pre-Market: Estimate Mode
+
+Before 9:30 ET, if you have a live price feed connected:
+
+1. A gold **⚡ Use [price] as Estimate** button appears
+2. Click it to set a preliminary opening print
+3. The OT card activates immediately with a gold border — shows which open type it *would* be
+4. The estimate is stored separately — it **never** writes to the actual Today's Open field
+5. The field placeholder shows `⚡ Est: 5925.50`
+
+If the price moves significantly before open, click **⚡ Update Estimate** to refresh.
+
+### At the Open: Auto-Confirm
+
+When the RTH session starts and BMBridge or Yahoo Finance delivers the real opening print:
+
+1. The estimate is automatically replaced with the confirmed value
+2. The field fills, border turns cyan, badge shows `⚡ confirmed from feed`
+3. If the OT classification changed (e.g., estimate said HIR but real open is HOR), a toast alerts you: *"⚠ Open type changed: HIR → HOR (real open: 5925.50)"*
+
+### Manual Capture
+
+During RTH, if the auto-fill hasn't fired yet:
+
+1. A cyan **📌 Set Opening Print** button appears
+2. Click it to capture the current live price as the confirmed opening print
+3. Or type directly into the Today's Open field — this overrides everything
+
+### Live Tracking Header
+
+The RTH Open display in the Live Price panel shows the current value with source badges:
+
+| Badge | Meaning |
+|-------|---------|
+| ⚡ + cyan | Auto-filled from feed |
+| 📌 + cyan | Manually captured |
+| ⚠ + gold | Estimate only (not confirmed) |
+| No badge | Manually typed |
+
+The ↻ Sync button pulls the latest value from the feed if available.
+
 ---
 
 ## Level Tracking & Live Price
@@ -177,17 +228,28 @@ At 10:30 ET, IBH/IBL auto-fill from session range. 1.5× and 2.0× extensions ca
 
 ## Trade Log
 
+### Smart Defaults
+
+When you open the Trade Log tab:
+- **Entry price** auto-fills from the live feed (shown in cyan — clears to normal on first keystroke)
+- **Direction** auto-selects from your current bias (Long/Short/Neutral)
+- Both are overridable — just type or select to replace
+
 ### Logging a Trade
 
-1. Select **Setup** (8 built-in + custom)
-2. Pick **Direction** (auto-suggested from feed)
+1. Select **Setup** (8 built-in + your custom setups)
+2. Pick **Direction** (auto-suggested from bias)
 3. Enter **Entry** and **Stop** (entry auto-filled from live price)
 4. Fill **Scale-outs** (Scale 1 = RN, Scale 2 = target, Scale 3 = runner)
 5. Tag **Targets** → set price → mark Hit/Bailed/Missed
 6. Rate **Process** (A/B/C/F)
-7. Tag **Errors** and **Emotions**
-8. Add **Notes** and **📷 Screenshots**
+7. Tag **Errors** and **Emotions** (customizable in Settings)
+8. Add **Notes** and **📎 Media** (images + video replay links)
 9. Click **Log Trade**
+
+### Editing a Trade
+
+Click ✎ on any trade card → all fields load back into the form. Gold edit banner shows with Cancel option. Click **Update Trade** to save changes in place.
 
 ### Daily Goals Tracker
 
@@ -195,20 +257,33 @@ Shows today's P&L (always real fees, immune to toggle), trade count vs max, loss
 
 ---
 
-## Trade Screenshots
+## Media Attachments
 
-Attach chart images to individual trades:
+Attach chart screenshots and video replay links to trades, missed trades, and journal sessions.
 
-1. Expand the **📷 Screenshots** section in the trade form
-2. Paste image URLs — one per line (Imgur, Gyazo, ShareX, Google Drive, etc.)
-3. Live thumbnail previews show as you type
-4. Supports multiple images per trade
+### Adding Media
 
-**Display:**
-- Purple **📷 3** badge on collapsed trade cards (shows count at a glance)
-- Clickable thumbnails in expanded trade detail
-- Thumbnails in journal trade review
-- Populated back into form when editing a trade
+1. Expand the **📎 Media** section in the trade form (or missed trade form, or journal)
+2. Paste URLs — one per line
+3. Live previews appear as you type
+
+### How URLs Render
+
+| URL Type | Preview | Example |
+|----------|---------|---------|
+| Image (`.png/.jpg/.gif/.webp/.svg`, imgur) | Thumbnail | `https://i.imgur.com/abc123.png` |
+| Video / other | 🎬 clickable link with domain | `https://youtube.com/watch?v=abc` |
+
+### Display
+
+- Smart badge on trade cards: **📷 2 🎬 1** for mixed media (images + videos counted separately)
+- Clickable thumbnails/links in expanded trade detail
+- Thumbnails in journal trade review and session cards
+- Populated back into form when editing trades or missed trades
+
+### Supported Hosting
+
+Any URL works — Imgur, Gyazo, ShareX, Google Drive, YouTube, Notion, local file paths. Image URLs get thumbnails; everything else gets a 🎬 link.
 
 ---
 
@@ -216,7 +291,11 @@ Attach chart images to individual trades:
 
 ### Logging
 
-Enter date, direction, entry, stop, estimated exit, and select reasons (multi-select).
+Enter date, direction, entry, stop, estimated exit, and select reasons (multi-select). Attach media URLs if desired. Simple mode for single target, or expand for multi-scale (RN + Target + Runner).
+
+### Editing
+
+Click ✎ on any missed trade → all fields load back into the form including scales, reason chips, time, and media. Gold edit banner with Cancel. Click **Update Missed Trade** to save in place.
 
 ### Filters
 
@@ -237,12 +316,12 @@ Shows P&L if you'd taken these trades. Top 3 costliest miss reasons ranked by do
 2. Fill in open type, day type, result, process, setups
 3. Edit **📋 Preflight Answers** if needed (syncs back to Preflight tab)
 4. Write notes and lessons
-5. Add screenshot URLs
+5. Add media URLs (images + video replays)
 6. Click **Save Session**
 
 ### What Gets Saved
 
-Levels (including custom), fuel map, bias log, hit log, preflight answers, trade screenshots, and all form fields — permanently in the session record.
+Levels (including custom), fuel map, bias log, hit log, preflight answers, media attachments, and all form fields — permanently in the session record.
 
 ### Editing Past Sessions
 
@@ -286,6 +365,38 @@ Click ✎ on any session card → loads all fields back into the form (including
 
 ---
 
+## Custom Labels & Defaults
+
+Customize the chip options that appear in trade forms, missed trade forms, and throughout analytics.
+
+### Where to Configure
+
+Settings → **Custom Labels & Defaults**. Four collapsible categories:
+
+| Category | Defaults | Used In |
+|----------|----------|---------|
+| Execution Errors | 12 (Chased Entry, FOMO, etc.) | Trade form, analytics error cost, What-If, AI Coach, CSV export |
+| Emotional States | 10 (Confident, Anxious, etc.) | Trade form, analytics, What-If, AI Coach, CSV export |
+| Missed Trade Reasons | 10 (Fear, Hesitation, etc.) | Missed trade form, reason breakdown, What-If |
+| Trigger Types | 4 (Type 1–4) | Trade form, analytics, What-If, AI Coach |
+
+### Hiding Defaults
+
+Click the 👁 eye icon next to any default item to hide it. The item disappears from forms but **remains visible in analytics** for any historical trades that used it. Click the eye again to unhide.
+
+### Adding Custom Items
+
+Type a name and click **+ Add**. The item appears in forms immediately. Custom items can also be hidden (same eye toggle) but never truly deleted.
+
+### How It Works
+
+- `getActiveItems(cat)` — returns only visible items (forms use this)
+- `getAllLabels(cat)` — returns every item including hidden (analytics/export use this)
+- Stored in `tl_custom_labels` in localStorage
+- Included in export/import backups
+
+---
+
 ## CSV Import & Column Mapping
 
 ### Supported Formats
@@ -315,9 +426,13 @@ Labels without a mapping that have valid prices → auto-added as custom levels.
 
 MES ($1.25/tick, $0.62 comm), ES ($12.50/tick, $2.50 comm), MNQ ($0.50/tick, $0.62 comm), NQ ($5.00/tick, $2.50 comm). Custom instruments supported.
 
+### Custom Labels & Defaults
+
+Customize execution errors, emotions, missed trade reasons, and trigger types. See [Custom Labels & Defaults](#custom-labels--defaults) for full details.
+
 ### BMBridge
 
-Two URLs: ◎ Levels Feed (imports) + ⚡ Live Price Feed (real-time). Auto-test on Settings open.
+Two URLs: ◎ Levels Feed (imports) + ⚡ Live Price Feed (real-time). Auto-test on Settings open. RTH stale data buffer configurable (default 3 min).
 
 ### Daily Goals
 
@@ -348,11 +463,12 @@ Max daily loss, max trades, commission override. Goals tracker always shows real
 
 ### Backward Compatibility
 
-| From | To v2.1 | Result |
+| From | To v2.1.1 | Result |
 |------|---------|--------|
 | v1.x | ✅ | Full migration |
 | v2.0 | ✅ | Adds new fields |
-| v2.1 | ✅ | No changes needed |
+| v2.1 | ✅ | Adds missed trade screenshots |
+| v2.1.1 | ✅ | No changes needed |
 
 ---
 
@@ -367,8 +483,14 @@ Check BMBridge URL in Settings. Click Test buttons. Falls back to Yahoo (~15 min
 ### Levels not being tagged
 Verify price is set (gold border = missing). Tags only fire during RTH. Check RTH buffer setting.
 
+### Opening print not auto-filling
+BMBridge needs to include an OPEN field mapped in CSV Column Mapping. Yahoo fallback has ~15 min delay. Use ⚡ Estimate or 📌 Capture as alternatives.
+
 ### Fee numbers inconsistent
 Fee toggle syncs globally. Goals tracker always shows real fees regardless of toggle.
+
+### Custom labels not appearing in trade form
+Make sure the item isn't hidden — check Settings → Custom Labels & Defaults. The 👁 eye icon toggles visibility.
 
 ### Data lost after browser update
 Import your backup: Settings → Import Backup. **Always export backups regularly.**
@@ -379,4 +501,4 @@ If you didn't Save Session in Journal, answers only exist in localStorage until 
 ---
 
 *"If this — then that. If not — then what?"*
-*TraderLab 101 v2.1 · Created by SeanDavid · Based on Tom B.'s Traders Lab methodology*
+*TraderLab 101 v2.1.1 · Created by SeanDavid · Based on Tom B.'s Traders Lab methodology*

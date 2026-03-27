@@ -28,7 +28,7 @@ Open an issue with the `enhancement` label. Describe the feature and which workf
 
 If your change modifies the data schema:
 
-1. **Increment `SCHEMA_VERSION`** (currently 3)
+1. **Increment `SCHEMA_VERSION`** (currently 4)
 2. **Add migration** in BOTH `migrateLocalStorage()` AND `migrateImport(d)`
 3. **ONLY add** fields with safe defaults
 4. **NEVER delete, rename, or overwrite** existing data
@@ -54,9 +54,10 @@ If your change modifies the data schema:
 | "Tagged" | Level detection (price touched level) |
 | "Hit" | Trade target outcome |
 | `t.proc` | Process rating field (not `t.process`) |
-| `t.screenshots` | Array of URL strings |
+| `t.screenshots` | Array of URL strings (UI says "Media" but field name is SACRED) |
 | Custom level keys | `custom_` + level name (not index) |
 | Fee toggle | Single source: `anShowFees` + `localStorage('tl_an_fees')` |
+| Label chips | Dynamic — built by `buildErrorChips()` etc., not hardcoded HTML |
 
 ---
 
@@ -76,14 +77,14 @@ If your change modifies the data schema:
 
 ## Architecture
 
-Everything in `TraderLab101.html` (~12,100 lines):
+Everything in `TraderLab101_v2.1.1.html` (~12,740 lines):
 - HTML/CSS: lines 1–3450
-- State + migration: lines 3450–3550
-- Core JS: lines 3550–9300
-- Migration + export/import: lines 9300–9500
-- What-If Lab + AI: lines 9500–11000
-- Level tracker + session UI: lines 11000–12100
+- State + defaults + migration call: lines 3450–3570
+- Core JS: lines 3570–9400
+- Migration + export/import: lines 9400–9800
+- What-If Lab + AI: lines 9800–11200
+- Level tracker + session UI: lines 11200–12740
 
 ### Key localStorage Keys
 
-`tl_sessions`, `tl_trades`, `tl_missed`, `tl_pm`, `tl_schema_version`, `tl_bmurl`, `tl_bmurl_price`, `tl_bmmap`, `tl_an_fees`, `tl_instrument`, `tl_goals`, `tl_hits`, `tl_preflight`
+`tl_sessions`, `tl_trades`, `tl_missed`, `tl_pm`, `tl_schema_version`, `tl_bmurl`, `tl_bmurl_price`, `tl_bmmap`, `tl_an_fees`, `tl_instrument`, `tl_goals`, `tl_hits`, `tl_preflight`, `tl_custom_labels`, `tl_custom_setups`, `tl_journal_dropdowns`
