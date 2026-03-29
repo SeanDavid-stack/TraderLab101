@@ -77,7 +77,7 @@ If your change modifies the data schema:
 
 ## Architecture
 
-Everything in `TraderLab101_v2.1.1.html` (~12,740 lines):
+Everything in `TraderLab101_v2.2.html (~13,000 lines):
 - HTML/CSS: lines 1–3450
 - State + defaults + migration call: lines 3450–3570
 - Core JS: lines 3570–9400

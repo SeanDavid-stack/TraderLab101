@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 2.1.1 · March 2026**
+**Version 2.2 · March 2026**
 
 ---
 
@@ -463,12 +463,13 @@ Max daily loss, max trades, commission override. Goals tracker always shows real
 
 ### Backward Compatibility
 
-| From | To v2.1.1 | Result |
+| From | To v2.2 | Result |
 |------|---------|--------|
 | v1.x | ✅ | Full migration |
 | v2.0 | ✅ | Adds new fields |
-| v2.1 | ✅ | Adds missed trade screenshots |
-| v2.1.1 | ✅ | No changes needed |
+| v2.1 | ✅ | Adds missed trade screenshots, unified setups |
+| v2.1.1 | ✅ | Adds unified setup management |
+| v2.2 | ✅ | No changes needed |
 
 ---
 
@@ -501,4 +502,4 @@ If you didn't Save Session in Journal, answers only exist in localStorage until 
 ---
 
 *"If this — then that. If not — then what?"*
-*TraderLab 101 v2.1.1 · Created by SeanDavid · Based on Tom B.'s Traders Lab methodology*
+*TraderLab 101 v2.2 · Created by SeanDavid · Based on Tom B.'s Traders Lab methodology*

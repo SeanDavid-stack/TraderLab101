@@ -1,6 +1,6 @@
 # TraderLab 101
 
-**v2.1.1 · Free trading journal + performance simulator for ES/MES futures traders**
+**v2.2 · Free trading journal + performance simulator for ES/MES futures traders**
 Built on Auction Market Theory · Tom B.'s Traders Lab methodology
 
 ---
@@ -32,18 +32,20 @@ TraderLab 101 is a complete trading workflow — from pre-market preparation thr
 - **RTH stale data protection** — configurable buffer, freshness detection
 
 ### Trade Management
-- **Trade Log** — 3 scale-outs + runner, R-multiple tracking
-- **📎 Media attachments** — chart screenshots (thumbnails) + video replay links (🎬 clickable) per trade
-- **Customizable labels** — execution errors, emotions, missed reasons, triggers all configurable in Settings
+- **Trade Log** — 3 scale-outs + runner, R-multiple tracking, direction validation with stop-side warnings
+- **📎 Media attachments** — chart screenshots (thumbnails) + video replay links (🎬 clickable) per trade. Local file paths supported (auto-encodes `#`, strips quotes)
+- **Customizable labels** — setups, execution errors, emotions, missed reasons, triggers all configurable in Settings
 - **4 entry trigger types** — track which triggers produce edge
 - **Missed Trade Log** — full edit support, period + instrument filters, what-if impact, top 3 costliest reasons
 - **Smart defaults** — auto-fill entry price + auto-select direction from live feed
 
 ### Analytics Dashboard
 - **Equity curve** (gross + net), **6 visual SVG charts**, **15+ analysis sections**
+- **Configurable performance thresholds** — define green/gold/red for Win Rate, Profit Factor, RN Rate, Full Stop Rate, A-Process WR, BE Rate
 - **Collapsible & reorderable sections** with persistent state
 - **Global fee toggle** — synced across Analytics, Trade Log, Missed Trades, What-If Lab
-- **Period + instrument filters** · **CSV analytics export** (30+ computed metrics)
+- **Consistent filtering** — all three pages have identical period + instrument filters with 2M and custom date range
+- **CSV analytics export** (30+ computed metrics)
 - Calendar view, tilt detection, sweet spot finder
 
 ### 🔬 What-If Lab — Performance Simulator
@@ -61,14 +63,15 @@ TraderLab 101 is a complete trading workflow — from pre-market preparation thr
 
 ### Data Safety & Migration
 - **SACRED rule** — user data is never deleted, renamed, or overwritten
-- **Schema versioning** (currently v4) with dual migration paths (page load + import)
-- **Backward compatible** — v1.x, v2.0, v2.1, v2.1.1 backups all import cleanly
+- **Schema versioning** (currently v5) with dual migration paths (page load + import)
+- **Backward compatible** — v1.x, v2.0, v2.1, v2.1.x backups all import cleanly
+- **`_safeSave()` wrapper** on all localStorage writes — quota protection with user notification
 
 ---
 
 ## Quick Start
 
-1. Download `TraderLab101_v2_1_1.html`
+1. Download `TraderLab101_v2.2.html`
 2. Open in Chrome (or any modern browser)
 3. Go to **Settings** — select instrument, set commission
 4. Follow the 7-step workflow: Preflight → Levels → Open Context → Live Price → Trade → Missed → Journal
@@ -102,16 +105,18 @@ Pre-configured: MES, ES, MNQ, NQ. Custom instruments via Settings.
 
 ## Backward Compatibility
 
-| Source Version | Import Into v2.1.1 | What Happens |
+| Source Version | Import Into v2.2 | What Happens |
 |---------------|-------------------|--------------|
 | v1.x (no schema) | ✅ | Full migration: adds dates, normalizes trades, adds defaults |
 | v2.0 (schema 2) | ✅ | Adds customLevels, screenshots, normalizes new fields |
 | v2.1 (schema 3) | ✅ | Adds missed trade screenshots |
-| v2.1.1 (schema 4) | ✅ | No migration needed |
+| v2.1.1 (schema 4) | ✅ | Adds unified setup management |
+| v2.2 (schema 5) | ✅ | No migration needed |
 
 ---
 
 ## License
 
-MIT License. Free to use. Built for the Traders Lab community.
+**Proprietary — All Rights Reserved.** Free for personal, non-commercial use only. You may not sell, redistribute, modify and distribute, or use the code in competing products. See [LICENSE](LICENSE) for full terms.
+
 Created by **SeanDavid** · Based on **Tom B.**'s Traders Lab methodology
