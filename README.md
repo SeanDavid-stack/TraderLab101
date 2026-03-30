@@ -1,6 +1,6 @@
 # TraderLab 101
 
-**v2.2 · Free trading journal + performance simulator for ES/MES futures traders**
+**v2.3 · Free trading journal + performance simulator for ES/MES futures traders**
 Built on Auction Market Theory · Tom B.'s Traders Lab methodology
 
 ---
@@ -32,21 +32,25 @@ TraderLab 101 is a complete trading workflow — from pre-market preparation thr
 - **RTH stale data protection** — configurable buffer, freshness detection
 
 ### Trade Management
-- **Trade Log** — 3 scale-outs + runner, R-multiple tracking, direction validation with stop-side warnings
-- **📎 Media attachments** — chart screenshots (thumbnails) + video replay links (🎬 clickable) per trade. Local file paths supported (auto-encodes `#`, strips quotes)
-- **Customizable labels** — setups, execution errors, emotions, missed reasons, triggers all configurable in Settings
+- **Trade Log** — 3 scale-outs + runner, R-multiple tracking
+- **📎 Media attachments** — chart screenshots (thumbnails) + video replay links (🎬 clickable) per trade
+- **Customizable labels** — execution errors, emotions, missed reasons, triggers all configurable in Settings
 - **4 entry trigger types** — track which triggers produce edge
 - **Missed Trade Log** — full edit support, period + instrument filters, what-if impact, top 3 costliest reasons
 - **Smart defaults** — auto-fill entry price + auto-select direction from live feed
 
 ### Analytics Dashboard
 - **Equity curve** (gross + net), **6 visual SVG charts**, **15+ analysis sections**
-- **Configurable performance thresholds** — define green/gold/red for Win Rate, Profit Factor, RN Rate, Full Stop Rate, A-Process WR, BE Rate
 - **Collapsible & reorderable sections** with persistent state
 - **Global fee toggle** — synced across Analytics, Trade Log, Missed Trades, What-If Lab
-- **Consistent filtering** — all three pages have identical period + instrument filters with 2M and custom date range
-- **CSV analytics export** (30+ computed metrics)
+- **Period + instrument filters** · **CSV analytics export** (30+ computed metrics)
 - Calendar view, tilt detection, sweet spot finder
+- **Collapsible filter bars** with color-coded chips, trade count badges, and ✕ Clear Filters on all 3 tabs
+- **Equity curve per filter** — re-renders for filtered trade set
+- **Session calendar heatmap** in Journal — click any day to jump
+- **Bias Accuracy Tracker** — overall %, by direction, with vs against bias
+- **Setup Quality vs Execution Rating** — separate A/B/C/F ratings per trade
+- **P&L by Setup Quality** + Top 3 costliest trades and error types
 
 ### 🔬 What-If Lab — Performance Simulator
 10 simulation panels: errors, emotions, quality, timing, triggers, improvements, sizing, stop caps, daily discipline, missed trades. Edge Optimizer ranks 15+ dimensions by P&L impact.
@@ -63,15 +67,14 @@ TraderLab 101 is a complete trading workflow — from pre-market preparation thr
 
 ### Data Safety & Migration
 - **SACRED rule** — user data is never deleted, renamed, or overwritten
-- **Schema versioning** (currently v5) with dual migration paths (page load + import)
-- **Backward compatible** — v1.x, v2.0, v2.1, v2.1.x backups all import cleanly
-- **`_safeSave()` wrapper** on all localStorage writes — quota protection with user notification
+- **Schema versioning** (currently v6) with dual migration paths (page load + import)
+- **Backward compatible** — v1.x, v2.0, v2.1, v2.1.1 backups all import cleanly
 
 ---
 
 ## Quick Start
 
-1. Download `TraderLab101_v2.2.html`
+1. Download `TraderLab101_v2.3.html`
 2. Open in Chrome (or any modern browser)
 3. Go to **Settings** — select instrument, set commission
 4. Follow the 7-step workflow: Preflight → Levels → Open Context → Live Price → Trade → Missed → Journal
@@ -105,18 +108,18 @@ Pre-configured: MES, ES, MNQ, NQ. Custom instruments via Settings.
 
 ## Backward Compatibility
 
-| Source Version | Import Into v2.2 | What Happens |
+| Source Version | Import Into v2.3 | What Happens |
 |---------------|-------------------|--------------|
 | v1.x (no schema) | ✅ | Full migration: adds dates, normalizes trades, adds defaults |
 | v2.0 (schema 2) | ✅ | Adds customLevels, screenshots, normalizes new fields |
 | v2.1 (schema 3) | ✅ | Adds missed trade screenshots |
-| v2.1.1 (schema 4) | ✅ | Adds unified setup management |
-| v2.2 (schema 5) | ✅ | No migration needed |
+| v2.1.1 (schema 4) | ✅ | Adds setupRating field |
+| v2.2 (schema 5) | ✅ | Adds setupRating field |
+| v2.3 (schema 6) | ✅ | No migration needed |
 
 ---
 
 ## License
 
-**Proprietary — All Rights Reserved.** Free for personal, non-commercial use only. You may not sell, redistribute, modify and distribute, or use the code in competing products. See [LICENSE](LICENSE) for full terms.
-
+Proprietary — free for personal use. Built for the Traders Lab community.
 Created by **SeanDavid** · Based on **Tom B.**'s Traders Lab methodology

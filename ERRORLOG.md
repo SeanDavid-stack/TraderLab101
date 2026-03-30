@@ -4,6 +4,53 @@
 
 ---
 
+## v2.3 Bugs Fixed
+
+| # | Bug | Root Cause | Fix | Severity |
+|---|-----|-----------|-----|----------|
+| B-040 | Best Trade card shows `+$-10` green when all trades are losers | Display logic didn't handle all-loss scenario | Fixed display logic | 🟡 Display |
+| B-041 | CSV direction export shows raw lowercase `long`/`short` | No capitalization before export | Capitalized for display | 🟢 Display |
+| B-043 | Goals dropdown says "Only perfect process" | Stale "Process" label | → "Only perfect execution" | 🟢 Display |
+| B-044 | Visual chart tab says "By Process" | Stale "Process" label | → "By Execution" | 🟢 Display |
+| B-045 | Analytics mini-breakdown says "A-Process" | Stale "Process" label | → "A-Execution" | 🟢 Display |
+| B-046 | Filter bar missing EXECUTION label | HTML missing the label span | Added with data-filter attrs | 🟡 UX |
+| B-047 | Filter button logic uses fragile child-index counting | `querySelector` by child position | → data-filter/data-anf/data-jf attribute selectors | 🔴 Logic |
+| B-048 | What-If Lab says "Minimum Process Rating" | Stale "Process" label | → "Minimum Execution Rating" | 🟢 Display |
+| B-049 | AI Coach Full Review says "Process quality" | Stale "Process" label | → "Execution quality" | 🟢 Display |
+| B-050 | AI Coach Error Audit says "Process rating impact" | Stale "Process" label | → "Execution rating impact" | 🟢 Display |
+| B-051 | clearJFilters shows both form AND review | Hidden flag not restored | Always returns to form view | 🟡 UX |
+| B-052 | Journal heatmap — click day with trades but no session → nothing | `openSessionReview` returned silently when no session found | Changed to `jGoToDate()` which navigates to any date | 🟡 UX |
+| B-053 | clearTLFilters — `===All` doesn't match `All (220)` | Trade count badges changed button text from `All` to `All (N)` | → `startsWith('All')` | 🔴 Logic |
+| B-054 | clearJFilters — same textContent match issue | Same root cause as B-053 | → `startsWith('All')` | 🔴 Logic |
+| B-055 | `applyJournalDropdowns()` crashes on import with empty `journalDropdowns` | Direct `.map()` on undefined properties without fallback | Falls back to `DEFAULT_JOURNAL_DROPDOWNS` when properties missing | 🔴 Crash |
+| B-056 | Import error shows generic "invalid file" with no detail | Catch block swallowed actual error message | Now shows `err.message` and logs to error log with stack trace | 🟡 UX |
+
+### Pattern 11: Missed trade scales use `pts` not `pnlPts`
+Regular trade scales: `{label, price, qty, pnlPts, r}`. Missed trade scales: `{label, price, qty, pts}`. Different formats! The rendering at `renderMTList()` line 9758 calls `s.pts.toFixed(2)`. If you generate demo data or import data with `pnlPts` instead of `pts`, the Missed Trades tab crashes.
+
+---
+
+## v2.2 Bugs Fixed
+
+| # | Bug | Root Cause | Fix | Severity |
+|---|-----|-----------|-----|----------|
+| 1 | Direction case mismatch — Analytics "By Direction" showed 0 trades for all trade log entries | Trade Log saved `'long'` (lowercase), Missed Trades saved `'Long'` (capitalized). Comparisons used capitalized. | Standardized to lowercase. All comparisons use `.toLowerCase()` for legacy safety. | 🔴 Data |
+| 2 | Direction dropdown missing onchange — changing direction didn't recalculate R/P&L/result | No `onchange` handler on `tl-dir` or `mt-dir` `<select>` elements | Added `onchange="calcTrade()"` and `onchange="calcMissed()"` | 🔴 UX |
+| 3 | Missed trade log CSS class always "short" | Compared `t.dir==='Long'` but trades stored lowercase | Fixed with `.toLowerCase()` normalization | 🟡 Display |
+| 4 | Hidden setup preserved on edit — editing wipes setup field | Edit populated dropdown but hidden value wasn't an option | Injects temporary "(hidden)" option | 🔴 Data |
+| 5 | CSV export break-even count always 0 | Compared `'BE'` instead of `'Break Even'` | Fixed comparison string | 🟡 Data |
+| 6 | Trade Log stats ignored fee toggle | Used gross P&L regardless of toggle | Shows net with gross/fee breakdown when ON | 🟡 Data |
+| 7 | AM/PM time parsing — PM trades bucket as morning | `parseInt('1:30 PM')` returns `1`, not `13` | Shared `parseTradeHour()` helper, fixed 9 locations | 🟡 Data |
+| 8 | Screenshot `#` in filenames breaks URL | `#` means fragment in URLs, SC uses `#` in filenames | `sanitizeMediaUrl()` encodes `#` to `%23` | 🟡 Data |
+| 9 | Screenshot quoted paths fail to load | Windows paste wraps in `"quotes"` | `sanitizeMediaUrl()` strips outer quotes | 🟡 UX |
+| 10 | AI Coach stale label variables | Custom labels showed raw IDs in prompts | Added `getAllLabels()` refresh on AI Coach tab open | 🟡 Data |
+| 11 | CSV export raw IDs for errors/emotions | No label lookup before row generation | Added lookups in `exportAnalyticsCSV()` | 🟡 Data |
+| 12 | What-If Lab missed reason filter key mismatch | Old presets stored display-string keys | `wiLoadPreset()` auto-migrates old keys | 🟡 Data |
+| 13 | What-If Lab scroll jump | Any slider/chip interaction caused scroll to top | Saves and restores `.wi-scroll` position | 🟢 UX |
+| 14 | Duplicate label addition | Could add same label twice (case-insensitive) | Blocked with toast message | 🟢 UX |
+| 15 | Setup not required on Missed Trades | Setup field was optional | Now validated as required | 🟢 Data |
+| 16 | Hide label without trade count warning | User could hide a label used by 50 trades without knowing | Confirm dialog shows trade count | 🟢 UX |
+
 ## v2.1.1 Bugs Fixed
 
 | # | Bug | Root Cause | Fix | Severity |
@@ -11,11 +58,11 @@
 | 1 | AI Coach stale label variables — custom labels showed raw IDs in AI prompts | `WI_ERROR_LABELS`, `WI_EMO_LABELS`, `WI_TRIGGER_LABELS` only refreshed on What-If tab open, not AI Coach tab | Added same refresh (`getAllLabels()`) to `if(id==='aicoach')` block | 🟡 Data |
 | 2 | CSV export used raw IDs for errors/emotions — `chased` instead of `Chased Entry` | `exportAnalyticsCSV()` pushed raw ID strings without label lookup | Added `getAllLabels('errors')` and `getAllLabels('emotions')` lookups before row generation | 🟡 Display |
 
-## v2.1.1 Bugs Found (Pre-existing, Queued for v2.2)
+## v2.1.1 Bugs Found (Fixed in v2.2)
 
 | # | Bug | Root Cause | Status | Severity |
 |---|-----|-----------|--------|----------|
-| 1 | PM time parsing broken — all PM trades bucket into 09:30–10:00 | `parseInt('1:30 PM'.split(':')[0])` returns `1`, not `13`. No AM/PM conversion anywhere. | **OPEN** — need shared `parseTradeHour()` helper. 6+ locations affected: CSV export, AI Coach, What-If cutoff, ETH filter | 🟡 Data |
+| 1 | PM time parsing broken — all PM trades bucket into 09:30–10:00 | `parseInt('1:30 PM'.split(':')[0])` returns `1`, not `13`. No AM/PM conversion anywhere. | **FIXED v2.2** — shared `parseTradeHour()` helper. 9 locations fixed. | 🟡 Data |
 
 ---
 
@@ -96,7 +143,15 @@
 
 ### Pattern 10: AM/PM time not converted to 24-hour for math
 **What happens:** `parseInt('1:30 PM'.split(':')[0])` returns `1`, not `13`. All PM trades get bucketed/filtered as early-morning times.
-**Fix:** Use a shared helper that extracts hour and adds 12 for PM: `var h=parseInt(parts[0]); if(/PM/i.test(time)&&h<12) h+=12; if(/AM/i.test(time)&&h===12) h=0;`
+**Fix:** Use shared `parseTradeHour()` helper. **FIXED in v2.2** — applied across 9 locations.
+
+### Pattern 11: Direction case mismatch between forms
+**What happens:** One form saves `'long'` (lowercase), another saves `'Long'` (capitalized). Downstream comparisons match only one case, silently dropping the other from analytics.
+**Fix:** Standardize all dropdown `value` attributes to lowercase. All comparisons use `.toLowerCase()` for legacy data safety. Always add `onchange` to direction dropdowns so switching recalculates.
+
+### Pattern 12: Special characters in file paths break URLs
+**What happens:** `#` in filenames (common in Sierra Chart output) means "start of fragment" in URLs — everything after it is silently dropped. Outer `"quotes"` from Windows paste become part of the URL. Backslashes aren't valid in URLs.
+**Fix:** Use `sanitizeMediaUrl()` helper: strip quotes, convert `\` to `/`, encode `#` `%` `?` and spaces, prepend `file:///` for local paths. Apply via `parseMediaUrls()` at all parse points.
 
 ---
 

@@ -1,61 +1,21 @@
-TraderLab 101 — Proprietary License
+MIT License
 
-Copyright (c) 2026 SeanDavid. All rights reserved.
+Copyright (c) 2026 SeanDavid
 
-GRANT OF USE
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-You are granted a free, non-exclusive, non-transferable license to use
-TraderLab 101 for personal, non-commercial purposes only. This means you
-may download the application, open it in your browser, and use it to
-journal and analyze your own trading activity.
-
-RESTRICTIONS
-
-You may NOT, without prior written permission from the copyright holder:
-
-1. SELL, license, sublicense, rent, lease, or charge any fee for access
-   to TraderLab 101 or any portion of it.
-
-2. COPY, reproduce, or redistribute the source code, in whole or in part,
-   whether modified or unmodified.
-
-3. MODIFY and distribute derivative works based on TraderLab 101. You may
-   inspect the source code for personal learning, but you may not
-   distribute modified versions.
-
-4. USE any portion of the source code, design, or architecture in a
-   competing product, commercial application, or SaaS platform.
-
-5. REMOVE, alter, or obscure any copyright notice, authorship credit, or
-   this license from the application or its associated files.
-
-6. CLAIM authorship or misrepresent the origin of TraderLab 101.
-
-7. PACKAGE, bundle, or incorporate TraderLab 101 into any product or
-   service offered by a company, organization, or individual for
-   commercial gain.
-
-ATTRIBUTION
-
-TraderLab 101 was created by SeanDavid and is built on Market Auction
-Theory as taught by Tom B. in the Traders Lab community. This attribution
-must be preserved in any authorized copy.
-
-DISCLAIMER
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-TRADING DISCLAIMER
-
-TraderLab 101 is a journaling and analytics tool. It does not provide
-financial advice, trading signals, or investment recommendations. Trading
-futures involves substantial risk of loss. Past performance tracked in this
-application does not guarantee future results. Use at your own risk.
-
-For permissions beyond this license, contact SeanDavid via the Traders Lab
-community or GitHub.
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -1,5 +1,76 @@
 # TraderLab 101 — Changelog
 
+## v2.3 — Setup Quality, Filters, Heatmap, Error Log (March 2026)
+
+Schema version: 6 (auto-migrates from v5)
+
+### NEW: Setup Quality vs Execution Rating
+The old single Process Rating is now two separate ratings per trade. **Setup Quality** rates the trade idea itself (A/B/C/F). **Execution Rating** rates how you executed it (A/B/C/F). Both optional, both independent. New stat cards, analytics breakdowns, CSV export sections, and AI Coach analysis for each.
+
+### NEW: Collapsible Filter Bars (All 3 Tabs)
+Trade Log, Analytics, and Journal all have matching `▸ Filter Trades` collapsible panels with identical layout: SETUP chips, EXECUTION (A/B/C/F), SETUP QUALITY (All/A/B/C/F/Unrated), RESULT (All/Win/Loss/BE), DIRECTION (All/Long/Short). All with ✕ Clear Filters.
+
+### NEW: Color-Coded Filter Chips
+Active chips change color by meaning: A = green, B = cyan, C = gold, F = red, Win = green, Loss = red, Long = green, Short = red. Instant visual feedback.
+
+### NEW: Trade Count Badges
+Every filter chip shows its count: `IBC (12)`, `A (59)`, `Loss (4)`. Volume at a glance.
+
+### NEW: Equity Curve Per Filter
+Filter to "IBC only" or "A execution only" in Analytics and the equity curve re-renders for that filtered set.
+
+### NEW: Session Calendar Heatmap (Journal)
+Collapsible `▸ Session Calendar` with green/red cells, daily P&L, click any day to jump to that session. Month navigation arrows, gold border on current date.
+
+### NEW: Journal Trade Review with Session Context
+Filtered trades grouped by session date showing open type, bias, process rating, key levels, and session notes.
+
+### NEW: Bias Accuracy Tracker (Analytics)
+"Bias Accuracy — Are You Reading the Market Right?" Overall accuracy %, breakdown by LONG vs SHORT bias, win rate WITH vs AGAINST bias, net Bias Edge.
+
+### NEW: P&L by Setup Quality + Top 3 Costliest (Analytics)
+Setup Quality breakdown (A/B/C/F/Unrated) in Trade Efficiency. Top 3 costliest trades by dollar loss. Top 3 costliest error types.
+
+### NEW: Error Log System
+Built-in error logging captures validation blocks, save failures, import errors, and uncaught JS crashes. Viewable in Settings → Error Log with color-coded badges, timestamps, and details. Export as .txt for bug reports. Capped at 200 entries.
+
+### IMPROVED: Direction Validation
+Gold ⚠ warning + hard block when stop is on wrong side. Direction change recalculates immediately.
+
+### IMPROVED: Local Screenshot Support
+Paste Windows file paths directly. Quotes, `#` in filenames, and spaces handled automatically.
+
+### IMPROVED: Import Error Messages
+Import failures now show the actual error message instead of generic "invalid file."
+
+### IMPROVED: Journal Dropdown Resilience
+`applyJournalDropdowns()` now falls back to defaults when properties are missing, preventing crashes on import of partial data.
+
+### UI POLISH
+- Native disclosure triangles hidden (no double arrows)
+- Dual-panel analytics row arrows repositioned to top-right
+- Stats by Setup nested inside Overview
+- Heatmap cells 38px with 10px P&L text
+- Orphaned CSS removed
+
+### BUG FIXES
+1. **B-040** Best Trade card — `+$-10` green when all losers → fixed display logic
+2. **B-041** CSV direction — raw lowercase in export → capitalized for display
+3. **B-043** Goals dropdown — "Only perfect process" → "Only perfect execution"
+4. **B-044** Visual chart tab — "By Process" → "By Execution"
+5. **B-045** Analytics mini-breakdown — "A-Process" → "A-Execution"
+6. **B-046** Filter bar labels — missing EXECUTION label → added with data-filter attrs
+7. **B-047** Filter button logic — fragile child-index counting → data-filter attributes
+8. **B-048** What-If Lab — "Minimum Process Rating" → "Minimum Execution Rating"
+9. **B-049** AI Coach Full Review — "Process quality" → "Execution quality"
+10. **B-050** AI Coach Error Audit — "Process rating impact" → "Execution rating impact"
+11. **B-051** clearJFilters — showed both form AND review → always returns to form
+12. **B-052** Journal heatmap — click day with trades but no session → nothing → now navigates via `jGoToDate()`
+13. **B-053** clearTLFilters — `===All` didn't match `All (220)` → `startsWith('All')`
+14. **B-054** clearJFilters — same textContent match issue → `startsWith('All')`
+
+---
+
 ## v2.1.4 — Direction Fix, Stop Validation, Local Screenshots (March 2026)
 
 ### NEW: Direction Validation
