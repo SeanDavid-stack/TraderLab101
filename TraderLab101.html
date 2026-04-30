@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.7
+  TraderLab 101 v2.3.8
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.7</title>
+<title>TraderLab 101 v2.3.8</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.7</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.8</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -835,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.7</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.8</div>
   </nav>
 
   <div class="content">
@@ -3805,7 +3805,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.7'
+    v: 'v2.3.8'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -6626,7 +6626,7 @@ function saveTradeEntry(){
   var notes     = document.getElementById('tl-notes').value.trim();
   var screenshots = parseMediaUrls(document.getElementById('tl-screenshots').value);
   var instrKey  = document.getElementById('tl-instrument').value || instrumentSettings.name || 'MES';
-  var instrData = INSTRUMENT_PRESETS[instrKey] || {name:instrKey, tickSize:instrumentSettings.tickSize||0.25, tickValue:instrumentSettings.tickValue||1.25};
+  var instrData = INSTRUMENT_PRESETS[instrKey] || {name:instrKey, tickSize:instrumentSettings.tickSize||0.25, tickValue:instrumentSettings.tickValue||1.25, commission:(instrumentSettings.name===instrKey?instrumentSettings.commission:0)||0};
 
   // ── Required field validation ───────────────────────────────────────────
   var errors = [];
@@ -6726,6 +6726,11 @@ function saveTradeEntry(){
     totalR: parseFloat(totalR.toFixed(2)),
     gotRN, result, proc, setupRating, notes,
     instrument: instrData.name,
+    // Capture the per-contract commission active at save time. Lets fee calculations
+    // recover the correct fee even if the user later switches their active instrument
+    // away from a custom (non-preset) symbol — without this, the fallback returned 0
+    // for non-active custom instruments.
+    commission: instrData.commission||0,
     openType: cOT?cOT.type:'',
     bias: getBiasAtTime(time||nowETStr()),
     trendAlign: (function(){
@@ -6893,7 +6898,7 @@ function renderGoalsTracker(){
   todayTrades.forEach(function(t){
     var contracts=t.contracts||1;
     if(globalOverride){dayFees+=contracts*globalOverride;}
-    else{var instrName=t.instrument||instrumentSettings.name||'MES';var preset=INSTRUMENT_PRESETS[instrName];var comm=preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)||0;dayFees+=contracts*comm;}
+    else{var instrName=t.instrument||instrumentSettings.name||'MES';var preset=INSTRUMENT_PRESETS[instrName];var comm=(typeof t.commission==='number'?t.commission:(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)))||0;dayFees+=contracts*comm;}
   });
   var dayNetPnl=dayPnl-dayFees;
   var tradeCount=todayTrades.length;
@@ -8093,7 +8098,7 @@ function getCommissionForTrades(trades){
     } else {
       var instrName=t.instrument||instrumentSettings.name||'MES';
       var preset=INSTRUMENT_PRESETS[instrName];
-      var comm=preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)||0;
+      var comm=(typeof t.commission==='number'?t.commission:(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)))||0;
       totalFees+=contracts*comm;
     }
   });
@@ -8280,7 +8285,7 @@ function renderAnEquity(trades){
     if(anShowFees){
       var instrName=t.instrument||instrumentSettings.name||'MES';
       var preset=INSTRUMENT_PRESETS[instrName];
-      var tComm=globalCommOverride||(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0))||0;
+      var tComm=globalCommOverride||(typeof t.commission==='number'?t.commission:(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)))||0;
       cumNet+=(t.totalPnlDollars||0)-((t.contracts||1)*tComm);
     } else {
       cumNet=cum;
@@ -9688,7 +9693,7 @@ function getMTFee(t){
   if(globalOverride) return contracts*globalOverride;
   var instrName=t.instrument||instrumentSettings.name||'MES';
   var preset=INSTRUMENT_PRESETS[instrName];
-  var comm=preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)||0;
+  var comm=(typeof t.commission==='number'?t.commission:(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)))||0;
   return contracts*comm;
 }
 
@@ -9871,6 +9876,8 @@ function saveMissedTrade(){
     notes:notes,
     screenshots:parseMediaUrls(document.getElementById('mt-screenshots').value),
     instrument:instrName,
+    // Capture per-contract commission at save time (see saveTradeEntry).
+    commission:(function(){var p=INSTRUMENT_PRESETS[instrName];return p?p.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)||0;})(),
     bias:currentBias,
     openType:cOT?cOT.type:''
   };
@@ -12477,7 +12484,7 @@ function wiCalcStats(trades, useNetFees){
       } else {
         var instrName=t.instrument||instrumentSettings.name||'MES';
         var preset=INSTRUMENT_PRESETS[instrName];
-        var comm=preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)||0;
+        var comm=(typeof t.commission==='number'?t.commission:(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)))||0;
         tradeFee=contracts*comm;
       }
     }
@@ -12623,7 +12630,7 @@ function wiSimulate(){
         if(s.feesEnabled){
           var instrName=t.instrument||instrumentSettings.name||'MES';
           var preset=INSTRUMENT_PRESETS[instrName];
-          var comm=globalCommOverride||(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0))||0;
+          var comm=globalCommOverride||(typeof t.commission==='number'?t.commission:(preset?preset.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)))||0;
           tradePnl-=(t.contracts||1)*comm;
         }
         if(stopped){dailyLossStats.tradesCut++;dailyLossStats.pnlCut+=tradePnl;removed++;}

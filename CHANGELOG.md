@@ -1,5 +1,36 @@
 # TraderLab 101 — Changelog
 
+## v2.3.8 — Persist Commission Per Trade (April 2026)
+
+Quick follow-up to v2.3.7 fixing one more bug from the same review.
+
+### MEDIUM: Custom-Instrument Commissions Were Lost After Switching Active Instrument
+For preset instruments (MES, ES, MNQ, NQ) commission lookup falls back to
+`INSTRUMENT_PRESETS`, which is fine. But for **custom instruments** the fallback was
+`(instrumentSettings.name === instrName ? instrumentSettings.commission : 0)` — so once
+the user switched the active instrument away from a custom symbol, every previous trade
+on that custom symbol fell through to **$0** in fee calculations (analytics, daily
+goals, what-if).
+
+**Fix:** the per-contract commission active at save time is now stamped onto each trade
+(`t.commission`) and each missed trade. Six fee-calculation sites prefer `t.commission`
+when present, then fall back to the preset/active-instrument lookup for backwards
+compatibility with old data.
+
+### Backwards Data Compatibility
+- New `t.commission` field is purely additive. Existing trades without it continue to
+  use the existing preset / active-instrument fallback.
+- No localStorage key renamed or reshaped.
+- All v2.3.7 fixes (UTC date, tab-state, imports, AI key, etc.) carry forward.
+
+### Verified
+Smoke-tested: a saved trade on a custom instrument with commission $7.77 retains that
+value on the trade record even after the active instrument is switched to MES. Fee
+calculations across goals tracker, analytics, equity curve, and what-if all read the
+persisted value.
+
+---
+
 ## v2.3.7 — Bug Sweep: Date/TZ, Tab-State, Imports, AI Key (April 2026)
 
 A focused patch release fixing seven bugs surfaced by a static review. All fixes are
