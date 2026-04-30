@@ -1,5 +1,30 @@
 # TraderLab 101 — Changelog
 
+## v2.3.6 beta — Journal State Fix, License Update (April 2026)
+
+### BUG FIX: Journal No Longer Resets On Tab Switch
+Tabbing away from the Journal (e.g. to Trade Log or Pre-Market) and back **no longer wipes the in-progress fields**. Reported by Anthony in Discord. Root cause: `go('journal')` always re-ran `loadJDate()`, which called `clearJForm()` and reloaded only saved data, blowing away any unsaved typing. Fix introduces `_journalLoadedKey` so the journal only re-initializes on first visit or when the date actually changes; all other date-change paths (`jNav`, `jToday`, `jGoToDate`, `cancelJEdit`, `saveSession`, date picker) keep their existing reload behavior.
+
+### LICENSE: MIT → PolyForm Noncommercial 1.0.0
+Switched from MIT (which permitted commercial reuse) to the lawyer-drafted, SPDX-recognized [PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0).
+
+- ✅ Free to download, run, share unmodified copies, and modify for your own personal noncommercial use.
+- ❌ Not free to sell, sublicense, or build any commercial product / paid course / paid plugin / paid SaaS / commercial AI training set from any portion of the source.
+- ❌ Not free to remove or alter the embedded build identifiers (used to detect unauthorized copies).
+
+The license carries a Required Notice that must travel with every copy. See `LICENSE` for full terms.
+
+### DOCS
+- **USERGUIDE.md fully rewritten** for v2.3.6 — now covers AI Coach, What-If Lab, Statistics by Target, Mean Reversion checklist, Structured Trades alignment / go-no-go, the redesigned Open Context flowchart, expanded Settings sections, and the full localStorage key map.
+- **QUICKSTART.md added** — first-15-minutes guide with the daily workflow diagram, demo-data import path, and "habits that make TraderLab pay off" closing tips.
+- **USERGUIDE.pdf and QUICKSTART.pdf** generated as clean white print-ready PDFs.
+- HTML header comment + README license sections updated to reference PolyForm Noncommercial.
+
+### COMMITMENT: Backwards Data Compatibility
+Reaffirmed as a non-negotiable: every release must read existing localStorage data without loss. No localStorage key has been renamed or reshaped in this release. Demo data and any prior-version JSON backup remain importable.
+
+---
+
 ## v2.3 — Setup Quality, Filters, Heatmap, Error Log (March 2026)
 
 Schema version: 6 (auto-migrates from v5)

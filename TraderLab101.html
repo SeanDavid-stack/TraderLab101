@@ -1,25 +1,35 @@
 <!--
-  TraderLab 101 v2.3
-  Copyright (c) 2026 SeanDavid. All rights reserved.
-  
-  Free for personal, non-commercial use only.
-  You may NOT sell, copy, redistribute, modify and distribute,
-  or use any portion of this code in competing products.
-  
-  Built on Market Auction Theory — Tom B. / Traders Lab
-  See LICENSE for full terms.
+  TraderLab 101 v2.3.6 beta
+  Copyright (c) 2026 SeanDavid E. All rights reserved.
+
+  Licensed under the PolyForm Noncommercial License 1.0.0
+  https://polyformproject.org/licenses/noncommercial/1.0.0
+
+  Plain English: free to download, run, and share unmodified copies for
+  noncommercial use. You may NOT sell this software, build any commercial
+  product/service/course/plugin from any portion of it, or use it (or
+  derivatives) in commercial AI training. You may NOT remove or alter the
+  copyright, the embedded build identifiers, or the version metadata —
+  these are used to identify unauthorized copies.
+
+  Built on Auction Market Theory — Tom B. / Traders Lab.
+  See LICENSE for the full legal terms and a "Required Notice" that must
+  travel with every copy.
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TraderLab 101 v2.3</title>
+<meta name="generator" content="tl101-sd26e">
+<meta name="application-name" content="TraderLab101">
+<title>TraderLab 101 v2.3.6 beta</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#080a0d;--s1:#0e1116;--s2:#141820;--s3:#1a2028;--s4:#202830;
   --b1:#232d3a;--b2:#2e3c4e;--b3:#334050;
+  --_bld:sd26e-tl101-2026;
   --text:#f0f4fa;--t2:#b4c1d4;--t3:#7d8ea3;--t4:#5a6b80;
   --gold:#f5a623;--gold2:#c97d0e;--goldd:rgba(245,166,35,.12);
   --green:#36d79a;--greend:rgba(54,215,154,.1);
@@ -280,7 +290,19 @@ table.st tr.sec td{background:var(--s3)!important;font-size:9px!important;color:
 .jnav{display:flex;align-items:center;gap:8px;margin-bottom:20px;}
 .jarr{width:28px;height:28px;background:var(--s2);border:1px solid var(--b2);color:var(--t2);cursor:pointer;border-radius:4px;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .jarr:hover{border-color:var(--gold);color:var(--gold);}
-.jlbl{font-family:var(--sans);font-size:17px;font-weight:800;}
+.jlbl{font-family:var(--sans);font-size:17px;font-weight:800;position:relative;padding:2px 6px;border-radius:4px;transition:all .15s;}
+.jdate-btn{width:28px;height:28px;background:var(--s2);border:1px solid var(--b2);color:var(--gold);cursor:pointer;border-radius:4px;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.jdate-btn:hover{border-color:var(--gold);background:var(--goldd);}
+.jdate-pick{position:absolute;opacity:0;width:0;height:0;border:0;pointer-events:none;}
+.j-eb-btn.cancel{font-size:10px;padding:4px 10px;border-radius:3px;cursor:pointer;font-family:var(--mono);font-weight:600;color:var(--red);border:1px solid rgba(240,92,92,.3);background:rgba(240,92,92,.06);}
+.j-eb-btn.cancel:hover{background:rgba(240,92,92,.12);}
+.date-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center;}
+.date-modal-overlay.show{display:flex;}
+.date-modal{background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:20px 24px;min-width:340px;max-width:460px;}
+.date-modal h3{font-size:14px;font-weight:700;margin:0 0 6px;color:var(--text);}
+.date-modal p{font-size:11px;color:var(--t2);margin:0 0 14px;line-height:1.5;}
+.date-modal input[type="date"]{width:100%;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:12px;border-radius:4px;box-sizing:border-box;}
+.date-modal .mbrow{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;}
 .jtd{font-size:10px;color:var(--gold);background:var(--goldd);border:1px solid rgba(245,166,35,.3);padding:2px 8px;border-radius:3px;cursor:pointer;}
 /* Process rating buttons */
 .proc-row{display:flex;gap:6px;margin-top:4px;}
@@ -696,11 +718,12 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 </style>
 </head>
 <body>
+<div data-v="tl101" data-b="sd26e" aria-hidden="true" style="display:none;position:absolute;"></div>
 
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.6 beta</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -712,7 +735,8 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
       <p style="color:var(--t3);margin:4px 0 0;font-size:11px;">— Charles Bukowski</p>
     </div>
     <p style="font-weight:700;color:var(--text);margin-bottom:0;">Welcome to the work. Welcome to TraderLab 101.</p>
-    <div class="splash-sig">Created by SeanDavid · Based on Tom B.'s Traders Lab methodology</div>
+    <div class="splash-sig">Created by SeanDavid E. · Based on Tom B.'s Traders Lab methodology</div>
+    <div style="font-size:9px;color:var(--t4);font-family:var(--mono);margin-top:4px;">© 2026 SeanDavid E. All rights reserved.</div>
     <div class="splash-close">
       <button class="btn btn-g" onclick="dismissSplash()" style="padding:10px 40px;font-size:13px;font-weight:700;">Let's Get to Work →</button>
     </div>
@@ -727,7 +751,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
   <div style="font-size:10px;font-family:var(--mono);color:var(--t3);font-style:italic;letter-spacing:.02em;opacity:.7;">If this — then that. If not — then what?</div>
   <div class="hright">
     <div class="hdate" id="hdate"></div>
-    <button class="hbtn" onclick="exportData()">↓ Export</button>
+    <button class="hbtn" onclick="saveData()" title="Save backup with timestamp">💾 Save</button>
     <button class="hbtn" onclick="document.getElementById('ifile').click()">↑ Import</button>
     <input type="file" id="ifile" accept=".json" style="display:none" onchange="importData(event)">
   </div>
@@ -738,6 +762,11 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <h3 id="biasModalTitle">Bias Change</h3>
     <div style="font-size:11px;color:var(--t2);margin-bottom:10px;">What changed? <span style="color:var(--t3)">(optional)</span></div>
     <textarea id="biasModalReason" placeholder="e.g. Hit pVAH, absorbed, market showing balance developing..."></textarea>
+    <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+      <label style="font-size:10px;color:var(--t3);font-family:var(--mono);font-weight:600;white-space:nowrap;">Time (ET):</label>
+      <input type="text" id="biasModalTime" style="width:90px;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:5px 8px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;" placeholder="10:30 AM">
+      <span style="font-size:9px;color:var(--t4);font-family:var(--mono);">auto-filled · editable</span>
+    </div>
     <div class="mbrow">
       <button class="btn-o" onclick="closeBiasModal()">Cancel</button>
       <button class="btn btn-g" onclick="confirmBiasChange()">Confirm Change</button>
@@ -806,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.6 beta</div>
   </nav>
 
   <div class="content">
@@ -869,6 +898,11 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           <div class="fg"><label>8. Top-down analysis — overall read for today <span style="font-weight:400;color:var(--t3)">(ONVPOC · Settlement · NVPOC · pMID · ONH/L)</span></label>
             <textarea id="pf8" rows="3" placeholder="Synthesize everything. What do you think the market may do and why? Which trade plan — Opening, Continuation, Mean Reversion, or VPOC Shift?" oninput="savePreflight()"></textarea></div>
         </div>
+        <details style="margin-top:10px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">📎 Media <span style="font-weight:400;color:var(--t4);">— optional · pre-market charts, screenshots, replay links</span></summary>
+          <textarea id="pfMedia" rows="2" placeholder="https://i.imgur.com/chart.png&#10;C:\Screenshots\premarket.png&#10;One URL or file path per line" style="margin-top:6px;width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;resize:vertical;" oninput="savePreflight();renderPfMediaPreviews()"></textarea>
+          <div id="pf-media-preview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
+        </details>
         <div style="margin-top:14px;display:flex;gap:10px;align-items:center;">
           <button class="btn btn-g" onclick="completePreflight()" style="padding:10px 24px;">✅ Complete Preflight</button>
           <button class="btn-o" id="pfResetBtn" onclick="resetPreflight()" style="padding:8px 14px;font-size:10px;display:none;">↺ Reset & Redo</button>
@@ -958,7 +992,9 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
       <!-- Custom Levels -->
       <div class="card">
-        <div class="ct"><span class="dot" style="background:var(--purple)"></span>Custom Levels <span style="font-size:10px;color:var(--t3);font-weight:400;font-family:var(--mono);margin-left:6px;">— add any level you want to track</span></div>
+        <div class="ct" style="justify-content:space-between;flex-wrap:wrap;"><div><span class="dot" style="background:var(--purple)"></span>Custom Levels <span style="font-size:10px;color:var(--t3);font-weight:400;font-family:var(--mono);margin-left:6px;">— add any level you want to track</span></div>
+          <div id="clSortBtns" style="display:none;gap:4px;font-size:9px;font-family:var(--mono);"></div>
+        </div>
         <div style="font-size:10px;color:var(--t3);margin-bottom:10px;font-family:var(--mono);line-height:1.6;">Add support/resistance, weekly levels, VWAP, settlement, or any price level. These are fully tracked in the level tracker, tag log, and analytics.</div>
         <div id="customLevelsList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;"></div>
         <div style="display:flex;gap:6px;align-items:center;">
@@ -985,7 +1021,9 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
       <!-- Fuel / Stop Clusters -->
       <div class="card">
-        <div class="ct"><span class="dot" style="background:var(--purple)"></span>Fuel Map — Where Are the Stops?</div>
+        <div class="ct" style="justify-content:space-between;flex-wrap:wrap;"><div><span class="dot" style="background:var(--purple)"></span>Fuel Map — Where Are the Stops?</div>
+          <div id="fuelSortBtns" style="display:none;gap:4px;font-size:9px;font-family:var(--mono);"></div>
+        </div>
         <div style="font-size:11px;color:var(--t2);margin-bottom:14px;line-height:1.6;">Identify where trapped participants and stop clusters live. These areas may provide fuel for a move. Add as many levels as needed.</div>
         <div class="fuel-list" id="fuelList"></div>
         <button class="add-fuel-btn" onclick="addFuel()">+ Add Fuel Level</button>
@@ -998,24 +1036,46 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
       <div class="otsug card" id="otsug">
         <div class="ct" style="margin-bottom:8px"><span class="dot" style="background:var(--green)"></span>Open Type Detection</div>
         <div class="otmsg" id="otmsg"></div>
-        <div class="chips">
-          <div class="chip" data-ot="HOR" onclick="selChip(this)">HOR<small>High Out of Range</small></div>
-          <div class="chip" data-ot="LOR" onclick="selChip(this)">LOR<small>Low Out of Range</small></div>
-          <div class="chip" data-ot="HIR" onclick="selChip(this)">HIR<small>High In Range</small></div>
-          <div class="chip" data-ot="LIR" onclick="selChip(this)">LIR<small>Low In Range</small></div>
-          <div class="chip" data-ot="IR-IV" onclick="selChip(this)">IR-IV<small>In Range, In Value</small></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div>
+            <div style="font-size:8px;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;font-family:var(--mono);margin-bottom:4px;">In Range · In Value</div>
+            <div class="chips" style="margin-bottom:0;">
+              <div class="chip" data-ot="HIR-IV" onclick="selChip(this)">HIR-IV<small>High In Range, In Value</small></div>
+              <div class="chip" data-ot="LIR-IV" onclick="selChip(this)">LIR-IV<small>Low In Range, In Value</small></div>
+              <div class="chip" data-ot="IR-IV" onclick="selChip(this)">IR-IV<small>In Range, In Value</small></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;font-family:var(--mono);margin-bottom:4px;">In Range · Out of Value</div>
+            <div class="chips" style="margin-bottom:0;">
+              <div class="chip" data-ot="HIR" onclick="selChip(this)">HIR-OV<small>High In Range, Out of Value</small></div>
+              <div class="chip" data-ot="LIR" onclick="selChip(this)">LIR-OV<small>Low In Range, Out of Value</small></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:var(--t4);text-transform:uppercase;letter-spacing:.12em;font-family:var(--mono);margin-bottom:4px;">Out of Range (Gap)</div>
+            <div class="chips" style="margin-bottom:0;">
+              <div class="chip" data-ot="HOR" onclick="selChip(this)">HOR<small>High Out of Range</small></div>
+              <div class="chip" data-ot="LOR" onclick="selChip(this)">LOR<small>Low Out of Range</small></div>
+            </div>
+          </div>
         </div>
         <div class="confbar" id="confbar"><span>✓</span><strong id="conflabel"></strong> confirmed — flowchart and stats are ready</div>
         <div class="brow">
           <button class="btn btn-g" id="confbtn" onclick="confirmOT()" style="display:none">Confirm Open Type &amp; Start Session</button>
           <button class="btn-o" onclick="clearPM()">↺ Clear All</button>
         </div>
+        <details style="margin-top:10px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">📎 Media <span style="font-weight:400;color:var(--t4);">— optional · opening context charts, level screenshots</span></summary>
+          <textarea id="pmMedia" rows="2" placeholder="https://i.imgur.com/chart.png&#10;C:\Screenshots\levels.png&#10;One URL or file path per line" style="margin-top:6px;width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;resize:vertical;" oninput="savePM();renderPmMediaPreviews()"></textarea>
+          <div id="pm-media-preview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
+        </details>
       </div>
 
       <div class="card">
         <div class="ct"><span class="dot" style="background:var(--t3)"></span>Pre-Market Notes</div>
         <div class="fg"><label>General Context / Narrative</label>
-          <textarea id="pmNotes" placeholder="Additional context, catalysts, news events, things to watch..."></textarea>
+          <textarea id="pmNotes" placeholder="Additional context, catalysts, news events, things to watch..." oninput="savePM()"></textarea>
         </div>
       </div>
     </div>
@@ -1086,8 +1146,8 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
                 <div style="line-height:1.8;">Responsive? → Fade back into balance<br>Impulsive? → Trade direction of imbalance<br>Gap-and-Go? → Trend day, unlimited range</div>
               </div>
               <div style="background:var(--s3);border-radius:4px;padding:10px 12px;border:1px solid var(--b1);">
-                <div style="font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);margin-bottom:6px;">In Range (HIR/LIR/IR-IV)</div>
-                <div style="line-height:1.8;">IR-IV → Trade VA extremes, mean revert<br>HIR/LIR → Watch for range breakout<br>Breaking range → Trade direction, unlimited</div>
+                <div style="font-size:9px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);margin-bottom:6px;">In Range (HIR-OV/LIR-OV/HIR-IV/LIR-IV/IR-IV)</div>
+                <div style="line-height:1.8;">IR-IV → Trade VA extremes, mean revert<br>HIR-OV/LIR-OV → Watch for range breakout<br>HIR-IV/LIR-IV → In value near extreme, watch for failed extension → revert to YVPOC<br>Breaking range → Trade direction, unlimited</div>
               </div>
             </div>
             <div style="margin-top:8px;padding:8px 12px;background:var(--s3);border-radius:4px;border:1px solid var(--b1);font-size:10px;color:var(--t2);">Key levels: ONVPOC · pVAH · pVAL · pClose · ONH · ONL · pMID · Settlement · NVPOC</div>
@@ -1492,8 +1552,23 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         <button class="jarr" onclick="jNav(-1)">‹</button>
         <div class="jlbl" id="jlbl"></div>
         <button class="jarr" onclick="jNav(1)">›</button>
+        <button class="jdate-btn" onclick="jOpenDatePicker()" title="Jump to date">📅</button>
+        <input type="date" id="jDatePicker" class="jdate-pick" onchange="jApplyDatePicker(this.value)">
         <div class="jtd" onclick="jToday()">Today</div>
       </div>
+
+<!-- Weekend / Non-market day save modal -->
+<div class="date-modal-overlay" id="dateSaveModalOverlay">
+  <div class="date-modal">
+    <h3 id="dateSaveModalTitle">Save Session — Confirm Date</h3>
+    <p id="dateSaveModalMsg">You're saving on a non-market day. Which trading day should this session be saved under?</p>
+    <input type="date" id="dateSaveModalDate">
+    <div class="mbrow">
+      <button class="btn-o" onclick="closeDateSaveModal()">Cancel</button>
+      <button class="btn btn-g" onclick="confirmDateSave()">Save to This Date</button>
+    </div>
+  </div>
+</div>
 
       <!-- Session Heatmap -->
       <details style="margin-bottom:8px;">
@@ -1550,7 +1625,15 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         </div>
       </div>
       <div class="card">
-        <div class="ct"><span class="dot"></span>Session Entry</div>
+        <div class="ct" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+          <div><span class="dot"></span>Session Entry<span id="jEditTag" style="display:none;color:var(--gold);font-weight:600;font-size:13px;"> (Editing)</span></div>
+          <button id="jEditCancelBtn" class="j-eb-btn cancel" onclick="cancelJEdit()" style="display:none;">✕ Cancel Edit</button>
+        </div>
+        <div id="jEditInfo" style="display:none;background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:5px;padding:8px 12px;margin-bottom:14px;font-family:var(--mono);font-size:11px;line-height:1.8;">
+          <div style="display:flex;align-items:center;gap:8px;color:var(--t2);">Current date: <strong id="jEditOrigDateLbl" style="color:var(--text);"></strong> · <span style="color:var(--gold);cursor:pointer;text-decoration:underline;text-decoration-style:dashed;" onclick="jOpenEditDatePicker()">📅 Change Date</span></div>
+          <div id="jEditNewDateRow" style="display:none;color:var(--gold);">Move to: <strong id="jEditNewDateLbl" style="cursor:pointer;text-decoration:underline;text-decoration-style:dashed;" onclick="jOpenEditDatePicker()"></strong> <span style="font-size:9px;opacity:.7;">click to change</span></div>
+        </div>
+        <input type="date" id="jEditDatePicker" class="jdate-pick" onchange="jApplyEditDatePicker(this.value)">
 
         <!-- Row 1: Open Type + Profile Shape -->
         <div class="g2" style="margin-bottom:12px">
@@ -1559,8 +1642,10 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
               <option value="">-- Select --</option>
               <option>HOR — High Out of Range (Gap Up)</option>
               <option>LOR — Low Out of Range (Gap Down)</option>
-              <option>HIR — High In Range</option>
-              <option>LIR — Low In Range</option>
+              <option>HIR-OV — High In Range, Out of Value</option>
+              <option>LIR-OV — Low In Range, Out of Value</option>
+              <option>HIR-IV — High In Range, In Value</option>
+              <option>LIR-IV — Low In Range, In Value</option>
               <option>IR-IV — In Range, In Value</option>
             </select>
           </div>
@@ -1626,7 +1711,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
         <!-- Setup Taken -->
         <div class="fg" style="margin-bottom:12px">
-          <label>Setup(s) Taken <span style="color:var(--t3);font-weight:400">— select all that apply</span></label>
+          <label>Setup(s) Taken <span style="color:var(--t3);font-weight:400">— select all that apply</span> <span onclick="goToSetting('labelCard-setups')" style="cursor:pointer;font-size:10px;color:var(--t4);" title="Edit setups in Settings">⚙</span></label>
           <div class="setup-chips" id="jSetupChips">
             <!-- Populated dynamically by buildJournalChips() -->
           </div>
@@ -1715,7 +1800,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           </div>
         </details>
 
-        <button class="btn btn-g" onclick="saveSession()">Save Session</button>
+        <button class="btn btn-g" id="jSaveBtn" onclick="saveSession()">Save Session</button>
       </div>
       </div><!-- /journalFormWrap -->
       <div id="journalReviewWrap" style="display:none;"></div>
@@ -1971,14 +2056,38 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
       <!-- ── DATA ── -->
       <div id="set-data" class="set-section">DATA MANAGEMENT</div>
 
+      <!-- Log Name & Save Location -->
+      <div class="card" style="margin-bottom:16px;">
+        <div class="ct"><span class="dot" style="background:var(--gold)"></span>Log Name & Save Location</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <div style="font-size:10px;color:var(--t3);margin-bottom:6px;font-family:var(--mono);">LOG NAME — identifies your backup files</div>
+            <input type="text" id="set-log-name" placeholder="e.g. Sean, ES_Journal, March2026" style="width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:12px;border-radius:4px;outline:none;" oninput="saveLogName()">
+            <div style="font-size:9px;color:var(--t4);margin-top:4px;font-family:var(--mono);">Filename preview: <span id="set-filename-preview" style="color:var(--t2);"></span></div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--t3);margin-bottom:6px;font-family:var(--mono);">SAVE LOCATION</div>
+            <div id="set-save-location" style="font-size:11px;color:var(--t2);font-family:var(--mono);padding:8px 10px;background:var(--s3);border:1px solid var(--b1);border-radius:4px;min-height:18px;">No save location set — uses browser downloads</div>
+            <div style="display:flex;gap:6px;margin-top:6px;">
+              <button class="btn-o" style="font-size:10px;padding:4px 10px;" onclick="chooseSaveLocation()">📁 Choose Folder</button>
+              <button class="btn-o" style="font-size:10px;padding:4px 10px;border-color:var(--t4);color:var(--t3);" onclick="clearSaveLocation()">✕ Clear</button>
+            </div>
+            <div id="set-save-support" style="font-size:9px;color:var(--t4);margin-top:4px;font-family:var(--mono);"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Data Management -->
       <div class="card">
         <div class="ct"><span class="dot" style="background:var(--red)"></span>Data Management</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div style="background:var(--s3);border-radius:4px;padding:14px;border:1px solid var(--b1);">
             <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">Export All Data</div>
-            <div style="font-size:11px;color:var(--t2);margin-bottom:10px;">Download a JSON backup of all sessions, trades, settings, and journal entries.</div>
-            <button class="btn btn-g" onclick="exportData()">↓ Export Backup</button>
+            <div style="font-size:11px;color:var(--t2);margin-bottom:10px;">Download a timestamped JSON backup of all sessions, trades, settings, and journal entries.</div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-g" onclick="saveData()">💾 Save</button>
+              <button class="btn-o" onclick="exportData()">↓ Export</button>
+            </div>
           </div>
           <div style="background:var(--s3);border-radius:4px;padding:14px;border:1px solid var(--b1);">
             <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">Import Data</div>
@@ -2140,26 +2249,44 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
       <!-- Log New Trade Form -->
       <div class="tl-form" id="tlForm">
-        <div class="tl-form-title">+ Log New Trade <span id="tl-instrument-label" style="font-size:10px;font-weight:400;color:var(--t3);margin-left:8px;"></span></div>
+        <div class="tl-form-title" style="display:flex;align-items:center;justify-content:space-between;">
+          <div>+ Log New Trade <span id="tl-instrument-label" style="font-size:10px;font-weight:400;color:var(--t3);margin-left:8px;"></span></div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:9px;font-weight:400;color:var(--t3);text-transform:none;letter-spacing:0;">
+            Bias:
+            <select id="tl-bias-override" onchange="updateBiasNudge()" style="font-size:10px;padding:2px 6px;background:var(--s3);border:1px solid var(--b2);color:var(--text);border-radius:3px;font-family:var(--mono);outline:none;">
+              <option value="">Auto</option>
+              <option value="trend">↑ Aligned</option>
+              <option value="counter">↓ Not Aligned</option>
+              <option value="neutral">— Neutral</option>
+            </select>
+          </div>
+        </div>
 
         <!-- Date + Setup + Direction + Instrument + Time -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;" class="tl-row">
           <div class="fg"><label>Date</label>
             <input type="date" id="tl-date" style="font-family:var(--mono);background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:7px 8px;border-radius:4px;outline:none;font-size:11px;">
           </div>
-          <div class="fg"><label>Setup</label>
+          <div class="fg"><label>Setup <span onclick="goToSetting('labelCard-setups')" style="cursor:pointer;font-size:10px;color:var(--t4);margin-left:2px;" title="Edit setups in Settings">⚙</span></label>
             <select id="tl-setup">
               <option value="">-- Select --</option>
             </select>
           </div>
-          <div class="fg"><label>Direction</label>
-            <select id="tl-dir" onchange="calcTrade()">
+          <div class="fg"><label>Direction <span id="tl-bias-nudge" style="display:none;font-size:9px;font-family:var(--mono);font-weight:700;"></span></label>
+            <select id="tl-dir" onchange="calcTrade();updateBiasNudge()">
               <option value="">-- Select --</option>
               <option value="long">▲ Long</option>
               <option value="short">▼ Short</option>
             </select>
+            <label style="margin-top:6px;font-size:9px;color:var(--t3);" title="HTF = Higher Time Frame — your read of the larger trend direction">Market Context HTF <span style="font-weight:400;color:var(--t4);">— optional</span></label>
+            <select id="tl-trend-context" style="font-size:11px;">
+              <option value="">— Not tagged</option>
+              <option value="with_trend">▲ With Trend</option>
+              <option value="counter_trend">▼ Counter Trend</option>
+              <option value="range">◆ Range / Rotational</option>
+            </select>
           </div>
-          <div class="fg"><label>Symbol</label>
+          <div class="fg"><label>Symbol <span onclick="goToSetting('set-instrument')" style="cursor:pointer;font-size:10px;color:var(--t4);margin-left:2px;" title="Edit instruments in Settings">⚙</span></label>
             <select id="tl-instrument" style="font-family:var(--mono);">
               <option value="MES">MES — Micro E-mini S&P</option>
               <option value="ES">ES — E-mini S&P</option>
@@ -2169,20 +2296,20 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           </div>
           <div class="fg"><label>Time (ET)</label>
             <div style="display:flex;gap:4px;align-items:center;">
-              <select id="tl-hour" style="font-family:var(--mono);background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:7px 6px;border-radius:4px;outline:none;font-size:11px;flex:1.2;">
+              <select id="tl-hour" onchange="updateBiasNudge()" style="font-family:var(--mono);background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:7px 6px;border-radius:4px;outline:none;font-size:11px;flex:1.2;">
                 <option value="4 AM">4 AM</option><option value="5 AM">5 AM</option><option value="6 AM">6 AM</option><option value="7 AM">7 AM</option><option value="8 AM">8 AM</option>
                 <option value="9 AM">9 AM</option><option value="10 AM">10 AM</option><option value="11 AM">11 AM</option><option value="12 PM">12 PM</option>
                 <option value="1 PM">1 PM</option><option value="2 PM">2 PM</option><option value="3 PM">3 PM</option><option value="4 PM">4 PM</option><option value="5 PM">5 PM</option>
               </select>
               <span style="color:var(--t3);font-weight:700;">:</span>
-              <select id="tl-min" style="font-family:var(--mono);background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:7px 6px;border-radius:4px;outline:none;font-size:11px;flex:1;"></select>
+              <select id="tl-min" onchange="updateBiasNudge()" style="font-family:var(--mono);background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:7px 6px;border-radius:4px;outline:none;font-size:11px;flex:1;"></select>
             </div>
           </div>
         </div>
 
         <!-- Trigger Type -->
         <div class="fg" style="margin-bottom:12px;">
-          <label>Triggering Structure <span style="color:var(--t3);font-weight:400">— which pattern fired?</span></label>
+          <label>Triggering Structure <span style="color:var(--t3);font-weight:400">— which pattern fired?</span> <span onclick="goToSetting('labelCard-triggers')" style="cursor:pointer;font-size:10px;color:var(--t4);" title="Edit triggers in Settings">⚙</span></label>
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;" id="triggerChips"></div>
         </div>
 
@@ -2318,20 +2445,9 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           </div>
         </div>
 
-        <details style="margin-bottom:14px;">
-          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Notes <span style="font-weight:400;color:var(--t4);">— optional</span></summary>
-          <textarea id="tl-notes" rows="3" placeholder="Entry reason, what you observed, what happened..." style="margin-top:6px;width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;resize:vertical;"></textarea>
-        </details>
-
-        <details style="margin-bottom:14px;">
-          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">📎 Media <span style="font-weight:400;color:var(--t4);">— optional · images + video replay links</span></summary>
-          <textarea id="tl-screenshots" rows="2" placeholder="https://i.imgur.com/example.png&#10;C:\Screenshots\chart#1.png&#10;Web URLs or local file paths · quotes and # handled automatically" style="margin-top:6px;width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;resize:vertical;" oninput="renderTradeScreenshotPreviews()"></textarea>
-          <div id="tl-ss-preview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
-        </details>
-
         <!-- Execution Errors (collapsible) -->
         <details id="tlErrorSection" style="margin-bottom:14px;">
-          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">⚠ Execution Errors <span style="font-weight:400;color:var(--t4);">— optional · tag mistakes on this trade</span></summary>
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">⚠ Execution Errors <span style="font-weight:400;color:var(--t4);">— optional · tag mistakes on this trade</span> <span onclick="event.stopPropagation();goToSetting('labelCard-errors')" style="cursor:pointer;color:var(--t4);text-transform:none;letter-spacing:0;" title="Edit error labels in Settings">⚙</span></summary>
           <div style="margin-top:8px;">
             <div style="font-size:10px;color:var(--t3);margin-bottom:8px;font-family:var(--mono);">Select all that apply — these feed into your Analytics error cost tracking.</div>
             <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;" id="tlErrorChips"></div>
@@ -2348,8 +2464,19 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
         <!-- Emotional State -->
         <details style="margin-bottom:14px;">
-          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Emotional State <span style="font-weight:400;color:var(--t4);">— optional · how did you feel during this trade?</span></summary>
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Emotional State <span style="font-weight:400;color:var(--t4);">— optional · how did you feel during this trade?</span> <span onclick="event.stopPropagation();goToSetting('labelCard-emotions')" style="cursor:pointer;color:var(--t4);text-transform:none;letter-spacing:0;" title="Edit emotion labels in Settings">⚙</span></summary>
           <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;" id="tlEmotionChips"></div>
+        </details>
+
+        <details style="margin-bottom:14px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">Notes <span style="font-weight:400;color:var(--t4);">— optional</span></summary>
+          <textarea id="tl-notes" rows="3" placeholder="Entry reason, what you observed, what happened..." style="margin-top:6px;width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;resize:vertical;"></textarea>
+        </details>
+
+        <details style="margin-bottom:14px;">
+          <summary style="cursor:pointer;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);user-select:none;padding:6px 0;">📎 Media <span style="font-weight:400;color:var(--t4);">— optional · images + video replay links</span></summary>
+          <textarea id="tl-screenshots" rows="2" placeholder="https://i.imgur.com/example.png&#10;C:\Screenshots\chart#1.png&#10;Web URLs or local file paths · quotes and # handled automatically" style="margin-top:6px;width:100%;box-sizing:border-box;background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:8px 10px;font-family:var(--mono);font-size:11px;border-radius:4px;outline:none;resize:vertical;" oninput="renderTradeScreenshotPreviews()"></textarea>
+          <div id="tl-ss-preview" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
         </details>
 
         <!-- Validation banner -->
@@ -2531,8 +2658,12 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           <div id="anOpenType"></div>
         </div>
         <div class="an-section">
-          <div class="an-section-title"><span class="dot" style="background:var(--green)"></span>P&L by Trend Alignment</div>
+          <div class="an-section-title"><span class="dot" style="background:var(--green)"></span>P&L by Bias Alignment</div>
           <div id="anTrendAlign"></div>
+        </div>
+        <div class="an-section">
+          <div class="an-section-title"><span class="dot" style="background:var(--cyan)"></span>P&L by Market Context HTF</div>
+          <div id="anTrendContext"></div>
         </div>
       </div>
 
@@ -2648,7 +2779,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           <div class="fg"><label>Date</label>
             <input type="date" id="mt-date" style="font-family:var(--mono);background:var(--s3);border:1px solid var(--b2);color:var(--text);padding:7px 8px;border-radius:4px;outline:none;font-size:11px;">
           </div>
-          <div class="fg"><label>Setup</label>
+          <div class="fg"><label>Setup <span onclick="goToSetting('labelCard-setups')" style="cursor:pointer;font-size:10px;color:var(--t4);margin-left:2px;" title="Edit setups in Settings">⚙</span></label>
             <select id="mt-setup">
               <option value="">-- Select --</option>
             </select>
@@ -2660,7 +2791,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
               <option value="short">▼ Short</option>
             </select>
           </div>
-          <div class="fg"><label>Instrument</label>
+          <div class="fg"><label>Instrument <span onclick="goToSetting('set-instrument')" style="cursor:pointer;font-size:10px;color:var(--t4);margin-left:2px;" title="Edit instruments in Settings">⚙</span></label>
             <select id="mt-instrument"></select>
           </div>
           <div class="fg"><label>Time (ET)</label>
@@ -2720,7 +2851,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 
         <!-- Reason Chips -->
         <div class="fg">
-          <label>Why Did You Miss It?</label>
+          <label>Why Did You Miss It? <span onclick="goToSetting('labelCard-reasons')" style="cursor:pointer;font-size:10px;color:var(--t4);margin-left:2px;" title="Edit reason labels in Settings">⚙</span></label>
           <div class="mt-reason-chips" id="mtReasonChips"></div>
         </div>
 
@@ -3087,7 +3218,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           <div class="meth-body">
             <div class="meth-section">
               <div class="meth-section-title">Explanation</div>
-              <p>Executed at or near the open based on the opening context flowchart. The open type determines bias and initial direction. All opens are classified as either Gap (HOR/LOR — out of range) or In Range (HIR/LIR/IR-IV).</p>
+              <p>Executed at or near the open based on the opening context flowchart. The open type determines bias and initial direction. All opens are classified as either Gap (HOR/LOR — out of range) or In Range (HIR-OV/LIR-OV — out of value, HIR-IV/LIR-IV — in value near extreme, IR-IV — in value).</p>
             </div>
             <div class="meth-section">
               <div class="meth-section-title">Gap Opens (HOR / LOR)</div>
@@ -3098,10 +3229,10 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
               </div>
             </div>
             <div class="meth-section">
-              <div class="meth-section-title">In Range Opens (HIR / LIR / IR-IV)</div>
+              <div class="meth-section-title">In Range Opens (HIR-OV / LIR-OV / HIR-IV / LIR-IV / IR-IV)</div>
               <div class="meth-target">
                 <div class="meth-target-item"><strong style="color:var(--text)">IR-IV</strong> → Neutral day. Trade VA extremes, mean revert. Market is in balance.</div>
-                <div class="meth-target-item"><strong style="color:var(--text)">HIR / LIR</strong> → Watch for range breakout. If breaking range → trade direction, unlimited.</div>
+                <div class="meth-target-item"><strong style="color:var(--text)">HIR-OV / LIR-OV</strong> → Watch for range breakout. If breaking range → trade direction, unlimited.</div>
               </div>
             </div>
             <div class="meth-callout tip">Key levels: ONVPOC · pVAH · pVAL · pClose · ONH · ONL · pMID · Settlement · NVPOC. The opening context flowchart (Open Context tab) walks through the decision tree for each open type.</div>
@@ -3187,7 +3318,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <div class="toast" id="toast"></div>
 
 <script>
-var FMAP={HOR:'gap_hor',LOR:'gap_lor',HIR:'ir_ov_h',LIR:'ir_ov_l','IR-IV':'ir_iv'};
+var FMAP={HOR:'gap_hor',LOR:'gap_lor',HIR:'ir_ov_h',LIR:'ir_ov_l','HIR-IV':'ir_iv','LIR-IV':'ir_iv','IR-IV':'ir_iv'};
 var FD={
   gap_hor:{l:'HOR — Gap Up',s:[
     {t:'action',g:'Market State',m:'Market is OUT OF BALANCE',w:'Open above prior high = break from balance. Represents position trader activity to the upside.'},
@@ -3237,11 +3368,11 @@ var FD={
   iriv_rb:{l:'Breaking VA & Range',s:[
     {t:'conclusion',g:'State',m:'Market REJECTING previous interpretation of value'},
     {t:'conclusion',g:'Trade Plan',m:'Trade in direction of imbalance — range potential UNLIMITED.',w:'Market broken out of balance, value yet to be determined. Trade with position traders.'}]},
-  ir_ov_h:{l:'HIR — High In Range',s:[
+  ir_ov_h:{l:'HIR-OV — High In Range, Out of Value',s:[
     {t:'action',g:'Market State',m:'Market is SLIGHTLY OUT OF BALANCE — above value',w:'Opening in range but at/above pVAH = minor bullish imbalance. Directional conviction not as strong as an out-of-range open.'},
     {t:'action',g:'Day Type',m:'Overlapping or Normal Variation Day likely'},
     {t:'question',g:'Range Check',m:'Breaking out of prior day\'s RANGE to the upside?',y:'irov_rb',n:'irov_rh'}]},
-  ir_ov_l:{l:'LIR — Low In Range',s:[
+  ir_ov_l:{l:'LIR-OV — Low In Range, Out of Value',s:[
     {t:'action',g:'Market State',m:'Market is SLIGHTLY OUT OF BALANCE — below value',w:'Opening in range but at/below pVAL = minor bearish imbalance. Directional conviction not as strong as a gap.'},
     {t:'action',g:'Day Type',m:'Overlapping or Normal Variation Day likely'},
     {t:'question',g:'Range Check',m:'Breaking out of prior day\'s RANGE to the downside?',y:'irov_rb',n:'irov_rh'}]},
@@ -3276,7 +3407,7 @@ function renderFlow(){
     }
     const startKey=FMAP[d.type];
     if(!startKey){
-      wrap.innerHTML=`<div class="nomsg"><strong>Flow not found for open type: "${d.type}"</strong><br>Valid types: HOR, LOR, HIR, LIR, IR-IV</div>`;
+      wrap.innerHTML=`<div class="nomsg"><strong>Flow not found for open type: "${d.type}"</strong><br>Valid types: HOR, LOR, HIR-OV, LIR-OV, HIR-IV, LIR-IV, IR-IV</div>`;
       return;
     }
     fHist=[startKey];
@@ -3349,8 +3480,8 @@ var SD={
 };
 
 const COLS={all:'a',ir:'ir',or:'or',hir:'hir',lir:'lir',hor:'hor',lor:'lor'};
-const CLBLS={all:'All (100%)',ir:'In Range (64.5%)',or:'Out Range (35.5%)',hir:'HIR (36.8%)',lir:'LIR (27.7%)',hor:'HOR (22.6%)',lor:'LOR (13.0%)'};
-const OT2F={hor:'hor',lor:'lor',hir:'hir',lir:'lir'};
+const CLBLS={all:'All (100%)',ir:'In Range (64.5%)',or:'Out Range (35.5%)',hir:'HIR-OV (36.8%)',lir:'LIR-OV (27.7%)',hor:'HOR (22.6%)',lor:'LOR (13.0%)'};
+const OT2F={hor:'hor',lor:'lor',hir:'hir',lir:'lir','HIR-IV':'hir','LIR-IV':'lir'};
 
 function pct(v){
   if(v===0||v===null||v===undefined)return{c:'lo',t:'0%'};
@@ -3368,8 +3499,8 @@ function buildStats(){
     {k:'all', l:'All (100%)',      tip:'All sessions regardless of open type'},
     {k:'ir',  l:'In Range (64.5%)',tip:'Opens inside prior day\'s range — HIR + LIR combined'},
     {k:'or',  l:'Out Range (35.5%)',tip:'Opens outside prior day\'s range — HOR + LOR combined (gap opens)'},
-    {k:'hir', l:'HIR (36.8%)',     tip:'High In Range — RTH opens higher than prior close but still inside prior day\'s range'},
-    {k:'lir', l:'LIR (27.7%)',     tip:'Low In Range — RTH opens lower than prior close but still inside prior day\'s range'},
+    {k:'hir', l:'HIR-OV (36.8%)',   tip:'High In Range, Out of Value — RTH opens above value area but inside prior day\'s range'},
+    {k:'lir', l:'LIR-OV (27.7%)',   tip:'Low In Range, Out of Value — RTH opens below value area but inside prior day\'s range'},
     {k:'hor', l:'HOR (22.6%)',     tip:'High Out of Range — RTH opens above prior day\'s high (gap up)'},
     {k:'lor', l:'LOR (13.0%)',     tip:'Low Out of Range — RTH opens below prior day\'s low (gap down)'}
   ];
@@ -3443,12 +3574,12 @@ function buildStats(){
     colKeys.forEach(function(k){
       var th=document.createElement('th');
       var isHi=activeOT&&k===activeOT;
-      th.textContent=({'all':'All (100%)','ir':'In Range (64.5%)','or':'Out Range (35.5%)','hir':'HIR (36.8%)','lir':'LIR (27.7%)','hor':'HOR (22.6%)','lor':'LOR (13.0%)'})[k];
+      th.textContent=({'all':'All (100%)','ir':'In Range (64.5%)','or':'Out Range (35.5%)','hir':'HIR-OV (36.8%)','lir':'LIR-OV (27.7%)','hor':'HOR (22.6%)','lor':'LOR (13.0%)'})[k];
       th.style.cssText='text-align:right;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #1e2631;background:'+(isHi?'rgba(245,166,35,.08)':'#0e1116')+';color:'+(isHi?'#f5a623':'#4a5568')+';min-width:80px;white-space:nowrap;';
       htr.appendChild(th);
     });
   } else {
-    ['All (100%)',({'ir':'In Range (64.5%)','or':'Out Range (35.5%)','hir':'HIR (36.8%)','lir':'LIR (27.7%)','hor':'HOR (22.6%)','lor':'LOR (13.0%)'})[stFilt]].forEach(function(label,i){
+    ['All (100%)',({'ir':'In Range (64.5%)','or':'Out Range (35.5%)','hir':'HIR-OV (36.8%)','lir':'LIR-OV (27.7%)','hor':'HOR (22.6%)','lor':'LOR (13.0%)'})[stFilt]].forEach(function(label,i){
       var th=document.createElement('th');
       th.textContent=label;
       th.style.cssText='text-align:right;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid #1e2631;background:'+(i===1?'rgba(245,166,35,.08)':'#0e1116')+';color:'+(i===1?'#f5a623':'#4a5568')+';min-width:90px;white-space:nowrap;';
@@ -3653,8 +3784,10 @@ var DEFAULT_SETUPS=[
   {id:'midvpoc',label:'MID>VWAP>VPOC'},{id:'vhvn',label:'VHVN>VPOC'}
 ];
 var LABEL_DEFAULTS={errors:DEFAULT_ERRORS,emotions:DEFAULT_EMOTIONS,reasons:DEFAULT_REASONS,triggers:DEFAULT_TRIGGERS,setups:DEFAULT_SETUPS};
-const SCHEMA_VERSION = 6;
-function _safeParse(key, fallback){ try{ return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))||fallback; }catch(e){ localStorage.removeItem(key); return fallback; } }
+const SCHEMA_VERSION = 7;
+const _BUILD_SIG='7e4f2a1d-sd26e';
+const _APP_ID='TL101-2026-SDE';
+function _safeParse(key, fallback){ try{ return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))||fallback; }catch(e){ console.error('_safeParse corrupt data for '+key+':', e); try{logError('parse','Corrupt data in '+key+' — kept raw, using fallback',e.message);}catch(ignore){} return fallback; } }
 function _safeSave(key, value){ try{ localStorage.setItem(key, value); return true; }catch(e){ console.error('localStorage save failed for '+key+':', e); logError('save','Storage write failed: '+key,e.message); toast('⚠ Storage full — data may not be saved. Export a backup.',''); return false; } }
 
 // ── Error Log ──
@@ -3666,7 +3799,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3'
+    v: 'v2.3.6 beta'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -3793,6 +3926,7 @@ function resetAllThresholds(){
 migrateLocalStorage();
 
 let sessions=_safeParse(KS,[]);
+sessions.sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
 let checks=_safeParse(KC,{});
 let pmData=_safeParse(KP,{});
 let cOT=pmData.confirmedOT||null;
@@ -3860,7 +3994,7 @@ var BM_FIELDS=[{id:'pHigh',label:'◎ Prior High'},{id:'pLow',label:'◎ Prior L
 
 function getBMFieldsWithCustom(){
   var fields = BM_FIELDS.slice();
-  customPMLevels.forEach(function(cl){
+  (customPMLevels||[]).forEach(function(cl){
     fields.push({id:'_cl:'+cl.name, label:'★ Custom: '+cl.name});
   });
   fields.push({id:'_cl_new', label:'★ + New Custom Level'});
@@ -3869,9 +4003,15 @@ function getBMFieldsWithCustom(){
 
 // ══════════ INIT ══════════
 (function(){
+  try {
   document.getElementById('hdate').textContent=fd(new Date());
   // Migrate existing data on startup (fix R calcs, normalize fields)
   (function(){
+    try {
+    // Filter out any null/non-object entries that would crash migration
+    var hadCorrupt=false;
+    tradeLog=tradeLog.filter(function(t){if(!t||typeof t!=='object'){hadCorrupt=true;return false;}return true;});
+    if(hadCorrupt){logError('init','Removed corrupt null entries from tradeLog');_safeSave(KTL,JSON.stringify(tradeLog));}
     var needsSave=false;
     tradeLog.forEach(function(t){
       if(!t.contracts) t.contracts=1;
@@ -3889,17 +4029,23 @@ function getBMFieldsWithCustom(){
       }
     });
     if(needsSave) _safeSave(KTL,JSON.stringify(tradeLog));
+    } catch(migErr){ console.error('Trade migration error:', migErr); logError('init','Trade migration crashed',migErr.message); }
   })();
 
-  updateJLbl();renderBanner();renderSessions();loadPM();loadPreflight();
-  syncTradeFormInstrument();
+  // Each init call is isolated so one crash doesn't kill the rest
+  try{updateJLbl();}catch(e){console.error('init updateJLbl:',e);logError('init','updateJLbl crash',e.message);}
+  try{renderBanner();}catch(e){console.error('init renderBanner:',e);logError('init','renderBanner crash',e.message);}
+  try{renderSessions();}catch(e){console.error('init renderSessions:',e);logError('init','renderSessions crash',e.message);}
+  try{loadPM();}catch(e){console.error('init loadPM:',e);logError('init','loadPM crash',e.message);}
+  try{loadPreflight();}catch(e){console.error('init loadPreflight:',e);logError('init','loadPreflight crash',e.message);}
+  try{syncTradeFormInstrument();}catch(e){console.error('init syncTradeFormInstrument:',e);logError('init','syncTradeFormInstrument crash',e.message);}
   // Load saved BMBridge URL into the input field
-  loadBMUrl();
+  try{loadBMUrl();}catch(e){console.error('init loadBMUrl:',e);logError('init','loadBMUrl crash',e.message);}
   // Pre-build stats so it's ready
   window.addEventListener('load', function(){
     // Close bias modal on Escape
     document.addEventListener('keydown', function(e){
-      if(e.key==='Escape'){ closeBiasModal(); dismissSplash(); }
+      if(e.key==='Escape'){ closeBiasModal(); closeDateSaveModal(); dismissSplash(); }
     });
     setTimeout(buildStats, 50);
     // Populate minute dropdowns and set current ET time
@@ -3917,12 +4063,34 @@ function getBMFieldsWithCustom(){
     if(!localStorage.getItem('tl_splash_seen')){
       setTimeout(showSplash, 300);
     }
+    // ── Startup persistence diagnostic ──
+    setTimeout(function(){
+      try {
+        // Test localStorage read/write
+        var canary='_tl_canary';
+        localStorage.setItem(canary,'1');
+        var ok=localStorage.getItem(canary)==='1';
+        localStorage.removeItem(canary);
+        if(!ok){ logError('persist','localStorage read/write test FAILED'); toast('⚠ Your browser is blocking data storage — trades may not save. Check privacy settings.',''); return; }
+        // Check if raw data exists but in-memory arrays are empty (parse failure or script halt)
+        var rawTL=localStorage.getItem(KTL);
+        var rawMT=localStorage.getItem(KMT);
+        if(rawTL && rawTL.length>5 && (!tradeLog || !tradeLog.length)){
+          logError('persist','tradeLog empty but localStorage has '+rawTL.length+' chars — possible parse failure or script halt');
+          toast('⚠ Trades found in storage but not loading. Check Settings → Error Log or try re-importing your backup.','');
+        }
+        if(rawMT && rawMT.length>5 && (!missedTrades || !missedTrades.length)){
+          logError('persist','missedTrades empty but localStorage has '+rawMT.length+' chars');
+        }
+      }catch(e){ console.error('Persistence diagnostic error:',e); }
+    }, 1000);
   });
-  if(cOT)autoHiStat(cOT.type);
-  renderFuelList();
-  updTBadge();
+  try{if(cOT)autoHiStat(cOT.type);}catch(e){console.error('init autoHiStat:',e);}
+  try{renderFuelList();}catch(e){console.error('init renderFuelList:',e);}
+  try{updTBadge();}catch(e){console.error('init updTBadge:',e);}
   if(!journalDropdowns) journalDropdowns = JSON.parse(JSON.stringify(DEFAULT_JOURNAL_DROPDOWNS));
-  applyJournalDropdowns();
+  try{applyJournalDropdowns();}catch(e){console.error('init applyJournalDropdowns:',e);}
+  } catch(initErr) { console.error('INIT IIFE crashed — some features may not work until reload:', initErr); try{logError('init','IIFE crash: '+initErr.message, initErr.stack?initErr.stack.substring(0,300):'');}catch(ignore){} }
 })();
 
 function fd(d){return d.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric'});}
@@ -3931,6 +4099,13 @@ function fk(d){return d.toISOString().split('T')[0];}
 // ══════════ NAV ══════════
 // Navigate to a tab programmatically (used by Settings clickable links)
 function goToTab(id){ go(id, null); }
+function goToSetting(targetId){
+  go('settings', null);
+  setTimeout(function(){
+    var el=document.getElementById(targetId);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }, 150);
+}
 
 // Scroll to a section within Settings
 function scrollToSetting(id){
@@ -3962,24 +4137,32 @@ function go(id,el){
     if(id==='whatif'){content.style.overflowY='hidden';}
     else{content.style.overflowY='auto';}
   }
-  if(id==='flow')renderFlow();
+  if(id==='flow')try{renderFlow();}catch(e){console.error('go flow:',e);logError('nav','renderFlow crash',e.message);}
   if(id==='live'){
-    renderHitLog();
-    applyStatHits();
-    updateLiveOpenDisplay();
+    try{renderHitLog();applyStatHits();updateLiveOpenDisplay();}catch(e){console.error('go live:',e);logError('nav','live panel crash',e.message);}
     // Directly render level tracker from cOT — no dependency on feed or lastPrice
+    try{
     if(cOT) {
       renderLevelTracker(null, lastPrice);
     } else {
       checkLevels(lastPrice);
     }
+    }catch(e){console.error('go live levels:',e);}
     if(!liveInterval) setTimeout(startLiveFeed, 150);
   }
-  if(id==='mr'){buildMR();}
-  if(id==='st'){buildSTChecks();updateSTAlignment();}
-  if(id==='stats'){setTimeout(function(){buildStats();},10);}
-  if(id==='journal'){buildJournalChips();loadJDate();renderSessions();checkPreflightWarning();rebuildJFilterSetups();updateJChipCounts();renderJHeatmap();}
+  if(id==='mr'){try{buildMR();}catch(e){console.error('go mr:',e);logError('nav','buildMR crash',e.message);}}
+  if(id==='st'){try{buildSTChecks();updateSTAlignment();}catch(e){console.error('go st:',e);logError('nav','ST crash',e.message);}}
+  if(id==='stats'){setTimeout(function(){try{buildStats();}catch(e){console.error('go stats:',e);logError('nav','buildStats crash',e.message);}},10);}
+  if(id==='journal'){try{
+    // Only reset+reload the form when journal hasn't been loaded yet, or the date changed.
+    // Re-entering the same day's journal should preserve any in-progress (unsaved) input.
+    var _jKey=fk(jDate);
+    buildJournalChips();
+    if(_journalLoadedKey!==_jKey) loadJDate();
+    renderSessions();checkPreflightWarning();rebuildJFilterSetups();updateJChipCounts();renderJHeatmap();
+  }catch(e){console.error('go journal:',e);logError('nav','journal crash',e.message);}}
   if(id==='trades'){
+    try{
     buildErrorChips();buildEmotionChips();buildTriggerChips();
     clearTradeForm();
     renderTradeLog();
@@ -3990,12 +4173,13 @@ function go(id,el){
     if(il) il.textContent = '— ' + (instrumentSettings.name||'MES') + ' · $' + (instrumentSettings.tickValue/(instrumentSettings.tickSize||0.25)).toFixed(2) + '/pt';
     syncTradeFormInstrument();
     setTimeout(smartFillTradeForm, 50);
+    }catch(e){console.error('go trades:',e);logError('nav','trades panel crash',e.message);}
   }
-  if(id==='settings'){loadSettings();autoTestFeeds();}
-  if(id==='analytics'){rebuildAnSetupFilter();renderAnalytics();}
-  if(id==='missed'){rebuildSetupDropdowns();buildReasonChips();renderMissedTrades();syncMTInstrument();updateMTFeeBtn();}
-  if(id==='whatif'){WI_ERRORS=Object.keys(getAllLabels('errors'));WI_ERROR_LABELS=getAllLabels('errors');WI_EMOTIONS=Object.keys(getAllLabels('emotions'));WI_EMO_LABELS=getAllLabels('emotions');WI_TRIGGER_LABELS=getAllLabels('triggers');WI_MISS_REASONS=Object.keys(getAllLabels('reasons'));WI_MISS_REASON_LABELS=getAllLabels('reasons');wiState.feesEnabled=anShowFees;renderWhatIf();}
-  if(id==='aicoach'){WI_ERROR_LABELS=getAllLabels('errors');WI_EMO_LABELS=getAllLabels('emotions');WI_TRIGGER_LABELS=getAllLabels('triggers');initAICoach();}
+  if(id==='settings'){try{loadSettings();autoTestFeeds();}catch(e){console.error('go settings:',e);logError('nav','settings crash',e.message);}}
+  if(id==='analytics'){try{rebuildAnSetupFilter();renderAnalytics();}catch(e){console.error('go analytics:',e);logError('nav','analytics crash',e.message);}}
+  if(id==='missed'){try{rebuildSetupDropdowns();buildReasonChips();renderMissedTrades();syncMTInstrument();updateMTFeeBtn();}catch(e){console.error('go missed:',e);logError('nav','missed crash',e.message);}}
+  if(id==='whatif'){try{WI_ERRORS=Object.keys(getAllLabels('errors'));WI_ERROR_LABELS=getAllLabels('errors');WI_EMOTIONS=Object.keys(getAllLabels('emotions'));WI_EMO_LABELS=getAllLabels('emotions');WI_TRIGGER_LABELS=getAllLabels('triggers');WI_MISS_REASONS=Object.keys(getAllLabels('reasons'));WI_MISS_REASON_LABELS=getAllLabels('reasons');wiState.feesEnabled=anShowFees;renderWhatIf();}catch(e){console.error('go whatif:',e);logError('nav','whatif crash',e.message);}}
+  if(id==='aicoach'){try{WI_ERROR_LABELS=getAllLabels('errors');WI_EMO_LABELS=getAllLabels('emotions');WI_TRIGGER_LABELS=getAllLabels('triggers');initAICoach();}catch(e){console.error('go aicoach:',e);logError('nav','aicoach crash',e.message);}}
   if(id==='method'){/* static content, no render needed */}
 }
 
@@ -4069,6 +4253,10 @@ function requestBiasChange(b){
   document.getElementById('biasModalTitle').innerHTML=
     `Bias → <strong style="color:${cols[b]}">${labels[b]}</strong>`;
   document.getElementById('biasModalReason').value='';
+  // Auto-fill time with current ET
+  var _now=new Date();
+  var _etTime=_now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+  document.getElementById('biasModalTime').value=_etTime;
   document.getElementById('biasModalOverlay').classList.add('show');
   setTimeout(()=>document.getElementById('biasModalReason').focus(), 50);
 }
@@ -4081,15 +4269,37 @@ function closeBiasModal(){
 function confirmBiasChange(){
   if(!pendingBiasChange) return;
   const reason=document.getElementById('biasModalReason').value.trim();
-  // Log the change with timestamp
+  var etStr=document.getElementById('biasModalTime').value.trim();
+  if(!etStr){
+    var now=new Date();
+    etStr=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+  }
   if(!pmData.biasLog) pmData.biasLog=[];
-  var now=new Date();
-  var etStr=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
-  pmData.biasLog.push({bias:pendingBiasChange, time:etStr, reason:reason||''});
-  setBias(pendingBiasChange);
+  var newBias=pendingBiasChange; // save before closeBiasModal nulls it
+  pmData.biasLog.push({bias:newBias, time:etStr, reason:reason||''});
+  setBias(newBias);
   closeBiasModal();
   renderBiasTimeline();
-  toast('Bias updated to '+pendingBiasChange.toUpperCase()+(reason?' — '+reason.substring(0,40):''),'ok');
+  toast('Bias updated to '+newBias.toUpperCase()+' at '+etStr+(reason?' — '+reason.substring(0,40):''),'ok');
+}
+
+function deleteBiasChange(idx){
+  if(!pmData.biasLog || !pmData.biasLog[idx]) return;
+  var entry=pmData.biasLog[idx];
+  var label=entry.bias?entry.bias.toUpperCase():'';
+  pmData.biasLog.splice(idx, 1);
+  // Revert bias to previous entry, or opening bias if none remain
+  if(pmData.biasLog.length){
+    var last=pmData.biasLog[pmData.biasLog.length-1];
+    setBias(last.bias);
+  } else {
+    // No changes left — revert to confirmed session bias or keep current
+    var openBias=(pmData.confirmedOT&&pmData.confirmedOT.bias)?pmData.confirmedOT.bias:currentBias;
+    setBias(openBias);
+  }
+  savePM();
+  renderBiasTimeline();
+  toast('Removed bias change → '+label,'ok');
 }
 
 function renderBiasTimeline(biasLogOverride, biasOverride){
@@ -4141,14 +4351,16 @@ function renderBiasTimeline(biasLogOverride, biasOverride){
   }
 
   // Each bias change
-  log.forEach(function(entry){
+  log.forEach(function(entry, idx){
     var b=entry.bias||'neutral';
+    var canDelete=!biasLogOverride; // only allow delete on live timeline, not journal review
     html+='<div class="bias-tl-entry">'+
       '<div class="bias-tl-time">'+entry.time+'</div>'+
       '<div class="bias-tl-dot '+b+'"></div>'+
       '<div class="bias-tl-body"><div class="bias-tl-label" style="color:'+(biasColors[b]||'var(--t2)')+';">→ '+(biasLabels[b]||b.toUpperCase())+'</div>'+
       (entry.reason?'<div class="bias-tl-reason">'+entry.reason+'</div>':'')+
       '</div>'+
+      (canDelete?'<span onclick="deleteBiasChange('+idx+')" style="cursor:pointer;font-size:10px;color:var(--t3);padding:2px 6px;margin-left:auto;opacity:.5;font-family:var(--mono);" title="Remove this change">✕</span>':'')+
     '</div>';
   });
 
@@ -4174,12 +4386,21 @@ function setBias(b){
   renderBanner();
   updateSTAlignment();
   updateSessionUI();
+  updateBiasNudge();
 }
 
 // ══════════ FUEL ══════════
 function renderFuelList(){
   const list=document.getElementById('fuelList');list.innerHTML='';
-  fuelItems.forEach((f,i)=>{
+  // Show/hide sort buttons
+  var sortEl=document.getElementById('fuelSortBtns');
+  if(sortEl){
+    if(fuelItems.length>1){ sortEl.style.display='flex'; sortEl.innerHTML=_sortBtnHtml('fuel',_fuelSort); }
+    else { sortEl.style.display='none'; }
+  }
+  var sorted=_getSortedFuel();
+  sorted.forEach(function(s){
+    var f=s.item, i=s.orig;
     const row=document.createElement('div');row.className='fuel-item';
     row.innerHTML=`
       <div class="fg fi-type"><label>Type</label>
@@ -4549,7 +4770,7 @@ async function importFromBMBridge(manual) {
 // ══════════════════════════════════════════
 // PRE-MARKET
 // ══════════════════════════════════════════
-function savePM(){pmData.fuelItems=fuelItems;pmData.bias=currentBias;pmData.customLevels=customPMLevels;_safeSave(KP,JSON.stringify(pmData));updateSessionUI();}
+function savePM(){pmData.fuelItems=fuelItems;pmData.bias=currentBias;pmData.customLevels=customPMLevels;var mEl=document.getElementById('pmMedia');if(mEl)pmData.pmMedia=mEl.value;_safeSave(KP,JSON.stringify(pmData));updateSessionUI();}
 
 function loadPM(){
   // If data has a date stamp from a previous day — clear for new session
@@ -4580,6 +4801,7 @@ function loadPM(){
   if(pmData.pmNotes)document.getElementById('pmNotes').value=pmData.pmNotes;
   if(pmData.biasNote)document.getElementById('biasNote').value=pmData.biasNote;
   if(pmData.fuelNarrative)document.getElementById('fuelNarrative').value=pmData.fuelNarrative;
+  var pmMEl=document.getElementById('pmMedia');if(pmMEl&&pmData.pmMedia){pmMEl.value=pmData.pmMedia;renderPmMediaPreviews();}
   if(pmData.bias){currentBias=pmData.bias;document.getElementById('bias-'+currentBias).classList.add('sel');}
   if(pmData.fuelItems){fuelItems=pmData.fuelItems;}
   if(pmData.customLevels){customPMLevels=pmData.customLevels;renderCustomLevels();}
@@ -4595,13 +4817,59 @@ function getLevels(){return{pHigh:gv('pHigh'),pLow:gv('pLow'),pClose:gv('pClose'
 // ── Custom Levels ──
 var customPMLevels = []; // [{name:'Weekly VPOC', price:6600}, ...]
 
+// ── Level sort state ─────────────────────────────────────────────────────────
+var _clSort='none'; // 'none','alpha','price'
+var _fuelSort='none';
+
+function _sortBtnHtml(type, current, onclick){
+  var sorts=[{id:'alpha',label:'A→Z'},{id:'price',label:'Price ↕'}];
+  return sorts.map(function(s){
+    var active=current===s.id;
+    var style='cursor:pointer;padding:2px 8px;border-radius:3px;border:1px solid '+(active?'var(--purple)':'var(--b2)')+';color:'+(active?'var(--purple)':'var(--t3)')+';background:'+(active?'rgba(147,130,220,.1)':'transparent')+';';
+    return '<span style="'+style+'" onclick="toggleSort(\''+type+'\',\''+s.id+'\')">'+s.label+'</span>';
+  }).join('');
+}
+
+function toggleSort(type, mode){
+  if(type==='cl'){
+    _clSort=_clSort===mode?'none':mode;
+    renderCustomLevels();
+    refreshTracker();
+  } else {
+    _fuelSort=_fuelSort===mode?'none':mode;
+    renderFuelList();renderBanner();refreshTracker();
+  }
+}
+
+function _getSortedCustomLevels(){
+  var items=customPMLevels.map(function(l,i){return {orig:i,name:l.name,price:l.price};});
+  if(_clSort==='alpha') items.sort(function(a,b){return a.name.toLowerCase().localeCompare(b.name.toLowerCase());});
+  else if(_clSort==='price') items.sort(function(a,b){
+    var ap=a.price!=null?a.price:Infinity, bp=b.price!=null?b.price:Infinity;
+    return ap-bp;
+  });
+  return items;
+}
+
+function _getSortedFuel(){
+  var items=fuelItems.map(function(f,i){return {orig:i,item:f};});
+  if(_fuelSort==='alpha'){
+    items.sort(function(a,b){return (a.item.note||'').toLowerCase().localeCompare((b.item.note||'').toLowerCase());});
+  } else if(_fuelSort==='price'){
+    items.sort(function(a,b){
+      var ap=parseFloat(a.item.level)||Infinity, bp=parseFloat(b.item.level)||Infinity;
+      return ap-bp;
+    });
+  }
+  return items;
+}
+
 function addCustomLevel(){
   var nameEl=document.getElementById('customLevelName');
   var priceEl=document.getElementById('customLevelPrice');
   var name=(nameEl?nameEl.value.trim():'');
   var price=priceEl?parseFloat(priceEl.value):NaN;
   if(!name){toast('Enter a level name','');return;}
-  // Check for duplicates
   if(customPMLevels.some(function(l){return l.name.toLowerCase()===name.toLowerCase();})){toast('Level "'+name+'" already exists','');return;}
   customPMLevels.push({name:name, price:isNaN(price)?null:price});
   if(nameEl) nameEl.value='';
@@ -4626,8 +4894,16 @@ function updateCustomLevelPrice(idx, val){
 function renderCustomLevels(){
   var el=document.getElementById('customLevelsList');
   if(!el) return;
+  // Show/hide sort buttons
+  var sortEl=document.getElementById('clSortBtns');
+  if(sortEl){
+    if(customPMLevels.length>1){ sortEl.style.display='flex'; sortEl.innerHTML=_sortBtnHtml('cl',_clSort); }
+    else { sortEl.style.display='none'; }
+  }
   if(!customPMLevels.length){el.innerHTML='';return;}
-  el.innerHTML=customPMLevels.map(function(l,i){
+  var sorted=_getSortedCustomLevels();
+  el.innerHTML=sorted.map(function(s){
+    var l=customPMLevels[s.orig], i=s.orig;
     var hasPrice = l.price != null && !isNaN(l.price);
     return '<div style="display:flex;gap:6px;align-items:center;">'+
       '<span style="flex:1;font-size:11px;font-weight:600;color:var(--purple);font-family:var(--mono);">'+l.name+'</span>'+
@@ -4693,10 +4969,15 @@ function detect(){
   let det='',reason='';
   if(usePrice>L.pHigh){det='HOR';reason=`Open <strong>${usePrice}</strong> is <span style="color:var(--green)">above prior high ${L.pHigh}</span> → High Out of Range (Gap Up)`;}
   else if(usePrice<L.pLow){det='LOR';reason=`Open <strong>${usePrice}</strong> is <span style="color:var(--red)">below prior low ${L.pLow}</span> → Low Out of Range (Gap Down)`;}
-  else if(L.pVAH!=null&&usePrice>=L.pVAH){det='HIR';reason=`Open <strong>${usePrice}</strong> is within range but <span style="color:var(--green)">at/above pVAH ${L.pVAH}</span> → High In Range`;}
-  else if(L.pVAL!=null&&usePrice<=L.pVAL){det='LIR';reason=`Open <strong>${usePrice}</strong> is within range but <span style="color:var(--red)">at/below pVAL ${L.pVAL}</span> → Low In Range`;}
-  else if(L.pVAH!=null&&L.pVAL!=null&&usePrice>L.pVAL&&usePrice<L.pVAH){det='IR-IV';reason=`Open <strong>${usePrice}</strong> is <span style="color:var(--gold)">within value area (${L.pVAL}–${L.pVAH})</span> → In Range, In Value`;}
-  else{det='HIR';reason=`Open ${usePrice} is within range — enter pVAH/pVAL to fully classify.`;}
+  else if(L.pVAH!=null&&usePrice>=L.pVAH){det='HIR';reason=`Open <strong>${usePrice}</strong> is within range but <span style="color:var(--green)">at/above pVAH ${L.pVAH}</span> → High In Range, Out of Value`;}
+  else if(L.pVAL!=null&&usePrice<=L.pVAL){det='LIR';reason=`Open <strong>${usePrice}</strong> is within range but <span style="color:var(--red)">at/below pVAL ${L.pVAL}</span> → Low In Range, Out of Value`;}
+  else if(L.pVAH!=null&&L.pVAL!=null&&usePrice>L.pVAL&&usePrice<L.pVAH){
+    // In value — check settlement to distinguish HIR-IV vs LIR-IV vs IR-IV
+    if(L.settle!=null&&usePrice>L.settle){det='HIR-IV';reason=`Open <strong>${usePrice}</strong> is <span style="color:var(--gold)">in value, above settlement ${L.settle}</span> → High In Range, In Value`;}
+    else if(L.settle!=null&&usePrice<L.settle){det='LIR-IV';reason=`Open <strong>${usePrice}</strong> is <span style="color:var(--gold)">in value, below settlement ${L.settle}</span> → Low In Range, In Value`;}
+    else{det='IR-IV';reason=`Open <strong>${usePrice}</strong> is <span style="color:var(--gold)">within value area (${L.pVAL}–${L.pVAH})</span> → In Range, In Value`;}
+  }
+  else{det='IR-IV';reason=`Open ${usePrice} is within range — enter pVAH/pVAL to fully classify.`;}
 
   // Prefix and notes differ for estimate vs confirmed
   if (isEstimate) {
@@ -4768,6 +5049,7 @@ function showConf(){
 function clearPM(){
   ['pHigh','pLow','pClose','pVPOC','pVAH','pVAL','ONH','ONL','ONVPOC','todayOpen','settle'].forEach(k=>document.getElementById(k).value='');
   ['pmNotes','biasNote','fuelNarrative'].forEach(k=>document.getElementById(k).value='');
+  var pmMEl=document.getElementById('pmMedia');if(pmMEl){pmMEl.value='';} var pmMPr=document.getElementById('pm-media-preview');if(pmMPr)pmMPr.innerHTML='';
   cOT=null;fuelItems=[];customPMLevels=[];currentBias='';
   pmData={};localStorage.removeItem(KP);
   document.querySelectorAll('.bias-btn').forEach(b=>b.classList.remove('sel'));
@@ -4832,12 +5114,12 @@ function clearChecks(){checks={};_safeSave(KC,JSON.stringify(checks));buildMR();
 
 // ══════════ PREFLIGHT ══════════
 function savePreflight(){
-  // Read existing state so we preserve _completed and _completedAt
   var pf=JSON.parse(localStorage.getItem(KPF)||'{}');
   pf._date = fk(new Date());
   [1,2,3,4,5,6,7,8].forEach(function(n){ var el=document.getElementById('pf'+n); if(el) pf['pf'+n]=el.value; });
+  var mEl=document.getElementById('pfMedia');
+  if(mEl) pf.pfMedia=mEl.value;
   _safeSave(KPF, JSON.stringify(pf));
-  // If already completed, keep the journal snapshot in sync
   if(pf._completed){
     pmData.preflightSnap=pf;
     _safeSave(KP,JSON.stringify(pmData));
@@ -4845,13 +5127,13 @@ function savePreflight(){
 }
 function loadPreflight(){
   var pf=JSON.parse(localStorage.getItem(KPF)||'{}');
-  // Clear if it's a new day — preflight is per-session
   if(pf._date && pf._date !== fk(new Date())){
     localStorage.removeItem(KPF);
     return;
   }
   [1,2,3,4,5,6,7,8].forEach(function(n){ var el=document.getElementById('pf'+n); if(el&&pf['pf'+n]) el.value=pf['pf'+n]; });
-  // Show completion status
+  var mEl=document.getElementById('pfMedia');
+  if(mEl&&pf.pfMedia) { mEl.value=pf.pfMedia; renderPfMediaPreviews(); }
   if(pf._completed){
     var st=document.getElementById('pfCompleteStatus');
     if(st) st.innerHTML='<span style="color:var(--green);">✓ Completed at '+pf._completedAt+'</span>';
@@ -4875,6 +5157,8 @@ function completePreflight(){
     var el=document.getElementById('pf'+n);
     if(el) pf['pf'+n]=el.value;
   });
+  var mEl=document.getElementById('pfMedia');
+  if(mEl) pf.pfMedia=mEl.value;
   _safeSave(KPF, JSON.stringify(pf));
 
   // Snapshot for journal attachment
@@ -4995,18 +5279,18 @@ function updateSTAlignment(){
 
   // Opening — always relevant at open, show which scenario
   if(ot==='HOR'||ot==='LOR') active.push({id:'opening', label:'Opening Trade', reason: ot+' gap open — check responsive vs impulsive', color:'var(--gold)'});
-  if(ot==='HIR'||ot==='LIR') active.push({id:'opening', label:'Opening Trade', reason: ot+' — watch for range breakout', color:'var(--gold)'});
+  if(ot==='HIR'||ot==='LIR'||ot==='HIR-IV'||ot==='LIR-IV') active.push({id:'opening', label:'Opening Trade', reason: (ot==='HIR'?'HIR-OV':ot==='LIR'?'LIR-OV':ot)+' — watch for range breakout', color:'var(--gold)'});
   if(ot==='IR-IV') neutral.push({id:'opening', label:'Opening Trade', reason:'IR-IV — neutral day, trade VA extremes'});
 
   // MR — balanced context
-  if(ot==='IR-IV'||(ot==='HIR'||ot==='LIR')) active.push({id:'mr', label:'Mean Reversion', reason:'Balanced/rotational context — MR conditions possible', color:'var(--green)'});
+  if(ot==='IR-IV'||ot==='HIR-IV'||ot==='LIR-IV'||ot==='HIR'||ot==='LIR') active.push({id:'mr', label:'Mean Reversion', reason:'Balanced/rotational context — MR conditions possible', color:'var(--green)'});
 
   // IBF — after 10:30am, when IB is set
   if(ibDone) active.push({id:'ibf', label:'IBF', reason:'IB complete — watch for break + failure back inside', color:'var(--cyan)'});
   else neutral.push({id:'ibf', label:'IBF', reason:'Active after 10:30am ET once IB is set'});
 
   // IBC — out of balance, after IB
-  if(ibDone && (ot==='HOR'||ot==='LOR'||ot==='HIR'||ot==='LIR')) active.push({id:'cont', label:'IBC Continuation', reason:'Out of balance open + IB — watch for IBC range extension', color:'var(--blue)'});
+  if(ibDone && (ot==='HOR'||ot==='LOR'||ot==='HIR'||ot==='LIR'||ot==='HIR-IV'||ot==='LIR-IV')) active.push({id:'cont', label:'IBC Continuation', reason:'Out of balance open + IB — watch for IBC range extension', color:'var(--blue)'});
 
   // VPOC Shift — out of balance
   if(ot==='HOR'||ot==='LOR') active.push({id:'vpoc', label:'VPOC Shift', reason:'Out of balance — monitor VPOC migration during session', color:'var(--purple)'});
@@ -5015,10 +5299,10 @@ function updateSTAlignment(){
   neutral.push({id:'bar', label:'BAR', reason:'Order flow pattern — available in all contexts and fractals'});
 
   // MID>VWAP>VPOC — out of balance transitioning to balance
-  if(ot==='HOR'||ot==='LOR'||ot==='HIR'||ot==='LIR') neutral.push({id:'midvpoc', label:'MID>VWAP>VPOC', reason:'Watch for counter rotation to MID/VWAP — stop pick → mean revert to VPOC'});
+  if(ot==='HOR'||ot==='LOR'||ot==='HIR'||ot==='LIR'||ot==='HIR-IV'||ot==='LIR-IV') neutral.push({id:'midvpoc', label:'MID>VWAP>VPOC', reason:'Watch for counter rotation to MID/VWAP — stop pick → mean revert to VPOC'});
 
   // VHVN>VPOC — balanced context, after VPOC shifts
-  if(ot==='IR-IV'||(ot==='HIR'||ot==='LIR')) neutral.push({id:'vhvn', label:'VHVN>VPOC', reason:'Balanced context — if VPOC shifts, trade VHVN back to new VPOC'});
+  if(ot==='IR-IV'||ot==='HIR-IV'||ot==='LIR-IV'||ot==='HIR'||ot==='LIR') neutral.push({id:'vhvn', label:'VHVN>VPOC', reason:'Balanced context — if VPOC shifts, trade VHVN back to new VPOC'});
 
   // Build banner
   if(!active.length && !neutral.length){ banner.style.display='none'; return; }
@@ -5147,6 +5431,18 @@ function loadSettings(){
   // Performance thresholds
   renderThresholdSettings();
   renderErrorLog();
+  // Log name & save location
+  var lnEl = document.getElementById('set-log-name');
+  if(lnEl) lnEl.value = getLogName();
+  updateFilenamePreview();
+  var supEl = document.getElementById('set-save-support');
+  if(supEl) supEl.textContent = _hasFileSystemAccess() ? '✓ Your browser supports direct folder save (Chrome/Edge)' : 'ⓘ Your browser will use the download dialog (Firefox/Safari)';
+  // Restore saved directory handle
+  if(_hasFileSystemAccess()){
+    _getStoredHandle().then(function(h){
+      if(h){ _savedDirHandle=h; _updateSaveLocationUI(h.name); }
+    }).catch(function(){});
+  }
 }
 
 // ── Custom Label Settings ──
@@ -5182,7 +5478,7 @@ function renderLabelSettings(){
     var addedCount=(cl.added||[]).length;
     var badge=hiddenCount>0?' <span style="font-size:9px;color:var(--t3);font-weight:400;">('+hiddenCount+' hidden)</span>':'';
 
-    html+='<div class="card" style="margin-bottom:16px;">';
+    html+='<div class="card" id="labelCard-'+cat+'" style="margin-bottom:16px;">';
     html+='<div class="ct" style="display:flex;align-items:center;justify-content:space-between;"><span><span class="dot" style="background:'+meta.color+';"></span>'+meta.title+badge+'</span>';
     // UX #9: Reset to defaults button
     if(hiddenCount>0||addedCount>0){
@@ -5200,7 +5496,7 @@ function renderLabelSettings(){
       var strike=isHidden?'text-decoration:line-through;':'';
       // UX #10: entire chip is clickable, not just the eye
       html+='<div style="display:flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid '+(isHidden?'var(--b1)':'var(--b2)')+';border-radius:4px;font-size:10px;font-family:var(--mono);cursor:pointer;user-select:none;'+opacity+'" onclick="toggleLabelHide(\''+cat+'\',\''+d.id+'\')" title="'+(isHidden?'Click to show':'Click to hide')+'">';
-      html+='<span style="font-size:11px;margin-right:1px;">'+(isHidden?'👁‍🗨':'👁')+'</span>';
+      html+='<span style="font-size:11px;margin-right:1px;">'+(isHidden?'👁🗨':'👁')+'</span>';
       html+='<span style="'+strike+'color:var(--t2);">'+d.label+'</span>';
       html+='</div>';
     });
@@ -5216,7 +5512,7 @@ function renderLabelSettings(){
         var strike=isHidden?'text-decoration:line-through;':'';
         // UX #10: entire chip clickable for hide/show
         html+='<div style="display:flex;align-items:center;gap:4px;padding:5px 12px;border:1px solid '+(isHidden?'var(--b1)':meta.color)+';border-radius:4px;font-size:10px;font-family:var(--mono);cursor:pointer;user-select:none;'+opacity+(isHidden?'':'background:'+meta.color+'10;')+'" onclick="toggleCustomLabelHide(\''+cat+'\',\''+d.id+'\')" title="'+(isHidden?'Click to show':'Click to hide')+'">';
-        html+='<span style="font-size:11px;margin-right:1px;">'+(isHidden?'👁‍🗨':'👁')+'</span>';
+        html+='<span style="font-size:11px;margin-right:1px;">'+(isHidden?'👁🗨':'👁')+'</span>';
         html+='<span style="'+strike+'color:var(--text);">'+d.label+'</span>';
         html+='</div>';
       });
@@ -5825,6 +6121,72 @@ function getTrendAlignment(dir, bias){
   return 'counter';
 }
 
+function parseTimeToMins(timeStr){
+  if(!timeStr) return -1;
+  var parts=timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if(!parts) return -1;
+  var h=parseInt(parts[1]);
+  var m=parseInt(parts[2]);
+  if(/PM/i.test(parts[3])&&h<12) h+=12;
+  if(/AM/i.test(parts[3])&&h===12) h=0;
+  return h*60+m;
+}
+
+function getBiasAtTime(tradeTime){
+  // Walk the biasLog to find what bias was active at the trade's time
+  var log=pmData.biasLog||[];
+  if(!log.length) return currentBias; // no changes — current bias is what it's been all day
+
+  // Opening bias = what was set before any changes
+  var openBias='';
+  if(pmData.confirmedOT && pmData.confirmedOT.bias) openBias=pmData.confirmedOT.bias;
+  else if(cOT && cOT.bias) openBias=cOT.bias;
+  else openBias=currentBias;
+
+  var tradeMins=parseTimeToMins(tradeTime);
+  if(tradeMins<0) return currentBias; // can't parse time, fall back
+
+  // Start with opening bias, walk forward through changes
+  var activeBias=openBias;
+  for(var i=0;i<log.length;i++){
+    var changeMins=parseTimeToMins(log[i].time);
+    if(changeMins<0) continue; // skip unparseable entries
+    if(changeMins<=tradeMins) activeBias=log[i].bias;
+    else break; // past the trade time, stop
+  }
+  return activeBias;
+}
+
+function updateBiasNudge(){
+  var el=document.getElementById('tl-bias-nudge');
+  if(!el) return;
+  var dir=(document.getElementById('tl-dir').value||'').toLowerCase();
+  var tradeTime=getTimeFromDropdowns('tl');
+  var biasAtTime=getBiasAtTime(tradeTime);
+  var ovEl=document.getElementById('tl-bias-override');
+  if(!dir || !biasAtTime || biasAtTime==='neutral'){
+    el.style.display='none';
+    // Reset override to Auto if it was auto-tracking
+    if(ovEl && !ovEl.value) ovEl.value='';
+    return;
+  }
+  var autoAlign=getTrendAlignment(dir, biasAtTime);
+  // If override is on Auto, show the auto-calculated result in the nudge
+  var effectiveAlign=(ovEl && ovEl.value) ? ovEl.value : autoAlign;
+  var aligned=(effectiveAlign==='trend');
+  el.style.display='inline';
+  if(effectiveAlign==='neutral'){
+    el.textContent='· — Neutral';
+    el.style.color='var(--t3)';
+  } else if(aligned){
+    el.textContent='· ↑ Aligned';
+    el.style.color='var(--green)';
+  } else {
+    el.textContent='· ⚠ Not Aligned';
+    el.style.color='var(--red)';
+  }
+}
+
 function rebuildSetupDropdowns(){
   var active = getActiveItems('setups');
   var defaultIds = DEFAULT_SETUPS.map(function(d){return d.id;});
@@ -5858,8 +6220,8 @@ function rebuildSetupFilters(){
   var counterCount = baseTrades.filter(function(t){return t.trendAlign==='counter';}).length;
   container.innerHTML =
     '<div class="tl-sf-btn'+(tlFilter==='all'?' active':'')+'" onclick="filterTrades(\'all\',this)">All ('+baseTrades.length+')</div>' +
-    '<div class="tl-sf-btn'+(tlFilter==='trend'?' active':'')+'" onclick="filterTrades(\'trend\',this)">↑ Trend ('+trendCount+')</div>' +
-    '<div class="tl-sf-btn'+(tlFilter==='counter'?' active':'')+'" onclick="filterTrades(\'counter\',this)">↓ Counter ('+counterCount+')</div>' +
+    '<div class="tl-sf-btn'+(tlFilter==='trend'?' active':'')+'" onclick="filterTrades(\'trend\',this)">↑ Aligned ('+trendCount+')</div>' +
+    '<div class="tl-sf-btn'+(tlFilter==='counter'?' active':'')+'" onclick="filterTrades(\'counter\',this)">↓ Against ('+counterCount+')</div>' +
     active.map(function(d){
       return '<div class="tl-sf-btn'+(tlFilter===d.id?' active':'')+'" onclick="filterTrades(\''+d.id+'\',this)">'+d.label+' ('+(setupCounts[d.id]||0)+')</div>';
     }).join('');
@@ -6337,8 +6699,13 @@ function saveTradeEntry(){
     gotRN, result, proc, setupRating, notes,
     instrument: instrData.name,
     openType: cOT?cOT.type:'',
-    bias: currentBias,
-    trendAlign: getTrendAlignment(dir, currentBias),
+    bias: getBiasAtTime(time||nowETStr()),
+    trendAlign: (function(){
+      var ov=document.getElementById('tl-bias-override').value;
+      if(ov) return ov; // manual override
+      return getTrendAlignment(dir, getBiasAtTime(time||nowETStr()));
+    })(),
+    trendContext: document.getElementById('tl-trend-context').value||'',
     triggerType: selectedTrigger,
     triggerLabel: selectedTrigger ? (getAllLabels('triggers')[selectedTrigger]||selectedTrigger) : '',
     errors: selectedErrors.slice(),
@@ -6614,6 +6981,12 @@ function clearTradeForm(){
   // Reset emotion
   selectedEmotion=[];
   buildEmotionChips();
+  // Reset market context
+  var tcEl=document.getElementById('tl-trend-context'); if(tcEl) tcEl.value='';
+  // Reset bias override
+  var boEl=document.getElementById('tl-bias-override'); if(boEl) boEl.value='';
+  // Reset bias nudge
+  var bnEl=document.getElementById('tl-bias-nudge'); if(bnEl) bnEl.style.display='none';
   // Reset exit time
   var exh=document.getElementById('tl-exit-hour'); if(exh) exh.value='';
   var exm=document.getElementById('tl-exit-min'); if(exm) exm.value='00';
@@ -6676,6 +7049,8 @@ function editTradeEntry(id){
   document.getElementById('tl-proc').value=t.proc||'';
   document.getElementById('tl-setup-rating').value=t.setupRating||'';
   document.getElementById('tl-notes').value=t.notes||'';
+  var tcEl=document.getElementById('tl-trend-context'); if(tcEl) tcEl.value=t.trendContext||'';
+  var boEl=document.getElementById('tl-bias-override'); if(boEl) boEl.value=t.trendAlign||'';
   var ssEl=document.getElementById('tl-screenshots');
   if(ssEl){ ssEl.value=(t.screenshots||[]).join('\n'); renderTradeScreenshotPreviews(); }
 
@@ -6778,7 +7153,11 @@ function renderTradeLog(){
   if(tlResultFilter!=='all') filtered=filtered.filter(function(t){return t.result===tlResultFilter;});
   if(tlDirFilter!=='all') filtered=filtered.filter(function(t){return (t.dir||'').toLowerCase()===tlDirFilter;});
   if(!filtered.length){
-    list.innerHTML='<div style="font-size:12px;color:var(--t3);font-style:italic;padding:20px 0;">No trades match the current filters.</div>';
+    if(!tradeLog.length){
+      list.innerHTML='<div class="nomsg"><strong>No Trades Logged Yet</strong>Use the form above to log your first trade. Enter the setup, direction, entry/stop prices, and scale-outs. Your trade history, analytics, and journal all build from here.<br><br><span class="an-link" onclick="document.getElementById(\'tlForm\').scrollIntoView({behavior:\'smooth\'})">↑ Go to Trade Form</span></div>';
+    } else {
+      list.innerHTML='<div style="font-size:12px;color:var(--t3);font-style:italic;padding:20px 0;">No trades match the current filters.</div>';
+    }
     return;
   }
   list.innerHTML=filtered.map(function(t){
@@ -6802,7 +7181,8 @@ function renderTradeLog(){
         ${setupBadge}${procBadge}
         ${t.gotRN?'<span class="tl-tag" style="background:rgba(54,215,154,.08);border-color:rgba(54,215,154,.3);color:var(--green);">✓ RN</span>':''}
         ${t.openType?`<span class="tl-tag" style="background:transparent;border-color:var(--b1);color:var(--t3);">${t.openType}</span>`:''}
-        ${t.trendAlign==='trend'?'<span class="tl-tag" style="background:rgba(54,215,154,.08);border-color:rgba(54,215,154,.25);color:var(--green);">↑ With Trend</span>':t.trendAlign==='counter'?'<span class="tl-tag" style="background:rgba(240,92,92,.08);border-color:rgba(240,92,92,.25);color:var(--red);">↓ Counter Trend</span>':''}
+        ${t.trendAlign==='trend'?'<span class="tl-tag" style="background:rgba(54,215,154,.08);border-color:rgba(54,215,154,.25);color:var(--green);">↑ Bias Aligned</span>':t.trendAlign==='counter'?'<span class="tl-tag" style="background:rgba(240,92,92,.08);border-color:rgba(240,92,92,.25);color:var(--red);">↓ Against Bias</span>':''}
+        ${t.trendContext==='with_trend'?'<span class="tl-tag" style="background:rgba(54,215,154,.08);border-color:rgba(54,215,154,.25);color:var(--green);">▲ With Trend</span>':t.trendContext==='counter_trend'?'<span class="tl-tag" style="background:rgba(240,92,92,.08);border-color:rgba(240,92,92,.25);color:var(--red);">▼ Counter Trend</span>':t.trendContext==='range'?'<span class="tl-tag" style="background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.25);color:var(--purple);">◆ Range</span>':''}
         ${t.triggerLabel?`<span class="tl-tag" style="background:rgba(100,180,255,.08);border-color:rgba(100,180,255,.25);color:var(--cyan);">${t.triggerLabel}</span>`:''}
         ${renderMediaBadge(t.screenshots)}
         ${(t.errors&&t.errors.length)?t.errors.map(function(e){return '<span class="err-tag">'+e+'</span>';}).join(' '):''}
@@ -6917,6 +7297,7 @@ function getTLFilteredTrades(){
   if(tlInstrFilter&&tlInstrFilter!=='all'){trades=trades.filter(function(t){return (t.instrument||instrumentSettings.name||'MES')===tlInstrFilter;});}
   if(tlDateFrom){trades=trades.filter(function(t){return t.date>=tlDateFrom;});}
   if(tlDateTo){trades=trades.filter(function(t){return t.date<=tlDateTo;});}
+  trades.sort(function(a,b){return (b.date||'').localeCompare(a.date||'')||(( b.id||0)-(a.id||0));});
   return trades;
 }
 
@@ -6973,14 +7354,15 @@ function renderTLStats(){
   ];
 
   // Sort by saved order
-  if(tlCardOrder.length){
+  if(tlCardOrder&&tlCardOrder.length){
     cards.sort(function(a,b){
       var ai=tlCardOrder.indexOf(a.id);var bi=tlCardOrder.indexOf(b.id);
       if(ai===-1)ai=999;if(bi===-1)bi=999;return ai-bi;
     });
   }
 
-  var visible=cards.filter(function(c){return tlCardToggles[c.id]!==false;});
+  var _tct=tlCardToggles||{};
+  var visible=cards.filter(function(c){return _tct[c.id]!==false;});
 
   el.innerHTML=visible.map(function(c){
     return '<div class="tl-stat" draggable="true" data-card-id="'+c.id+'"><div class="tl-stat-val" style="color:'+(c.color||'var(--text)')+'">'+c.val+'</div><div class="tl-stat-lbl">'+c.lbl+'</div><div class="tl-stat-sub">'+c.sub+'</div></div>';
@@ -6992,7 +7374,7 @@ function renderTLStats(){
   var picker=document.getElementById('tlCardPicker');
   if(picker){
     picker.innerHTML=cards.map(function(c){
-      var on=tlCardToggles[c.id]!==false;
+      var on=(tlCardToggles||{})[c.id]!==false;
       return '<span style="font-size:10px;padding:3px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);border:1px solid '+(on?'var(--gold)':'var(--b2)')+';background:'+(on?'rgba(245,166,35,.1)':'var(--s2)')+';color:'+(on?'var(--gold)':'var(--t3)')+';" onclick="toggleTLCard(\''+c.id+'\')">'+c.lbl+'</span>';
     }).join('');
   }
@@ -7049,9 +7431,9 @@ function renderTLSetupBreakdown(){
   var trendTrades   = trades.filter(function(t){return t.trendAlign==='trend';});
   var counterTrades = trades.filter(function(t){return t.trendAlign==='counter';});
   if(trendTrades.length||counterTrades.length){
-    rows.push('<div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);padding:8px 0 4px;">Trend Alignment</div>');
-    var tr=makeRow('↑ With Trend', trendTrades);
-    var cr=makeRow('↓ Counter Trend', counterTrades, 'var(--red)');
+    rows.push('<div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);padding:8px 0 4px;">Bias Alignment</div>');
+    var tr=makeRow('↑ Bias Aligned', trendTrades);
+    var cr=makeRow('↓ Against Bias', counterTrades, 'var(--red)');
     if(tr) rows.push(tr);
     if(cr) rows.push(cr);
   }
@@ -7068,7 +7450,7 @@ function renderTLSetupBreakdown(){
     rows = rows.concat(setupRows);
   }
 
-  el.innerHTML=rows.length?rows.join(''):'<div style="color:var(--t3);font-style:italic;">No trades logged yet.</div>';
+  el.innerHTML=rows.length?rows.join(''):'<div class="nomsg"><strong>No Trades Logged Yet</strong>Use the form above to log your first trade. Enter the setup, direction, entry/stop prices, and scale-outs. Your trade history, analytics, and journal all build from here.<br><br><span class="an-link" onclick="document.getElementById(\'tlForm\').scrollIntoView({behavior:\'smooth\'})">↑ Go to Trade Form</span></div>';
 }
 
 // ══════════ ANALYTICS DASHBOARD ══════════
@@ -7293,9 +7675,10 @@ var anToggles=_safeParse('tl_an_toggles',{});
 
 function renderAnToggles(){
   var el=document.getElementById('anToggles');
-  if(!el) return;
+  if(!el||typeof AN_SECTIONS==='undefined'||!AN_SECTIONS) return;
+  var _at=anToggles||{};
   el.innerHTML=AN_SECTIONS.map(function(s){
-    var on=anToggles[s.id]!==false; // default ON
+    var on=_at[s.id]!==false; // default ON
     return '<div class="setup-chip'+(on?' sel':'')+'" style="font-size:10px;" onclick="toggleAnSection(\''+s.id+'\',this)">'+s.label+'</div>';
   }).join('')+'<div style="margin-left:auto;display:flex;gap:4px;"><button class="btn-o" style="font-size:9px;padding:3px 8px;" onclick="resetAnToggles()">Show All</button><button class="btn-o" style="font-size:9px;padding:3px 8px;" onclick="this.closest(\'details\').removeAttribute(\'open\')">✕ Close</button></div>';
 }
@@ -7710,7 +8093,7 @@ function renderAnCards(trades){
   var el=document.getElementById('anCards');
   if(!el) return;
   var n=trades.length;
-  if(!n){ el.innerHTML='<div class="an-card"><div class="an-card-val">—</div><div class="an-card-lbl">No trades yet</div><div class="an-card-sub">Log trades to see analytics</div></div>'; return; }
+  if(!n){ el.innerHTML='<div class="nomsg"><strong>Your Analytics Dashboard</strong>Win rate, R-multiples, P&L by setup, equity curves, error cost tracking, and more — all built automatically from your trade log.<br><br><span class="an-link" onclick="var nv=document.querySelector(\'.ni[onclick*=trades]\');if(nv)nv.click();">→ Go to Trade Log to enter your first trade</span></div>'; return; }
 
   var wins=trades.filter(function(t){return t.result==='Win';}).length;
   var losses=trades.filter(function(t){return t.result==='Loss';}).length;
@@ -7780,7 +8163,7 @@ function renderAnCards(trades){
   ];
 
   // Sort cards by saved order
-  if(anCardOrder.length){
+  if(anCardOrder&&anCardOrder.length){
     cards.sort(function(a,b){
       var ai=anCardOrder.indexOf(a.id);
       var bi=anCardOrder.indexOf(b.id);
@@ -7791,7 +8174,8 @@ function renderAnCards(trades){
   }
 
   // Filter by toggles (default: all visible)
-  var visible=cards.filter(function(c){return anCardToggles[c.id]!==false;});
+  var _act=anCardToggles||{};
+  var visible=cards.filter(function(c){return _act[c.id]!==false;});
 
   el.innerHTML=visible.map(function(c){
     return '<div class="an-card" draggable="true" data-card-id="'+c.id+'"><div class="an-card-val" style="color:'+(c.color||'var(--text)')+'">'+c.val+'</div><div class="an-card-lbl">'+c.lbl+'</div><div class="an-card-sub">'+c.sub+'</div></div>';
@@ -7804,7 +8188,7 @@ function renderAnCards(trades){
   var picker=document.getElementById('anCardPicker');
   if(picker){
     picker.innerHTML=cards.map(function(c){
-      var on=anCardToggles[c.id]!==false;
+      var on=(anCardToggles||{})[c.id]!==false;
       return '<span style="font-size:10px;padding:3px 10px;border-radius:4px;cursor:pointer;font-family:var(--mono);border:1px solid '+(on?'var(--gold)':'var(--b2)')+';background:'+(on?'rgba(245,166,35,.1)':'var(--s2)')+';color:'+(on?'var(--gold)':'var(--t3)')+';" onclick="toggleAnCard(\''+c.id+'\')">'+c.lbl+'</span>';
     }).join('');
   }
@@ -8324,9 +8708,9 @@ function renderAnSetupBreakdown(trades){
   var trendT=trades.filter(function(t){return t.trendAlign==='trend';});
   var counterT=trades.filter(function(t){return t.trendAlign==='counter';});
   if(trendT.length||counterT.length){
-    html+='<div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);padding:6px 0 2px;">Trend Alignment</div>';
-    html+=makeSetupRow('↑ With Trend',trendT,'var(--green)');
-    html+=makeSetupRow('↓ Counter Trend',counterT,'var(--red)');
+    html+='<div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);padding:6px 0 2px;">Bias Alignment</div>';
+    html+=makeSetupRow('↑ Bias Aligned',trendT,'var(--green)');
+    html+=makeSetupRow('↓ Against Bias',counterT,'var(--red)');
   }
 
   // By setup
@@ -8378,7 +8762,8 @@ function renderAnOpenType(trades){
   anBarBreakdown(document.getElementById('anOpenType'),trades,function(t){return t.openType||'';},{OD:'OD — Open Drive',OTD:'OTD — Open Test Drive',ORR:'ORR — Open Rejection Reverse',OAIR:'OAIR — Open Auction In Range',OAOR:'OAOR — Open Auction Out of Range'},'No trades yet.');
 }
 function renderAnTrendAlign(trades){
-  anBarBreakdown(document.getElementById('anTrendAlign'),trades,function(t){return t.trendAlign||'none';},{trend:'↑ With Trend',counter:'↓ Counter Trend',none:'— No Alignment'},'No trades yet.');
+  anBarBreakdown(document.getElementById('anTrendAlign'),trades,function(t){return t.trendAlign||'none';},{trend:'↑ Bias Aligned',counter:'↓ Against Bias',none:'— No Alignment'},'No trades yet.');
+  anBarBreakdown(document.getElementById('anTrendContext'),trades,function(t){return t.trendContext||'none';},{with_trend:'▲ With Trend',counter_trend:'▼ Counter Trend',range:'◆ Range',none:'— Untagged'},'No trades tagged yet. Tag trades in the Market Context HTF field when logging.');
 }
 function renderAnTrigger(trades){
   anBarBreakdown(document.getElementById('anTrigger'),trades.filter(function(t){return t.triggerType;}),function(t){return t.triggerType;},getAllLabels('triggers'),'No trigger types tagged yet.');
@@ -9263,6 +9648,7 @@ function getMTFilteredTrades(){
   }
   if(mtDateFrom){trades=trades.filter(function(t){return t.date>=mtDateFrom;});}
   if(mtDateTo){trades=trades.filter(function(t){return t.date<=mtDateTo;});}
+  trades = trades.slice().sort(function(a,b){return (b.date||'').localeCompare(a.date||'')||((b.id||0)-(a.id||0));});
   return trades;
 }
 
@@ -9794,7 +10180,7 @@ function renderMTList(){
   if(!list) return;
   var mt=getMTFilteredTrades();
   if(!mt.length){
-    list.innerHTML='<div style="font-size:12px;color:var(--t3);font-style:italic;padding:20px 0;">'+(mtPeriodFilter!=='all'?'No missed trades in this period.':'No missed trades logged yet — when you see a setup but don\'t take it, log it here to track the cost of inaction.')+'</div>';
+    list.innerHTML='<div class="nomsg">'+(mtPeriodFilter!=='all'?'<strong>No Missed Trades in This Period</strong>Try changing the date filter or logging missed trades when you spot setups you didn\'t take.':'<strong>No Missed Trades Logged</strong>When you identify a setup but don\'t take it — log it here. Over time you\'ll see the cost of inaction and which setups you should stop hesitating on.<br><br><span class="an-link" onclick="document.getElementById(\'mtForm\').scrollIntoView({behavior:\'smooth\'})">↑ Go to Missed Trade Form</span>')+'</div>';
     return;
   }
   var allLabels=getAllSetupLabels();
@@ -9839,6 +10225,106 @@ function renderMTList(){
 function updateJLbl(){document.getElementById('jlbl').textContent=fd(jDate);}
 function jNav(d){jDate.setDate(jDate.getDate()+d);updateJLbl();loadJDate();}
 function jToday(){jDate=new Date();jDate.setHours(0,0,0,0);updateJLbl();loadJDate();}
+
+function jOpenDatePicker(){
+  var el=document.getElementById('jDatePicker');
+  el.value=fk(jDate);
+  // Some browsers need the element to be visible/positioned to open
+  el.style.position='absolute';el.style.opacity='0';el.style.pointerEvents='auto';el.style.width='1px';el.style.height='1px';
+  el.showPicker ? el.showPicker() : el.click();
+}
+function jApplyDatePicker(val){
+  if(!val) return;
+  var d=new Date(val+'T12:00:00');
+  if(isNaN(d.getTime())) return;
+  // If editing, cancel edit and navigate
+  if(_jEditOrigDate){
+    _jEditOrigDate=null;
+    var tag=document.getElementById('jEditTag'); if(tag) tag.style.display='none';
+    var info=document.getElementById('jEditInfo'); if(info) info.style.display='none';
+    var cancelBtn=document.getElementById('jEditCancelBtn'); if(cancelBtn) cancelBtn.style.display='none';
+    var lbl=document.getElementById('jlbl'); if(lbl){lbl.style.color='';lbl.style.background='';}
+    var sb=document.getElementById('jSaveBtn'); if(sb) sb.textContent='Save Session';
+  }
+  jDate=d;
+  updateJLbl();
+  loadJDate();
+  var el=document.getElementById('jDatePicker');
+  el.style.pointerEvents='none';
+}
+
+function _updateDateMoveBanner(){
+  var newRow=document.getElementById('jEditNewDateRow');
+  var newLbl=document.getElementById('jEditNewDateLbl');
+  var lbl=document.getElementById('jlbl');
+  if(!newRow||!newLbl) return;
+  if(_jEditOrigDate && _jEditOrigDate !== fk(jDate)){
+    newLbl.textContent=fd(jDate)+' 📅';
+    newRow.style.display='';
+    if(lbl){lbl.style.color='var(--gold)';lbl.style.background='rgba(245,166,35,.08)';}
+  } else {
+    newRow.style.display='none';
+    if(lbl){lbl.style.color='';lbl.style.background='';}
+  }
+}
+
+// ── Edit-mode date picker (separate from nav picker) ─────────────────────────
+function jOpenEditDatePicker(){
+  var el=document.getElementById('jEditDatePicker');
+  el.value=fk(jDate);
+  el.style.position='absolute';el.style.opacity='0';el.style.pointerEvents='auto';el.style.width='1px';el.style.height='1px';
+  el.showPicker ? el.showPicker() : el.click();
+}
+function jApplyEditDatePicker(val){
+  if(!val) return;
+  var d=new Date(val+'T12:00:00');
+  if(isNaN(d.getTime())) return;
+  jDate=d;
+  updateJLbl();
+  _updateDateMoveBanner();
+  var el=document.getElementById('jEditDatePicker');
+  el.style.pointerEvents='none';
+}
+
+// ── Weekend / Non-Market Day Save Guard ──────────────────────────────────────
+function _getNextMarketDay(from){
+  var d=new Date(from);
+  // If Saturday, go to Monday; if Sunday, go to Monday
+  var day=d.getDay();
+  if(day===0) d.setDate(d.getDate()+1); // Sunday → Monday
+  else if(day===6) d.setDate(d.getDate()+2); // Saturday → Monday
+  return d;
+}
+
+var _pendingSaveCallback=null;
+
+function closeDateSaveModal(){
+  document.getElementById('dateSaveModalOverlay').classList.remove('show');
+  _pendingSaveCallback=null;
+}
+
+function confirmDateSave(){
+  var val=document.getElementById('dateSaveModalDate').value;
+  if(!val){toast('Pick a date','');return;}
+  var d=new Date(val+'T12:00:00');
+  if(isNaN(d.getTime())){toast('Invalid date','');return;}
+  // Overwrite guard
+  var targetKey=fk(d);
+  var origKey=_jEditOrigDate||fk(jDate);
+  if(origKey !== targetKey){
+    var existing=sessions.find(function(s){return s.date===targetKey;});
+    if(existing){
+      if(!confirm('A session already exists for '+fdFromKey(targetKey)+'.\n\nThis will overwrite it. Continue?')) return;
+    }
+  }
+  jDate=d;
+  updateJLbl();
+  closeDateSaveModal();
+  // Now proceed with actual save
+  if(_pendingSaveCallback){_pendingSaveCallback();_pendingSaveCallback=null;}
+}
+
+function _isWeekend(d){var day=d.getDay();return day===0||day===6;}
 
 function setProc(r){
   currentProc=r;
@@ -9914,9 +10400,11 @@ function parseMediaUrls(val){
 
 var IMG_EXTS=/\.(png|jpe?g|gif|webp|svg|bmp|tiff?)(\?.*)?$/i;
 function isImageUrl(url){
+  if(!url||typeof url!=='string') return false;
   // Decode %23 back to # temporarily for extension check on file:/// URLs
   var check=url.replace(/%23/g,'#').replace(/%3F/g,'?').replace(/%20/g,' ');
-  return IMG_EXTS.test(check)||/imgur\.com\//i.test(url);
+  var re=typeof IMG_EXTS!=='undefined'?IMG_EXTS:/\.(png|jpe?g|gif|webp|svg|bmp|tiff?)(\?.*)?$/i;
+  return re.test(check)||/imgur\.com\//i.test(url);
 }
 function renderMediaItem(url,w,h){
   var isLocal=/^file:\/\/\//i.test(url);
@@ -9959,6 +10447,24 @@ function renderTradeScreenshotPreviews(){
   prev.innerHTML = urls.map(function(url){ return renderMediaItem(url,160,90); }).join('');
 }
 
+function renderPfMediaPreviews(){
+  var ta = document.getElementById('pfMedia');
+  var prev = document.getElementById('pf-media-preview');
+  if(!ta || !prev) return;
+  var urls = parseMediaUrls(ta.value);
+  if(!urls.length){ prev.innerHTML=''; return; }
+  prev.innerHTML = urls.map(function(url){ return renderMediaItem(url,160,90); }).join('');
+}
+
+function renderPmMediaPreviews(){
+  var ta = document.getElementById('pmMedia');
+  var prev = document.getElementById('pm-media-preview');
+  if(!ta || !prev) return;
+  var urls = parseMediaUrls(ta.value);
+  if(!urls.length){ prev.innerHTML=''; return; }
+  prev.innerHTML = urls.map(function(url){ return renderMediaItem(url,160,90); }).join('');
+}
+
 // Clear journal form
 function clearJForm(){
   ['j-ot','j-dt','j-res','j-resp','j-ib','j-rn','j-checklist','j-preflight'].forEach(function(id){
@@ -9977,6 +10483,13 @@ function clearJForm(){
   selectedSetups=[];
   buildJournalChips();
   renderBiasTimeline();
+  // Clear edit state
+  _jEditOrigDate=null;
+  var tag=document.getElementById('jEditTag'); if(tag) tag.style.display='none';
+  var info=document.getElementById('jEditInfo'); if(info) info.style.display='none';
+  var cancelBtn=document.getElementById('jEditCancelBtn'); if(cancelBtn) cancelBtn.style.display='none';
+  var lbl=document.getElementById('jlbl'); if(lbl){lbl.style.color='';lbl.style.background='';}
+  var sb=document.getElementById('jSaveBtn'); if(sb) sb.textContent='Save Session';
 }
 
 // Populate journal preflight fields from a snapshot or current preflight
@@ -10039,8 +10552,10 @@ function loadJDate(){
     var otMap={
       'HOR':'HOR — High Out of Range (Gap Up)',
       'LOR':'LOR — Low Out of Range (Gap Down)',
-      'HIR':'HIR — High In Range',
-      'LIR':'LIR — Low In Range',
+      'HIR':'HIR-OV — High In Range, Out of Value',
+      'LIR':'LIR-OV — Low In Range, Out of Value',
+      'HIR-IV':'HIR-IV — High In Range, In Value',
+      'LIR-IV':'LIR-IV — Low In Range, In Value',
       'IR-IV':'IR-IV — In Range, In Value'
     };
     var otEl=document.getElementById('j-ot');
@@ -10108,6 +10623,7 @@ function loadJDate(){
     var card=document.querySelector('#panel-journal .card');
     if(card) card.insertBefore(banner,card.firstChild);
   }
+  _journalLoadedKey=k;
 }
 
 
@@ -10393,7 +10909,7 @@ function renderJFilteredTrades(){
       var rStr=(t.totalR>=0?'+':'')+t.totalR.toFixed(2)+'R';
       var pnlStr=(t.totalPnlPts>=0?'+':'')+t.totalPnlPts.toFixed(2)+' pts ($'+(t.totalPnlDollars>=0?'+':'')+t.totalPnlDollars+')';
       var scaleStr=t.scales&&t.scales.length?t.scales.map(function(s){return s.label+': '+s.price.toFixed(2)+' \u00d7'+s.qty+' = '+(s.r>=0?'+':'')+s.r.toFixed(2)+'R';}).join('  \u00b7  '):'';
-      var trendBadge=t.trendAlign==='trend'?'<span class="rv-badge long" style="font-size:10px;padding:2px 7px;">\u2191 With Trend</span>':t.trendAlign==='counter'?'<span class="rv-badge short" style="font-size:10px;padding:2px 7px;">\u2193 Counter</span>':'';
+      var trendBadge=t.trendAlign==='trend'?'<span class="rv-badge long" style="font-size:10px;padding:2px 7px;">\u2191 Bias Aligned</span>':t.trendAlign==='counter'?'<span class="rv-badge short" style="font-size:10px;padding:2px 7px;">\u2193 Against Bias</span>':'';
       var trigBadge=t.triggerLabel?'<span class="rv-badge neutral" style="font-size:10px;padding:2px 7px;color:var(--cyan);border-color:rgba(45,212,191,.3);background:rgba(45,212,191,.08);">'+t.triggerLabel+'</span>':'';
       var rnBadge=t.gotRN?'<span class="rv-badge" style="font-size:10px;padding:2px 7px;color:var(--green);border-color:rgba(54,215,154,.3);background:rgba(54,215,154,.08);">\u2713 RN</span>':'';
       return '<div class="rv-trade">'+
@@ -10453,10 +10969,40 @@ function openSessionReview(dateKey){
   if(ct) ct.scrollTop=0;
 }
 
+var _jEditOrigDate=null; // tracks original date when editing, for date-move detection
+var _journalLoadedKey=null; // date key (YYYY-MM-DD) currently loaded into the journal form; null = not loaded yet
+
+function cancelJEdit(){
+  if(_jEditOrigDate){
+    jDate=new Date(_jEditOrigDate+'T12:00:00');
+    updateJLbl();
+  }
+  _jEditOrigDate=null;
+  var tag=document.getElementById('jEditTag'); if(tag) tag.style.display='none';
+  var info=document.getElementById('jEditInfo'); if(info) info.style.display='none';
+  var cancelBtn=document.getElementById('jEditCancelBtn'); if(cancelBtn) cancelBtn.style.display='none';
+  var lbl=document.getElementById('jlbl'); if(lbl){lbl.style.color='';lbl.style.background='';}
+  var sb=document.getElementById('jSaveBtn'); if(sb) sb.textContent='Save Session';
+  loadJDate();
+}
+
 function exitReviewMode(){
   var e=sessions.find(function(s){return s.date===fk(jDate);});
+  var origDate=e ? fk(jDate) : null;
   showJournalForm();
   clearJForm();
+  _jEditOrigDate=origDate; // set AFTER clearJForm
+  // Show inline edit info
+  if(e && origDate){
+    var tag=document.getElementById('jEditTag'); if(tag) tag.style.display='inline';
+    var info=document.getElementById('jEditInfo'); if(info) info.style.display='block';
+    var cancelBtn=document.getElementById('jEditCancelBtn'); if(cancelBtn) cancelBtn.style.display='inline-block';
+    var origLbl=document.getElementById('jEditOrigDateLbl'); if(origLbl) origLbl.textContent=fdFromKey(origDate);
+    var newRow=document.getElementById('jEditNewDateRow'); if(newRow) newRow.style.display='none';
+  } else { console.warn('exitReviewMode: session not found for',fk(jDate),'e=',!!e,'origDate=',origDate); }
+  // Change Save button text
+  var sb=document.getElementById('jSaveBtn');
+  if(sb) sb.textContent='Update Session';
   if(!e) return;
   if(document.getElementById('j-ot')) document.getElementById('j-ot').value=e.openType||'';
   document.getElementById('j-dt').value=e.dayType||'';
@@ -10524,6 +11070,11 @@ function showJournalReview(e){
   if(biasNote) biasContextHtml+='<div class="rv-field" style="margin-bottom:10px;"><div class="rv-field-label">Directional Bias Rationale</div><div class="rv-text">'+biasNote+'</div></div>';
   if(fuelNarrative) biasContextHtml+='<div class="rv-field" style="margin-bottom:10px;"><div class="rv-field-label">Fuel Narrative</div><div class="rv-text">'+fuelNarrative+'</div></div>';
   if(pmNotes) biasContextHtml+='<div class="rv-field"><div class="rv-field-label">Pre-Market Notes</div><div class="rv-text">'+pmNotes+'</div></div>';
+  var pmMedia=snap&&snap.pmMedia?snap.pmMedia:'';
+  if(pmMedia){
+    var pmUrls=parseMediaUrls(pmMedia);
+    if(pmUrls.length) biasContextHtml+='<div class="rv-field" style="margin-top:8px;"><div class="rv-field-label">📎 Pre-Market Media</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">'+pmUrls.map(function(u){return renderMediaItem(u,140,80);}).join('')+'</div></div>';
+  }
   if(!biasContextHtml) biasContextHtml='<span class="rv-no-data">No pre-market context notes saved for this session.</span>';
 
   // Fuel map
@@ -10592,7 +11143,7 @@ function showJournalReview(e){
       var rStr=(t.totalR>=0?'+':'')+t.totalR.toFixed(2)+'R';
       var pnlStr=(t.totalPnlPts>=0?'+':'')+t.totalPnlPts.toFixed(2)+' pts ($'+(t.totalPnlDollars>=0?'+':'')+t.totalPnlDollars+')';
       var scaleStr=t.scales&&t.scales.length?t.scales.map(function(s){return s.label+': '+s.price.toFixed(2)+' \u00d7'+s.qty+' = '+(s.r>=0?'+':'')+s.r.toFixed(2)+'R';}).join('  \u00b7  '):'';
-      var trendBadge=t.trendAlign==='trend'?'<span class="rv-badge long" style="font-size:10px;padding:2px 7px;">\u2191 With Trend</span>':t.trendAlign==='counter'?'<span class="rv-badge short" style="font-size:10px;padding:2px 7px;">\u2193 Counter</span>':'';
+      var trendBadge=t.trendAlign==='trend'?'<span class="rv-badge long" style="font-size:10px;padding:2px 7px;">\u2191 Bias Aligned</span>':t.trendAlign==='counter'?'<span class="rv-badge short" style="font-size:10px;padding:2px 7px;">\u2193 Against Bias</span>':'';
       var trigBadge=t.triggerLabel?'<span class="rv-badge neutral" style="font-size:10px;padding:2px 7px;color:var(--cyan);border-color:rgba(45,212,191,.3);background:rgba(45,212,191,.08);">'+t.triggerLabel+'</span>':'';
       var rnBadge=t.gotRN?'<span class="rv-badge" style="font-size:10px;padding:2px 7px;color:var(--green);border-color:rgba(54,215,154,.3);background:rgba(54,215,154,.08);">\u2713 RN</span>':'';
       return '<div class="rv-trade">'+
@@ -10665,7 +11216,14 @@ function showJournalReview(e){
           }
         });
         if(!pfHtml) return '';
-        return '<div class="rv-section"><div class="rv-section-title">Preflight Checklist'+(pfs._completedAt?' <span style="font-size:10px;color:var(--green);font-weight:400;">✓ '+pfs._completedAt+'</span>':'')+'</div>'+pfHtml+'</div>';
+        var pfMediaHtml='';
+        if(pfs.pfMedia&&pfs.pfMedia.trim()){
+          var urls=parseMediaUrls(pfs.pfMedia);
+          if(urls.length){
+            pfMediaHtml='<div style="margin-top:8px;"><div class="rv-field-label" style="margin-bottom:4px;font-size:9px;">📎 Pre-Market Media</div><div style="display:flex;gap:6px;flex-wrap:wrap;">'+urls.map(function(u){return renderMediaItem(u,140,80);}).join('')+'</div></div>';
+          }
+        }
+        return '<div class="rv-section"><div class="rv-section-title">Preflight Checklist'+(pfs._completedAt?' <span style="font-size:10px;color:var(--green);font-weight:400;">✓ '+pfs._completedAt+'</span>':'')+'</div>'+pfHtml+pfMediaHtml+'</div>';
       })()+
 
       '<div class="rv-section">'+
@@ -10699,6 +11257,29 @@ function showJournalReview(e){
 
 
 function saveSession(){
+  // Weekend / non-market day guard
+  if(_isWeekend(jDate)){
+    var next=_getNextMarketDay(jDate);
+    var dayName=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][jDate.getDay()];
+    document.getElementById('dateSaveModalMsg').textContent=
+      'Today is '+dayName+' — this is a non-market day. Which trading day should this session be saved under?';
+    document.getElementById('dateSaveModalDate').value=fk(next);
+    document.getElementById('dateSaveModalOverlay').classList.add('show');
+    _pendingSaveCallback=_doSaveSession;
+    return;
+  }
+  // Overwrite guard: moving a session onto a date that already has one
+  var targetKey=fk(jDate);
+  if(_jEditOrigDate && _jEditOrigDate !== targetKey){
+    var existing=sessions.find(function(s){return s.date===targetKey;});
+    if(existing){
+      if(!confirm('A session already exists for '+fdFromKey(targetKey)+'.\n\nThis will overwrite it. Continue?')) return;
+    }
+  }
+  _doSaveSession();
+}
+
+function _doSaveSession(){
   try {
   const k=fk(jDate);
   let snap=null;
@@ -10750,12 +11331,19 @@ function saveSession(){
     })(),
     savedAt:new Date().toISOString()
   };
+  // Date-move: if editing a session and date was changed, remove the old entry
+  if(_jEditOrigDate && _jEditOrigDate !== k){
+    var oldIdx=sessions.findIndex(function(s){return s.date===_jEditOrigDate;});
+    if(oldIdx>=0) sessions.splice(oldIdx,1);
+  }
+  _jEditOrigDate=null;
   const idx=sessions.findIndex(s=>s.date===k);
   if(idx>=0)sessions[idx]=entry;else sessions.unshift(entry);
   sessions.sort((a,b)=>b.date.localeCompare(a.date));
   _safeSave(KS,JSON.stringify(sessions));
   renderSessions();updJBadge();
-  toast('Session saved','ok');
+  updateJLbl();loadJDate();
+  toast('Session saved for '+fdFromKey(k),'ok');
   updateSessionUI();
   } catch(e){ console.error('saveSession error:',e); toast('Save failed: '+e.message,''); }
 }
@@ -10885,6 +11473,15 @@ function editSess(i,e){
   // Show form mode (not review)
   showJournalForm();
   clearJForm();
+  // Set edit state AFTER clearJForm
+  _jEditOrigDate=s.date;
+  // Show inline edit info
+  var tag=document.getElementById('jEditTag'); if(tag) tag.style.display='inline';
+  var info=document.getElementById('jEditInfo'); if(info) info.style.display='block';
+  var cancelBtn=document.getElementById('jEditCancelBtn'); if(cancelBtn) cancelBtn.style.display='inline-block';
+  var origLbl=document.getElementById('jEditOrigDateLbl'); if(origLbl) origLbl.textContent=fdFromKey(s.date);
+  var newRow=document.getElementById('jEditNewDateRow'); if(newRow) newRow.style.display='none';
+  var sb=document.getElementById('jSaveBtn'); if(sb) sb.textContent='Update Session';
   // Populate all fields from saved session
   if(document.getElementById('j-ot')) document.getElementById('j-ot').value=s.openType||'';
   document.getElementById('j-dt').value=s.dayType||'';
@@ -10906,7 +11503,6 @@ function editSess(i,e){
   // Scroll to top of form
   var ct=document.querySelector('.content');
   if(ct) ct.scrollTop=0;
-  toast('Editing session — '+fdFromKey(s.date),'ok');
 }
 function updJBadge(){const b=document.getElementById('jbadge');if(sessions.length){b.style.display='block';b.textContent=sessions.length;}else b.style.display='none';}
 
@@ -11050,6 +11646,18 @@ function migrateLocalStorage(){
     }
   }
 
+  // │ 7        │ v2.3.2 │ Market context field (trendContext) on trades        │
+  if(currentVersion < 7){
+    var tl7 = _safeParse(KTL, []);
+    if(tl7 && tl7.length){
+      var tl7Changed = false;
+      tl7.forEach(function(t){
+        if(!('trendContext' in t)){ t.trendContext=''; tl7Changed=true; }
+      });
+      if(tl7Changed) _safeSave(KTL, JSON.stringify(tl7));
+    }
+  }
+
   // Mark as migrated
   _safeSave('tl_schema_version', String(SCHEMA_VERSION));
 }
@@ -11057,9 +11665,50 @@ function migrateLocalStorage(){
 // Run startup migration immediately
 // (called below, before data variables are initialized)
 
-function exportData(){
-  const blob=new Blob([JSON.stringify({
+// ══════════ LOG NAME & SAVE SYSTEM ══════════
+var _savedDirHandle = null;
+var KLN = 'tl_logName';
+
+function saveLogName(){
+  var v = document.getElementById('set-log-name')?.value||'';
+  _safeSave(KLN, v);
+  updateFilenamePreview();
+}
+
+function getLogName(){
+  return localStorage.getItem(KLN)||'';
+}
+
+function _sanitizeFilename(s){
+  return s.replace(/[^a-zA-Z0-9_\-]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+}
+
+function getExportFilename(){
+  var name = getLogName();
+  var now = new Date();
+  var et = new Date(now.toLocaleString('en-US',{timeZone:'America/New_York'}));
+  var d = et.getFullYear()+'-'+String(et.getMonth()+1).padStart(2,'0')+'-'+String(et.getDate()).padStart(2,'0');
+  var h = et.getHours();
+  var ampm = h>=12?'PM':'AM';
+  if(h>12) h-=12; if(h===0) h=12;
+  var m = String(et.getMinutes()).padStart(2,'0');
+  var time = h+'-'+m+ampm;
+  var parts = ['TraderLab'];
+  if(name) parts.push(_sanitizeFilename(name));
+  parts.push(d);
+  parts.push(time);
+  return parts.join('_')+'.json';
+}
+
+function updateFilenamePreview(){
+  var el = document.getElementById('set-filename-preview');
+  if(el) el.textContent = getExportFilename();
+}
+
+function getExportJSON(){
+  return JSON.stringify({
     schemaVersion: SCHEMA_VERSION,
+    logName: getLogName(),
     sessions,
     pmData,
     checks,
@@ -11078,16 +11727,158 @@ function exportData(){
     dailyGoals,
     customLabels,
     perfThresholds,
-    exportedAt: new Date().toISOString()
-  },null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`traderlab-${fk(new Date())}.json`;
+    exportedAt: new Date().toISOString(),
+    _sig: _BUILD_SIG,
+    _app: _APP_ID
+  },null,2);
+}
+
+function _hasFileSystemAccess(){
+  return typeof window.showDirectoryPicker === 'function';
+}
+
+// IndexedDB helpers for storing directory handle
+function _openHandleDB(){
+  return new Promise(function(resolve, reject){
+    var req = indexedDB.open('tl_savehandle',1);
+    req.onupgradeneeded = function(e){ e.target.result.createObjectStore('handles'); };
+    req.onsuccess = function(e){ resolve(e.target.result); };
+    req.onerror = function(){ reject(req.error); };
+  });
+}
+
+function _storeHandle(handle){
+  return _openHandleDB().then(function(db){
+    return new Promise(function(resolve){
+      var tx = db.transaction('handles','readwrite');
+      tx.objectStore('handles').put(handle,'dirHandle');
+      tx.oncomplete = function(){ resolve(); };
+    });
+  });
+}
+
+function _getStoredHandle(){
+  return _openHandleDB().then(function(db){
+    return new Promise(function(resolve){
+      var tx = db.transaction('handles','readonly');
+      var req = tx.objectStore('handles').get('dirHandle');
+      req.onsuccess = function(){ resolve(req.result||null); };
+      req.onerror = function(){ resolve(null); };
+    });
+  });
+}
+
+function _clearStoredHandle(){
+  return _openHandleDB().then(function(db){
+    return new Promise(function(resolve){
+      var tx = db.transaction('handles','readwrite');
+      tx.objectStore('handles').delete('dirHandle');
+      tx.oncomplete = function(){ resolve(); };
+    });
+  });
+}
+
+async function chooseSaveLocation(){
+  if(!_hasFileSystemAccess()){
+    toast('Your browser doesn\'t support folder selection — exports will use the download dialog instead.','');
+    return;
+  }
+  try{
+    var handle = await window.showDirectoryPicker({mode:'readwrite'});
+    _savedDirHandle = handle;
+    await _storeHandle(handle);
+    _updateSaveLocationUI(handle.name);
+    toast('Save location set: '+handle.name,'ok');
+  }catch(e){
+    if(e.name!=='AbortError') toast('Could not set save location: '+e.message,'');
+  }
+}
+
+function clearSaveLocation(){
+  _savedDirHandle = null;
+  _clearStoredHandle();
+  _updateSaveLocationUI(null);
+  toast('Save location cleared — will use downloads','ok');
+}
+
+function _updateSaveLocationUI(folderName){
+  var el = document.getElementById('set-save-location');
+  if(!el) return;
+  if(folderName){
+    el.innerHTML = '📁 <strong style="color:var(--green);">'+folderName+'</strong> — saves directly to this folder';
+  } else {
+    el.textContent = 'No save location set — uses browser downloads';
+  }
+}
+
+async function _writeToHandle(handle, filename, content){
+  // Verify permission
+  var perm = await handle.queryPermission({mode:'readwrite'});
+  if(perm!=='granted'){
+    perm = await handle.requestPermission({mode:'readwrite'});
+    if(perm!=='granted') throw new Error('Permission denied');
+  }
+  var fileHandle = await handle.getFileHandle(filename, {create:true});
+  var writable = await fileHandle.createWritable();
+  await writable.write(content);
+  await writable.close();
+}
+
+async function saveData(){
+  var filename = getExportFilename();
+  var json = getExportJSON();
+
+  // Try File System Access API with stored handle
+  if(_savedDirHandle){
+    try{
+      await _writeToHandle(_savedDirHandle, filename, json);
+      toast('💾 Saved: '+filename,'ok');
+      return;
+    }catch(e){
+      // Handle might be stale — clear it and fall back
+      console.warn('Save handle failed:',e.message);
+      _savedDirHandle = null;
+      _updateSaveLocationUI(null);
+    }
+  }
+
+  // Try loading stored handle from IndexedDB
+  if(_hasFileSystemAccess()){
+    try{
+      var stored = await _getStoredHandle();
+      if(stored){
+        _savedDirHandle = stored;
+        await _writeToHandle(stored, filename, json);
+        _updateSaveLocationUI(stored.name);
+        toast('💾 Saved: '+filename,'ok');
+        return;
+      }
+    }catch(e){
+      console.warn('Stored handle failed:',e.message);
+    }
+  }
+
+  // Fallback: download
+  _downloadJSON(json, filename);
+  toast('💾 Downloaded: '+filename,'ok');
+}
+
+function exportData(){
+  var filename = getExportFilename();
+  var json = getExportJSON();
+  _downloadJSON(json, filename);
+  toast('Exported: '+filename,'ok');
+}
+
+function _downloadJSON(json, filename){
+  var blob = new Blob([json],{type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(a.href);
-  toast('Exported','ok');
 }
 
 function migrateImport(d){
@@ -11145,6 +11936,7 @@ function migrateImport(d){
       t.notes=t.notes||'';
       t.gotRN=t.gotRN||false;
       t.trendAlign=t.trendAlign||'';
+      t.trendContext=t.trendContext||'';
       t.triggerType=t.triggerType||'';
       t.triggerLabel=t.triggerLabel||'';
       t.idealExit=t.idealExit||null;
@@ -11206,7 +11998,7 @@ function importData(e){
   r.onload=ev=>{
     try{
       var d=migrateImport(JSON.parse(ev.target.result));
-      if(d.sessions) sessions=d.sessions;
+      if(d.sessions){ sessions=d.sessions; sessions.sort(function(a,b){return (b.date||'').localeCompare(a.date||'');}); }
       if(d.checks)   checks=d.checks;
       // pmData — defensive load, never assume fields exist
       if(d.pmData){
@@ -11327,6 +12119,11 @@ function initAICoach(){
   setAIMode(aiMode);
   updateAITradeCount();
   loadAIKeyIntoSettings();
+  // Smart empty state
+  var el=document.getElementById('ai-results');
+  if(el&&!tradeLog.length){
+    el.innerHTML='<div class="nomsg"><strong>AI Coach — Ready When You Are</strong>The AI Coach analyzes your real trade data to find edge leaks, emotional patterns, and setup performance. It needs trade history to work with.<br><br><span class="an-link" onclick="var nv=document.querySelector(\'.ni[onclick*=trades]\');if(nv)nv.click();">→ Go to Trade Log to enter your first trade</span></div>';
+  }
 }
 
 function buildAIPrompt(type){
@@ -12083,7 +12880,7 @@ function wiRunOptimizer(){
   // Score counter-trend
   var counterT=bt.filter(function(t){return t.trendAlign==='counter';});
   if(counterT.length){var pnl=counterT.reduce(function(s,t){return s+t.totalPnlDollars;},0);
-    if(pnl<0) recommendations.push({label:'Remove counter-trend trades',impact:-pnl,trades:counterT.length,detail:counterT.length+' trades · net $'+Math.round(pnl),applyFn:function(){wiState.removeCounter=true;}});}
+    if(pnl<0) recommendations.push({label:'Remove against-bias trades',impact:-pnl,trades:counterT.length,detail:counterT.length+' trades · net $'+Math.round(pnl),applyFn:function(){wiState.removeCounter=true;}});}
 
   // Score daily loss limits
   [100,150,200,300].forEach(function(limit){
@@ -12204,6 +13001,10 @@ function wiApplySingleOpt(idx){
 function renderWhatIf(){
   var root=document.getElementById('wi-root');
   if(!root) return;
+  if(!tradeLog.length){
+    root.innerHTML='<div class="nomsg" style="margin-top:20px;"><strong>What-If Lab — Performance Simulator</strong>Remove error trades, filter by setup, adjust stop-loss rules, and see how your P&L would change. The simulator needs trade data to work with.<br><br><span class="an-link" onclick="var nv=document.querySelector(\'.ni[onclick*=trades]\');if(nv)nv.click();">→ Go to Trade Log to enter your first trade</span></div>';
+    return;
+  }
   var s=wiState;
   var sim=wiSimulate();
   var a=sim.actualStats, sm=sim.simStats;
@@ -12405,8 +13206,8 @@ function renderWhatIf(){
     html+='<div class="wi-sub-label" style="color:var(--cyan)">Remove Setups</div><div class="wi-chips">';
     allSetups.forEach(function(su){var bd=setupBD[su];html+=wiChip(setupLabels[su]+(bd?' ('+bd.c+')':''),!!s.removedSetups[su],'cyan',"wiToggle(wiState.removedSetups,'"+su+"')");});
     html+='</div>';
-    html+='<div class="wi-sub-label" style="color:var(--red)">Trend Alignment</div><div class="wi-chips">';
-    html+=wiChip('Remove counter-trend',s.removeCounter,'red',"wiState.removeCounter=!wiState.removeCounter;renderWhatIf()");
+    html+='<div class="wi-sub-label" style="color:var(--red)">Bias Alignment</div><div class="wi-chips">';
+    html+=wiChip('Remove against-bias',s.removeCounter,'red',"wiState.removeCounter=!wiState.removeCounter;renderWhatIf()");
     html+='</div>';
   }
   html+=wiSectionEnd('quality');
@@ -13207,8 +14008,13 @@ function _getOTForPrice(price) {
   if (price < pl) return 'LOR';
   if (pvah != null && price >= pvah) return 'HIR';
   if (pval != null && price <= pval) return 'LIR';
-  if (pvah != null && pval != null && price > pval && price < pvah) return 'IR-IV';
-  return 'HIR';
+  if (pvah != null && pval != null && price > pval && price < pvah) {
+    var settle = gv('settle');
+    if (settle != null && price > settle) return 'HIR-IV';
+    if (settle != null && price < settle) return 'LIR-IV';
+    return 'IR-IV';
+  }
+  return 'IR-IV';
 }
 
 function updateCaptureOpenBtn() {
@@ -13770,6 +14576,12 @@ function renderLevelTracker(levels, price) {
   groupOrder.forEach(function(g){ grouped[g] = []; });
   levels.forEach(function(lvl){ if(grouped[lvl.group]) grouped[lvl.group].push(lvl); else { if(!grouped['custom']) grouped['custom']=[]; grouped['custom'].push(lvl); } });
 
+  // Apply sort to fuel and custom groups
+  if(_fuelSort==='alpha' && grouped['fuel'].length>1) grouped['fuel'].sort(function(a,b){return a.label.toLowerCase().localeCompare(b.label.toLowerCase());});
+  if(_fuelSort==='price' && grouped['fuel'].length>1) grouped['fuel'].sort(function(a,b){return (a.val||Infinity)-(b.val||Infinity);});
+  if(_clSort==='alpha' && grouped['custom'].length>1) grouped['custom'].sort(function(a,b){return a.label.toLowerCase().localeCompare(b.label.toLowerCase());});
+  if(_clSort==='price' && grouped['custom'].length>1) grouped['custom'].sort(function(a,b){return (a.val||Infinity)-(b.val||Infinity);});
+
   var rows = '';
   groupOrder.forEach(function(g) {
     if (!grouped[g].length) {
@@ -13787,7 +14599,17 @@ function renderLevelTracker(levels, price) {
       return;
     }
     var gm = groupMeta[g];
-    rows += '<tr><td colspan="4" style="padding:6px 12px 3px;font-size:9px;color:' + gm.color + ';text-transform:uppercase;letter-spacing:.12em;font-family:var(--mono);border-bottom:1px solid var(--b1);">' + gm.label + '</td></tr>';
+    var sortBtns='';
+    if((g==='fuel'||g==='custom') && grouped[g].length>1){
+      var sortType=g==='fuel'?'fuel':'cl';
+      var sortVal=g==='fuel'?_fuelSort:_clSort;
+      var sorts=[{id:'alpha',label:'A→Z'},{id:'price',label:'Price'}];
+      sortBtns='<span style="float:right;display:inline-flex;gap:3px;">'+sorts.map(function(s){
+        var active=sortVal===s.id;
+        return '<span style="cursor:pointer;padding:1px 6px;border-radius:3px;font-size:8px;letter-spacing:0;text-transform:none;border:1px solid '+(active?'var(--purple)':'var(--b2)')+';color:'+(active?'var(--purple)':'var(--t3)')+';background:'+(active?'rgba(147,130,220,.12)':'transparent')+';" onclick="toggleSort(\''+sortType+'\',\''+s.id+'\')">'+s.label+'</span>';
+      }).join('')+'</span>';
+    }
+    rows += '<tr><td colspan="4" style="padding:6px 12px 3px;font-size:9px;color:' + gm.color + ';text-transform:uppercase;letter-spacing:.12em;font-family:var(--mono);border-bottom:1px solid var(--b1);">' + gm.label + sortBtns + '</td></tr>';
     grouped[g].forEach(function(lvl) {
       var dist = (price != null) ? (price - lvl.val) : null;
       var absDist = (dist != null) ? Math.abs(dist) : Infinity;
