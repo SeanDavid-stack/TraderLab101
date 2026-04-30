@@ -1,5 +1,73 @@
 # TraderLab 101 — Changelog
 
+## v2.3.7 — Bug Sweep: Date/TZ, Tab-State, Imports, AI Key (April 2026)
+
+A focused patch release fixing seven bugs surfaced by a static review. All fixes are
+backwards-compatible with existing localStorage data.
+
+### CRITICAL: Trade Dates Now Use ET, Not UTC
+`fk()` previously used `d.toISOString().split('T')[0]`, which returned the **UTC** date.
+Trades logged after roughly 8 PM Eastern were silently filed under the *next* calendar
+day, splitting evening sessions across the wrong day in journal/analytics. Replaced with
+`Intl.DateTimeFormat('en-CA', {timeZone:'America/New_York', ...})` so the trade-day
+grouping matches the US futures session everywhere. DST is handled automatically.
+
+> **Existing data:** old localStorage dates aren't rewritten — they were saved with the
+> buggy UTC math. Most trades are unaffected (most users log mid-session). If you logged
+> trades late in the evening before this release, those entries may show on the next
+> calendar day in the journal; you can edit individual trades to correct the date.
+
+### HIGH: Trade Log Form Survives Tab Switch
+Same pattern as the v2.3.6 journal fix. `go('trades')` previously called
+`clearTradeForm()` on every tab activation, wiping in-progress trade entries when users
+tabbed away to check Settings, Live Price, Journal, etc. New `_tradesInitialized` guard
+limits the clear+smartFill to the first visit; revisits preserve typed form state.
+`saveTrade()` and `editTrade()` continue to manage their own form state explicitly.
+
+### HIGH: AI Key Session-Only Storage Mode
+The Anthropic API key was stored only in `localStorage` (plaintext, persistent). Added an
+opt-in **Session-only storage** checkbox under Settings → AI Coach. When enabled, the
+key lives in `sessionStorage` instead — cleared automatically when the browser closes.
+The key automatically migrates between stores when you flip the toggle. Default behavior
+is unchanged.
+
+### MEDIUM: Defensive Direction/Bias Case
+A handful of display paths used `t.dir==='long'` strict-equality, which silently fell
+back to the wrong CSS class on legacy data with capitalized `'Long'`/`'Short'`. Added
+`.toLowerCase()` defensive guards to: trade list rendering, journal review trade rows,
+banner bias log, journal session-strip bias chip, and journal-review bias log. New data
+already saves lowercase per v2.1.4 — this hardens the display side.
+
+### MEDIUM: JSON Import Resilience
+`migrateImport()` crashed on malformed JSON containing `null` trade entries
+(`Cannot read properties of null (reading 'contracts')`). Now filters non-object entries
+out of `tradeLog`, `missedTrades`, and `sessions` before normalization. Imported trades
+also get missing `scales` / `errors` / `emotions` / `targets` / `screenshots` arrays
+backfilled so subsequent renders never crash on hand-edited or partially-corrupted
+backups.
+
+### LOW: smartFillTradeForm Retries For Late Live Price
+On first Trade Log visit, the form auto-fills the entry price from the live feed via a
+50 ms timeout. If the BMBridge / Yahoo fetch hadn't completed yet (pre-market or slow
+network), the entry was left blank. Now retries every 500 ms for up to 5 seconds (or
+until the user navigates away), then quietly stops.
+
+### LOW: hitLog Corruption Now Surfaces A Toast
+If `tl_hits` localStorage was malformed (corrupted JSON), the app silently reset it to
+empty on load. Now logs the error and shows a deferred warning toast: *"Hit log was
+corrupted and has been reset."*
+
+### Backwards Data Compatibility
+- No localStorage key renamed or reshaped.
+- `tl_ai_key_mode` (new) is purely additive — absent = old default behavior.
+- `fk()` change does not rewrite existing dates; only new date assignments use ET.
+
+### Verified
+Each fix was smoke-tested against the demo dataset (220 trades, 61 sessions, 41 missed
+trades). All 15 panels load without errors. The v2.3.6 journal fix continues to work.
+
+---
+
 ## v2.3.6 — Journal State Fix, License Update (April 2026)
 
 ### BUG FIX: Journal No Longer Resets On Tab Switch

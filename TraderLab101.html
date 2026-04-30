@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.6
+  TraderLab 101 v2.3.7
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.6</title>
+<title>TraderLab 101 v2.3.7</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.6</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.7</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -835,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.6</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.7</div>
   </nav>
 
   <div class="content">
@@ -2048,8 +2048,14 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           </div>
           <div id="ai-key-status" style="font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:6px;"></div>
         </div>
+        <div class="fg" style="margin-bottom:6px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:400;font-size:11px;color:var(--t2);">
+            <input type="checkbox" id="settings-ai-key-session" onchange="toggleAIKeySessionOnly()" style="cursor:pointer;">
+            <span><strong style="color:var(--text)">Session-only storage</strong> — clear the key when the browser closes (more private; you re-enter it each session)</span>
+          </label>
+        </div>
         <div style="font-size:10px;color:var(--t4);font-family:var(--mono);line-height:1.6;">
-          🔒 Your API key is stored in your browser's localStorage only. It is never sent anywhere except directly to Anthropic's API. No data is stored on any server.
+          🔒 Default: your API key is stored in <code>localStorage</code> on this device only. It is never sent anywhere except directly to Anthropic's API. With Session-only mode on, the key is held in <code>sessionStorage</code> and disappears when you close the browser tab.
         </div>
       </div>
 
@@ -3799,7 +3805,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.6'
+    v: 'v2.3.7'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -4094,7 +4100,21 @@ function getBMFieldsWithCustom(){
 })();
 
 function fd(d){return d.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric'});}
-function fk(d){return d.toISOString().split('T')[0];}
+// fk: format a Date as YYYY-MM-DD in America/New_York (ET). Uses Intl so DST is handled automatically.
+// Why ET (not UTC, not browser-local): TraderLab is built around the US futures session, which is
+// scheduled in ET. The previous implementation used d.toISOString() which returns the *UTC* date —
+// a trade logged at 11pm ET would be stored under tomorrow's UTC date and disappear from "today" in
+// the journal. Using ET keeps the trade-day grouping aligned with the market session everywhere.
+var _fkFmt=null;
+function fk(d){
+  try{
+    if(!_fkFmt) _fkFmt=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+    return _fkFmt.format(d);
+  }catch(e){
+    // Fallback if Intl/timeZone is unavailable on a very old browser. Better to be off-by-one than crash.
+    return d.toISOString().split('T')[0];
+  }
+}
 
 // ══════════ NAV ══════════
 // Navigate to a tab programmatically (used by Settings clickable links)
@@ -4163,8 +4183,8 @@ function go(id,el){
   }catch(e){console.error('go journal:',e);logError('nav','journal crash',e.message);}}
   if(id==='trades'){
     try{
+    // Always-safe rebuild calls (don't touch user-entered form state).
     buildErrorChips();buildEmotionChips();buildTriggerChips();
-    clearTradeForm();
     renderTradeLog();
     rebuildSetupDropdowns();
     rebuildSetupFilters();
@@ -4172,7 +4192,14 @@ function go(id,el){
     var il = document.getElementById('tl-instrument-label');
     if(il) il.textContent = '— ' + (instrumentSettings.name||'MES') + ' · $' + (instrumentSettings.tickValue/(instrumentSettings.tickSize||0.25)).toFixed(2) + '/pt';
     syncTradeFormInstrument();
-    setTimeout(smartFillTradeForm, 50);
+    // Only clear + smart-fill on first visit (or after explicit reset). Re-entering the
+    // tab should preserve any in-progress (unsaved) trade entry. saveTrade() and
+    // editTrade() handle their own form state — they don't depend on this guard.
+    if(!_tradesInitialized){
+      clearTradeForm();
+      setTimeout(smartFillTradeForm, 50);
+      _tradesInitialized=true;
+    }
     }catch(e){console.error('go trades:',e);logError('nav','trades panel crash',e.message);}
   }
   if(id==='settings'){try{loadSettings();autoTestFeeds();}catch(e){console.error('go settings:',e);logError('nav','settings crash',e.message);}}
@@ -4232,8 +4259,9 @@ function renderBanner(){
   if(biasLog.length){
     r3=`<span class="banner-label">Bias Log</span>`;
     biasLog.forEach(function(entry){
-      var col=entry.bias==='long'?'var(--green)':entry.bias==='short'?'var(--red)':'var(--t2)';
-      r3+=`<span style="font-size:10px;font-family:var(--mono);color:var(--t3);">${entry.time} → <strong style="color:${col}">${entry.bias.toUpperCase()}</strong>${entry.reason?' <span style="color:var(--t3);">· '+entry.reason+'</span>':''}</span>`;
+      var biasNorm=(entry.bias||'').toLowerCase();
+      var col=biasNorm==='long'?'var(--green)':biasNorm==='short'?'var(--red)':'var(--t2)';
+      r3+=`<span style="font-size:10px;font-family:var(--mono);color:var(--t3);">${entry.time} → <strong style="color:${col}">${(entry.bias||'').toUpperCase()}</strong>${entry.reason?' <span style="color:var(--t3);">· '+entry.reason+'</span>':''}</span>`;
     });
   }
 
@@ -7162,7 +7190,7 @@ function renderTradeLog(){
   }
   list.innerHTML=filtered.map(function(t){
     var resClass=t.result==='Win'?'win':t.result==='Loss'?'loss':'be';
-    var dirClass=t.dir==='long'?'long':'short';
+    var dirClass=(t.dir||'').toLowerCase()==='long'?'long':'short';
     var pnlClass=t.totalPnlPts>0?'pos':t.totalPnlPts<0?'neg':'zero';
     var pnlStr=(t.totalPnlPts>=0?'+':'')+t.totalPnlPts.toFixed(2)+' pts  ';
     var dolStr='($'+(t.totalPnlDollars>=0?'+':'')+t.totalPnlDollars+')';
@@ -10971,6 +10999,8 @@ function openSessionReview(dateKey){
 
 var _jEditOrigDate=null; // tracks original date when editing, for date-move detection
 var _journalLoadedKey=null; // date key (YYYY-MM-DD) currently loaded into the journal form; null = not loaded yet
+var _tradesInitialized=false; // true after first visit to Trade Log; prevents tab-switch from wiping in-progress form input
+var _missedInitialized=false; // true after first visit to Missed Trades; prevents tab-switch from wiping in-progress form input
 
 function cancelJEdit(){
   if(_jEditOrigDate){
@@ -11113,8 +11143,9 @@ function showJournalReview(e){
   if(e.biasLog&&e.biasLog.length){
     biasLogHtml='<div class="rv-section"><div class="rv-section-title">Bias Log \u2014 Mid-Session Changes</div>'+
       e.biasLog.map(function(entry){
-        var col=entry.bias==='long'?'var(--green)':entry.bias==='short'?'var(--red)':'var(--t2)';
-        return '<div style="font-size:11px;font-family:var(--mono);color:var(--t3);margin-bottom:4px;">'+entry.time+' \u2192 <strong style="color:'+col+'">'+entry.bias.toUpperCase()+'</strong>'+(entry.reason?' \u00b7 <span style="color:var(--t3);">'+entry.reason+'</span>':'')+'</div>';
+        var biasNorm=(entry.bias||'').toLowerCase();
+        var col=biasNorm==='long'?'var(--green)':biasNorm==='short'?'var(--red)':'var(--t2)';
+        return '<div style="font-size:11px;font-family:var(--mono);color:var(--t3);margin-bottom:4px;">'+entry.time+' \u2192 <strong style="color:'+col+'">'+(entry.bias||'').toUpperCase()+'</strong>'+(entry.reason?' \u00b7 <span style="color:var(--t3);">'+entry.reason+'</span>':'')+'</div>';
       }).join('')+'</div>';
   }
 
@@ -11138,7 +11169,7 @@ function showJournalReview(e){
     }
     tradesHtml=dayTrades.map(function(t){
       var resClass=t.result==='Win'?'win':t.result==='Loss'?'loss':'be';
-      var dirClass=t.dir==='long'?'long':'short';
+      var dirClass=(t.dir||'').toLowerCase()==='long'?'long':'short';
       var pc=t.totalPnlPts>0?'var(--green)':t.totalPnlPts<0?'var(--red)':'var(--t2)';
       var rStr=(t.totalR>=0?'+':'')+t.totalR.toFixed(2)+'R';
       var pnlStr=(t.totalPnlPts>=0?'+':'')+t.totalPnlPts.toFixed(2)+' pts ($'+(t.totalPnlDollars>=0?'+':'')+t.totalPnlDollars+')';
@@ -11923,6 +11954,9 @@ function migrateImport(d){
   }
   // ── Always: Normalize trades (safe to run multiple times) ──
   if(d.tradeLog&&d.tradeLog.length){
+    // Drop null / non-object entries up front so the per-field normalization below
+    // never has to defend against a missing trade record (was crashing on null.contracts).
+    d.tradeLog=d.tradeLog.filter(function(t){return t&&typeof t==='object';});
     d.tradeLog=d.tradeLog.map(function(t){
       // Ensure required fields exist
       t.contracts=t.contracts||1;
@@ -11960,6 +11994,7 @@ function migrateImport(d){
   }
   // Normalize missed trades
   if(d.missedTrades&&d.missedTrades.length){
+    d.missedTrades=d.missedTrades.filter(function(t){return t&&typeof t==='object';});
     d.missedTrades=d.missedTrades.map(function(t){
       t.contracts=t.contracts||1;
       t.instrument=t.instrument||'MES';
@@ -11971,6 +12006,7 @@ function migrateImport(d){
   }
   // Normalize sessions
   if(d.sessions&&d.sessions.length){
+    d.sessions=d.sessions.filter(function(s){return s&&typeof s==='object';});
     d.sessions=d.sessions.map(function(s){
       s.hitsSnap=s.hitsSnap||[];
       s.preflightSnap=s.preflightSnap||null;
@@ -12017,7 +12053,22 @@ function importData(e){
       if(d.fuelItems && !fuelItems.length) fuelItems=d.fuelItems;
       if(d.preflight){_safeSave(KPF,JSON.stringify(d.preflight));loadPreflight();}
       if(d.stChecks){stChecks=d.stChecks;_safeSave(KST,JSON.stringify(stChecks));}
-      if(d.tradeLog){tradeLog=d.tradeLog;_safeSave(KTL,JSON.stringify(tradeLog));}
+      // Normalize imported trade objects so legacy / hand-edited JSON without expected
+      // arrays (scales, errors, emotions, targets, screenshots) doesn't crash render
+      // functions that call .map / .forEach on them. Drop entries that aren't objects.
+      var _normalizeTradeShape=function(t){
+        if(!t||typeof t!=='object') return null;
+        if(!Array.isArray(t.scales)) t.scales=[];
+        if(!Array.isArray(t.errors)) t.errors=[];
+        if(!Array.isArray(t.emotions)) t.emotions=[];
+        if(!Array.isArray(t.targets)) t.targets=[];
+        if(!Array.isArray(t.screenshots)) t.screenshots=[];
+        return t;
+      };
+      if(d.tradeLog){
+        d.tradeLog=(d.tradeLog||[]).map(_normalizeTradeShape).filter(function(t){return t;});
+        tradeLog=d.tradeLog;_safeSave(KTL,JSON.stringify(tradeLog));
+      }
       if(d.customSetups){customSetups=d.customSetups;_safeSave(KCS,JSON.stringify(customSetups));}
       // customSetups are now migrated into customLabels.setups by migrateImport v4→v5
       if(d.instrumentSettings){instrumentSettings=d.instrumentSettings;_safeSave(KIS,JSON.stringify(instrumentSettings));}
@@ -12026,7 +12077,10 @@ function importData(e){
       if(d.bmUrl){_safeSave(KBM,d.bmUrl);}
       if(d.bmPriceUrl){_safeSave(KBMP,d.bmPriceUrl);}
       if(d.rthBuffer!=null){_safeSave('tl_rth_buffer',d.rthBuffer);}
-      if(d.missedTrades){missedTrades=d.missedTrades;_safeSave(KMT,JSON.stringify(missedTrades));}
+      if(d.missedTrades){
+        d.missedTrades=(d.missedTrades||[]).map(_normalizeTradeShape).filter(function(t){return t;});
+        missedTrades=d.missedTrades;_safeSave(KMT,JSON.stringify(missedTrades));
+      }
       if(d.dailyGoals){dailyGoals=d.dailyGoals;_safeSave('tl_goals',JSON.stringify(dailyGoals));}
       if(d.customLabels){customLabels=d.customLabels;['errors','emotions','reasons','triggers','setups'].forEach(function(cat){if(!customLabels[cat])customLabels[cat]={hidden:[],added:[]};});saveCustomLabels();}
       if(d.perfThresholds){perfThresholds=d.perfThresholds;saveThresholds();}
@@ -12048,10 +12102,34 @@ function importData(e){
 var aiMode='free'; // 'free' or 'api'
 var aiPeriod='all';
 
+// AI key storage — defaults to localStorage (persistent). User can opt into
+// sessionStorage via the "Session-only storage" toggle in Settings, which clears
+// the key when the browser closes. The mode flag itself is in localStorage so
+// the toggle's state survives reloads even though the key may not.
+function _aiKeySessionOnly(){ return localStorage.getItem('tl_ai_key_mode')==='session'; }
+function _getAIKey(){
+  // Preferred store first; fall back to the other so a user toggling mode mid-session
+  // doesn't lose access until they re-enter the key.
+  if(_aiKeySessionOnly()){
+    return sessionStorage.getItem('tl_ai_key') || localStorage.getItem('tl_ai_key') || '';
+  }
+  return localStorage.getItem('tl_ai_key') || sessionStorage.getItem('tl_ai_key') || '';
+}
+function _setAIKey(key){
+  if(_aiKeySessionOnly()){
+    if(key) sessionStorage.setItem('tl_ai_key', key);
+    else sessionStorage.removeItem('tl_ai_key');
+    localStorage.removeItem('tl_ai_key'); // ensure no shadow copy remains in persistent store
+  } else {
+    if(key) _safeSave('tl_ai_key', key);
+    else localStorage.removeItem('tl_ai_key');
+    sessionStorage.removeItem('tl_ai_key');
+  }
+}
+
 function saveAIKey(){
   var key=document.getElementById('settings-ai-key').value.trim();
-  if(key) _safeSave('tl_ai_key',key);
-  else localStorage.removeItem('tl_ai_key');
+  _setAIKey(key);
 }
 
 function toggleAIKeyVisibility(){
@@ -12059,8 +12137,19 @@ function toggleAIKeyVisibility(){
   el.type=el.type==='password'?'text':'password';
 }
 
+function toggleAIKeySessionOnly(){
+  var el=document.getElementById('settings-ai-key-session');
+  var sessionMode = !!(el && el.checked);
+  // Capture current key BEFORE flipping the mode flag so _setAIKey routes it to the new store.
+  var key = _getAIKey();
+  if(sessionMode) localStorage.setItem('tl_ai_key_mode','session');
+  else localStorage.removeItem('tl_ai_key_mode');
+  if(key) _setAIKey(key);
+  toast(sessionMode?'API key now session-only — clears when browser closes':'API key now persists in localStorage','ok');
+}
+
 function testAIKey(){
-  var key=localStorage.getItem('tl_ai_key')||'';
+  var key=_getAIKey();
   var status=document.getElementById('ai-key-status');
   if(!key){status.innerHTML='<span style="color:var(--red)">No API key saved</span>';return;}
   status.innerHTML='<span style="color:var(--gold)">Testing...</span>';
@@ -12078,7 +12167,9 @@ function testAIKey(){
 
 function loadAIKeyIntoSettings(){
   var el=document.getElementById('settings-ai-key');
-  if(el){var k=localStorage.getItem('tl_ai_key')||'';el.value=k;}
+  if(el){el.value=_getAIKey();}
+  var tog=document.getElementById('settings-ai-key-session');
+  if(tog) tog.checked=_aiKeySessionOnly();
 }
 
 function setAIMode(mode){
@@ -12088,7 +12179,7 @@ function setAIMode(mode){
   if(btnFree){btnFree.style.borderColor=mode==='free'?'var(--green)':'var(--b2)';btnFree.style.background=mode==='free'?'var(--greend)':'transparent';btnFree.style.color=mode==='free'?'var(--green)':'var(--t2)';}
   if(btnApi){btnApi.style.borderColor=mode==='api'?'var(--purple)':'var(--b2)';btnApi.style.background=mode==='api'?'var(--purpled)':'transparent';btnApi.style.color=mode==='api'?'var(--purple)':'var(--t2)';}
   var warn=document.getElementById('ai-no-key-warn');
-  if(warn) warn.style.display=(mode==='api'&&!localStorage.getItem('tl_ai_key'))?'block':'none';
+  if(warn) warn.style.display=(mode==='api'&&!_getAIKey())?'block':'none';
 }
 
 function setAIPeriod(period,btn){
@@ -12264,7 +12355,7 @@ function runAICoach(type){
   }
 
   // Mode 2: API call
-  var apiKey=localStorage.getItem('tl_ai_key')||'';
+  var apiKey=_getAIKey();
   if(!apiKey){
     toast('No API key — add one in Settings or use Mode 1','err');
     var warn=document.getElementById('ai-no-key-warn');
@@ -13386,7 +13477,16 @@ function renderWhatIf(){
 var liveInterval = null;
 var lastPrice = null;
 var prevPrice = null;
-var hitLog = (function(){ try{ return JSON.parse(localStorage.getItem('tl_hits')||'[]')||[]; }catch(e){ localStorage.removeItem('tl_hits'); return []; } })();
+var hitLog = (function(){
+  try{ return JSON.parse(localStorage.getItem('tl_hits')||'[]')||[]; }
+  catch(e){
+    localStorage.removeItem('tl_hits');
+    // Defer warning to after DOM/UI is ready so the toast actually shows.
+    setTimeout(function(){ try{ toast('⚠ Hit log was corrupted and has been reset',''); }catch(ignore){} }, 2000);
+    try{ logError('parse','tl_hits corrupted, reset to empty', e.message); }catch(ignore){}
+    return [];
+  }
+})();
 var levelHitState = {}; // track which levels already hit to avoid spam
 // Rebuild levelHitState from today's persisted hitLog — prevents duplicates after app restart
 (function(){
@@ -13665,9 +13765,10 @@ function updateSessionUI(){
     // Bias
     var ssBias = document.getElementById('ss-bias');
     if(ssBias){
-      if(s.bias === 'long'){ ssBias.className='ss-chip bias-long'; ssBias.textContent='▲ LONG'; }
-      else if(s.bias === 'short'){ ssBias.className='ss-chip bias-short'; ssBias.textContent='▼ SHORT'; }
-      else if(s.bias === 'neutral'){ ssBias.className='ss-chip bias-neutral'; ssBias.textContent='— NEUTRAL'; }
+      var biasNorm=(s.bias||'').toLowerCase();
+      if(biasNorm === 'long'){ ssBias.className='ss-chip bias-long'; ssBias.textContent='▲ LONG'; }
+      else if(biasNorm === 'short'){ ssBias.className='ss-chip bias-short'; ssBias.textContent='▼ SHORT'; }
+      else if(biasNorm === 'neutral'){ ssBias.className='ss-chip bias-neutral'; ssBias.textContent='— NEUTRAL'; }
       else { ssBias.className='ss-chip info'; ssBias.textContent='No bias'; }
     }
     // Open type
@@ -13772,13 +13873,25 @@ function goNextStep(){
 }
 
 // ── 5. Trade form smart defaults ──
-function smartFillTradeForm(){
-  // Auto-fill entry price with current live price
+function smartFillTradeForm(retryCount){
+  retryCount = retryCount || 0;
+  // Auto-fill entry price with current live price.
+  // If lastPrice isn't available yet (pre-market, slow Yahoo fetch), retry every 500ms
+  // for up to 5s so the entry doesn't stay stubbornly empty when the feed lands a
+  // moment after the tab activation timeout.
   var entryEl = document.getElementById('tl-entry');
-  if(entryEl && !entryEl.value && lastPrice){
-    entryEl.value = lastPrice.toFixed(2);
-    entryEl.style.color = 'var(--cyan)';
-    entryEl.addEventListener('input', function handler(){ entryEl.style.color = ''; entryEl.removeEventListener('input', handler); }, {once:true});
+  if(entryEl && !entryEl.value){
+    if(lastPrice){
+      entryEl.value = lastPrice.toFixed(2);
+      entryEl.style.color = 'var(--cyan)';
+      entryEl.addEventListener('input', function handler(){ entryEl.style.color = ''; entryEl.removeEventListener('input', handler); }, {once:true});
+    } else if(retryCount < 10){
+      // Bail out early if user navigated away from the trades panel.
+      var trPanel = document.getElementById('panel-trades');
+      if(trPanel && !trPanel.classList.contains('active')) return;
+      setTimeout(function(){ smartFillTradeForm(retryCount + 1); }, 500);
+      return;
+    }
   }
   // Auto-select direction based on bias
   var dirEl = document.getElementById('tl-dir');
