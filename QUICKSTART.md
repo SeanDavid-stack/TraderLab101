@@ -1,6 +1,6 @@
 # TraderLab 101 — Quick Start
 
-**Version 2.3.6 beta · Get going in about 15 minutes**
+**Version 2.3.6 · Get going in about 15 minutes**
 
 This guide takes you from "first download" to "logged a trade and looked at analytics" without the long-form theory. For everything else, see [USERGUIDE.md](USERGUIDE.md).
 

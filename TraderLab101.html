@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.6 beta
+  TraderLab 101 v2.3.6
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.6 beta</title>
+<title>TraderLab 101 v2.3.6</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.6 beta</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.6</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -835,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.6 beta</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.6</div>
   </nav>
 
   <div class="content">
@@ -3799,7 +3799,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.6 beta'
+    v: 'v2.3.6'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);

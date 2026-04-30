@@ -1,6 +1,6 @@
 # TraderLab 101 — Changelog
 
-## v2.3.6 beta — Journal State Fix, License Update (April 2026)
+## v2.3.6 — Journal State Fix, License Update (April 2026)
 
 ### BUG FIX: Journal No Longer Resets On Tab Switch
 Tabbing away from the Journal (e.g. to Trade Log or Pre-Market) and back **no longer wipes the in-progress fields**. Reported by Anthony in Discord. Root cause: `go('journal')` always re-ran `loadJDate()`, which called `clearJForm()` and reloaded only saved data, blowing away any unsaved typing. Fix introduces `_journalLoadedKey` so the journal only re-initializes on first visit or when the date actually changes; all other date-change paths (`jNav`, `jToday`, `jGoToDate`, `cancelJEdit`, `saveSession`, date picker) keep their existing reload behavior.
