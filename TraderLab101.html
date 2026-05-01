@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.10
+  TraderLab 101 v2.3.11
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.10</title>
+<title>TraderLab 101 v2.3.11</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.10</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.11</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -835,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.10</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.11</div>
   </nav>
 
   <div class="content">
@@ -1855,10 +1855,13 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
             <input id="settings-tick-value" type="number" step="0.01" placeholder="1.25" style="font-family:var(--mono);" oninput="onCustomInstrInput()">
           </div>
           <div class="fg" style="margin-bottom:0;">
-            <label>Commission ($) <span style="font-weight:400;color:var(--t3);">RT</span></label>
-            <input id="settings-commission" type="number" step="0.01" placeholder="0.62" style="font-family:var(--mono);" oninput="onCustomInstrInput()">
+            <label>Commission ($) <span style="font-weight:400;color:var(--gold);">RT — required for custom</span></label>
+            <input id="settings-commission" type="number" step="0.01" placeholder="your broker RT $" style="font-family:var(--mono);" oninput="onCustomInstrInput()">
           </div>
           <button class="btn btn-g" onclick="saveCustomInstrument()" style="padding:8px 14px;white-space:nowrap;">Save</button>
+        </div>
+        <div style="font-size:10px;color:var(--t3);font-family:var(--mono);margin-top:6px;line-height:1.5;">
+          <span style="color:var(--gold);">ⓘ</span> Presets (MES, ES, MNQ, NQ) auto-fill commission. Custom symbols require your actual RT cost so analytics and goals don't silently use $0 fees.
         </div>
         <div id="settings-instrument-calc" style="margin-top:10px;font-size:11px;font-family:var(--mono);color:var(--t3);padding:7px 10px;background:var(--s3);border-radius:4px;border:1px solid var(--b1);"></div>
 
@@ -3833,7 +3836,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.10'
+    v: 'v2.3.11'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -5695,9 +5698,34 @@ function saveCustomInstrument(){
   var name = document.getElementById('settings-instrument').value.trim();
   var ts   = parseFloat(document.getElementById('settings-tick-size').value);
   var tv   = parseFloat(document.getElementById('settings-tick-value').value);
-  if(!name){ toast('Enter a symbol name',''); return; }
-  if(isNaN(ts)||ts<=0){ toast('Enter a valid tick size',''); return; }
-  if(isNaN(tv)||tv<=0){ toast('Enter a valid tick value',''); return; }
+  var commEl = document.getElementById('settings-commission');
+  // Reset any prior error styling.
+  ['settings-instrument','settings-tick-size','settings-tick-value','settings-commission'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.style.borderColor='';
+  });
+  if(!name){
+    var nEl=document.getElementById('settings-instrument'); if(nEl){nEl.style.borderColor='var(--red)';nEl.focus();}
+    toast('Enter a symbol name',''); return;
+  }
+  if(isNaN(ts)||ts<=0){
+    var tsEl=document.getElementById('settings-tick-size'); if(tsEl){tsEl.style.borderColor='var(--red)';tsEl.focus();}
+    toast('Enter a valid tick size',''); return;
+  }
+  if(isNaN(tv)||tv<=0){
+    var tvEl=document.getElementById('settings-tick-value'); if(tvEl){tvEl.style.borderColor='var(--red)';tvEl.focus();}
+    toast('Enter a valid tick value',''); return;
+  }
+  // v2.3.11: require commission for non-preset (custom) symbols. The four built-in
+  // presets (MES/ES/MNQ/NQ) ship with sensible defaults; for any other symbol the
+  // user must enter their broker's actual RT cost so analytics, daily goals, and
+  // What-If math don't silently use $0 fees.
+  var commVal = parseFloat(commEl ? commEl.value : '');
+  var isPreset = !!INSTRUMENT_PRESETS[name];
+  if(!isPreset && (isNaN(commVal) || commVal <= 0)){
+    if(commEl){ commEl.style.borderColor='var(--red)'; commEl.focus(); }
+    toast('Commission required for custom symbol "'+name+'" — enter your broker RT cost','err');
+    return;
+  }
   var ytEl = document.getElementById('settings-yahoo-ticker');
   // Yahoo tickers are uppercase A–Z plus . - = digits (e.g. "ES=F", "BTC-USD", "^GSPC").
   // Strip whitespace and disallowed chars so we don't ship junk into a URL.
@@ -5776,7 +5804,7 @@ function ensureInstrumentOption(selectEl, name){
   selectEl.insertBefore(opt, selectEl.firstChild);
 }
 
-// ── Multi-symbol UX helpers (v2.3.10) ────────────────────────────────────
+// ── Multi-symbol UX helpers (v2.3.11) ────────────────────────────────────
 // Goal: surface the existing Instrument filter when a log has 2+ instruments,
 // without forcing users into a "mode" or hiding aggregate analytics.
 
@@ -7360,7 +7388,7 @@ function cancelEditTrade(){
 }
 
 function renderTradeLog(){
-  // v2.3.10: refresh the multi-symbol UX affordances first so they land before the table.
+  // v2.3.11: refresh the multi-symbol UX affordances first so they land before the table.
   try{ renderMixedInstrumentBanner(); }catch(e){}
   try{ renderSymbolSummary(); }catch(e){}
   renderTLStats();
@@ -7383,7 +7411,7 @@ function renderTradeLog(){
   }
   if(tlResultFilter!=='all') filtered=filtered.filter(function(t){return t.result===tlResultFilter;});
   if(tlDirFilter!=='all') filtered=filtered.filter(function(t){return (t.dir||'').toLowerCase()===tlDirFilter;});
-  // v2.3.10: per-symbol summary chip filter (multi-symbol UX).
+  // v2.3.11: per-symbol summary chip filter (multi-symbol UX).
   if(typeof tlInstrFilter!=='undefined' && tlInstrFilter && tlInstrFilter!=='all'){
     filtered = filtered.filter(function(t){return t.instrument===tlInstrFilter;});
   }
@@ -12704,7 +12732,7 @@ function wiCalcStats(trades, useNetFees){
     if(dd>maxDD) maxDD=dd;
     totalR+=(t.totalR||0);
     // Per-trade instrument ptVal for risk calc.
-    // Prefer values persisted on the trade itself (v2.3.10+) so historical risk
+    // Prefer values persisted on the trade itself (v2.3.11+) so historical risk
     // numbers are accurate for custom instruments even after the active instrument
     // is switched away.
     var instrName2=t.instrument||instrumentSettings.name||'MES';
@@ -12859,7 +12887,7 @@ function wiSimulate(){
   // ── Apply improvements ──
   var improved=kept.map(function(t){
     var mod=Object.assign({},t);
-    // Prefer persisted tick data on the trade (v2.3.10+); fall back to preset.
+    // Prefer persisted tick data on the trade (v2.3.11+); fall back to preset.
     var ptVal_t=5; // safe-ish default if everything else fails
     try{
       if(typeof t.tickValue==='number' && typeof t.tickSize==='number' && t.tickSize>0){

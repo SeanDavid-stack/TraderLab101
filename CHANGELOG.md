@@ -1,5 +1,52 @@
 # TraderLab 101 — Changelog
 
+## v2.3.11 — Commission Required For Custom Instruments (April 2026)
+
+Small UX safeguard following on from v2.3.10's multi-symbol work.
+
+### NEW: Custom Instruments Require A Commission
+TraderLab ships sensible default commissions for the four built-in presets (MES, ES,
+MNQ, NQ). For any **custom symbol** (RTY, YM, CL, BTC, etc.), there's no sensible
+default — your broker rate is yours alone. Previously, saving a custom symbol with
+a blank commission silently stored `commission: 0`, which would propagate $0 fees
+through analytics, daily goals, and What-If math forever.
+
+The fix:
+- **Settings → Custom Symbol** now blocks the Save button and surfaces a clear toast
+  if a non-preset symbol is saved with commission `<= 0` or empty:
+  *"Commission required for custom symbol 'XYZ' — enter your broker RT cost."*
+- The commission input border turns red and gets focus.
+- Other validation errors (missing name, bad tick size, bad tick value) now also
+  highlight their respective fields in red — consistent feedback.
+
+### NEW: UI Hints
+- Custom Symbol commission label: *"RT — required for custom"* (gold)
+- Commission placeholder: *"your broker RT $"*
+- Inline note under the Custom Symbol row:
+  *"ⓘ Presets (MES, ES, MNQ, NQ) auto-fill commission. Custom symbols require your
+  actual RT cost so analytics and goals don't silently use $0 fees."*
+
+### Backwards Data Compatibility
+- The validation runs **only when the user clicks Save in Settings.** Existing custom
+  instruments already in localStorage with `commission: 0` are not retroactively
+  blocked — they continue to work via the existing fallback.
+- JSON imports preserved as-is. No migration. No data loss.
+- Presets remain exempt — saving "MES" with empty commission still works because
+  the preset default fills in.
+
+### Verified
+- 6-case validation matrix: empty / negative / zero commission on custom blocks save;
+  $1.25 commission on custom saves; preset MES with empty commission still saves;
+  preset switches (MES/ES/MNQ/NQ) all work without invoking the validation path.
+- Demo (old format, no new fields) still loads cleanly: 220 trades, 61 sessions,
+  41 missed; all 15 panels render without errors.
+- Old NQ trade fee fallback still produces correct $4.64 (2 × $2.32 NQ preset).
+- New NQ trade saves with `commission: 2.32, tickValue: 5, tickSize: 0.25`.
+- Round-trip export → wipe → import: 220 → 220 trades, first trade ID matches,
+  zero JS console errors across the full test.
+
+---
+
 ## v2.3.10 — Multi-Symbol Hardening + Multi-Symbol UX (April 2026)
 
 A follow-on patch bundled with v2.3.9 that hardens the new symbol support against
