@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.8
+  TraderLab 101 v2.3.9
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.8</title>
+<title>TraderLab 101 v2.3.9</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.8</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.9</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -835,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.8</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.9</div>
   </nav>
 
   <div class="content">
@@ -1861,6 +1861,16 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
           <button class="btn btn-g" onclick="saveCustomInstrument()" style="padding:8px 14px;white-space:nowrap;">Save</button>
         </div>
         <div id="settings-instrument-calc" style="margin-top:10px;font-size:11px;font-family:var(--mono);color:var(--t3);padding:7px 10px;background:var(--s3);border-radius:4px;border:1px solid var(--b1);"></div>
+
+        <!-- Yahoo Finance Ticker (drives the live-price fallback when BMBridge is unavailable) -->
+        <div style="margin-top:14px;font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);margin-bottom:8px;">Yahoo Finance Ticker <span style="font-weight:400;color:var(--t4);text-transform:none;letter-spacing:0;">— used when BMBridge is unavailable</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end;">
+          <div class="fg" style="margin-bottom:0;">
+            <label>Yahoo Symbol <span style="font-weight:400;color:var(--t3);">leave blank to auto-pick</span></label>
+            <input id="settings-yahoo-ticker" type="text" placeholder="e.g. ES=F, NQ=F, YM=F, RTY=F, CL=F" style="font-family:var(--mono);" oninput="onYahooTickerInput()">
+          </div>
+          <div id="yahooTickerHint" style="font-size:10px;color:var(--t3);font-family:var(--mono);padding-bottom:8px;line-height:1.5;"></div>
+        </div>
 
         <!-- Commission Override -->
         <div style="margin-top:14px;font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono);margin-bottom:8px;">Commission Override</div>
@@ -3805,7 +3815,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.8'
+    v: 'v2.3.9'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -3955,7 +3965,10 @@ var selectedTargets=[];
 var editingTradeId=null;
 var editingMissedId=null;
 var fullStopMode=false;
-var INSTRUMENT_PRESETS={MES:{name:'MES',tickSize:0.25,tickValue:1.25,commission:0.62},ES:{name:'ES',tickSize:0.25,tickValue:12.50,commission:2.32},MNQ:{name:'MNQ',tickSize:0.25,tickValue:0.50,commission:0.62},NQ:{name:'NQ',tickSize:0.25,tickValue:5.00,commission:2.32}};
+// yahooTicker: which Yahoo Finance symbol the Yahoo fallback should fetch when this
+// instrument is active. Micros (MES/MNQ) track their parent contract on Yahoo because
+// Yahoo's micro feeds can be sparse / stale.
+var INSTRUMENT_PRESETS={MES:{name:'MES',tickSize:0.25,tickValue:1.25,commission:0.62,yahooTicker:'ES=F'},ES:{name:'ES',tickSize:0.25,tickValue:12.50,commission:2.32,yahooTicker:'ES=F'},MNQ:{name:'MNQ',tickSize:0.25,tickValue:0.50,commission:0.62,yahooTicker:'NQ=F'},NQ:{name:'NQ',tickSize:0.25,tickValue:5.00,commission:2.32,yahooTicker:'NQ=F'}};
 var SETUP_LABELS={opening:'Opening Trade',cont:'IBC Continuation',mr:'Mean Reversion',ibf:'IBF',vpoc:'VPOC Shift',bar:'BAR',midvpoc:'MID>VWAP>VPOC',vhvn:'VHVN>VPOC'};
 var TRIGGER_LABELS={'1':'Type 1 — Break High ↑','2':'Type 2 — Break Low ↓','3':'Type 3 — Sweep Low → Long ↑','4':'Type 4 — Sweep High → Short ↓'};
 var customLabels=_safeParse(KCL,{errors:{hidden:[],added:[]},emotions:{hidden:[],added:[]},reasons:{hidden:[],added:[]},triggers:{hidden:[],added:[]},setups:{hidden:[],added:[]}});
@@ -5428,6 +5441,14 @@ function loadSettings(){
   document.getElementById('settings-instrument').value = instrumentSettings.name || 'MES';
   document.getElementById('settings-tick-size').value = instrumentSettings.tickSize || 0.25;
   document.getElementById('settings-tick-value').value = instrumentSettings.tickValue || 1.25;
+  // Yahoo ticker override (optional). Empty input = "auto-pick from preset / instrument name".
+  var ytEl=document.getElementById('settings-yahoo-ticker');
+  if(ytEl){
+    // Only show an explicit override; presets are handled by getYahooTicker() so the
+    // field stays empty for stock presets and the hint surfaces the auto-picked ticker.
+    ytEl.value = instrumentSettings.yahooTicker || '';
+    if(typeof onYahooTickerInput==='function') onYahooTickerInput();
+  }
   updateInstrumentCalc();
   // Highlight active preset
   var activePreset = INSTRUMENT_PRESETS[instrumentSettings.name] ? instrumentSettings.name : null;
@@ -5659,13 +5680,31 @@ function saveCustomInstrument(){
   if(!name){ toast('Enter a symbol name',''); return; }
   if(isNaN(ts)||ts<=0){ toast('Enter a valid tick size',''); return; }
   if(isNaN(tv)||tv<=0){ toast('Enter a valid tick value',''); return; }
+  var ytEl = document.getElementById('settings-yahoo-ticker');
+  var yahooTicker = ytEl ? ytEl.value.trim() : '';
   instrumentSettings = {name:name, tickSize:ts, tickValue:tv, commission:parseFloat(document.getElementById('settings-commission').value)||0};
+  if(yahooTicker) instrumentSettings.yahooTicker = yahooTicker;
   _safeSave(KIS, JSON.stringify(instrumentSettings));
   updateInstrumentCalc();
   updatePresetActiveState(INSTRUMENT_PRESETS[name]?name:null);
   // Also update trade form selector if it has a custom slot
   syncTradeFormInstrument();
+  // Force the live-price feed to pick up the new ticker on its next poll.
+  refreshFeedSourceLabel();
+  if(typeof restartFeedForInstrument==='function') restartFeedForInstrument();
   toast(name+' saved as default instrument','ok');
+}
+
+// Live preview the active Yahoo ticker as the user types in the override field.
+function onYahooTickerInput(){
+  var hint = document.getElementById('yahooTickerHint');
+  var override = (document.getElementById('settings-yahoo-ticker')||{}).value;
+  if(!hint) return;
+  if(override && override.trim()){
+    hint.innerHTML = 'Will fetch <strong style="color:var(--gold)">'+override.trim()+'</strong> from Yahoo';
+  } else {
+    hint.innerHTML = 'Auto: <strong style="color:var(--gold)">'+getYahooTicker()+'</strong> (based on current instrument)';
+  }
 }
 
 function saveInstrumentSettings(){
@@ -5718,10 +5757,39 @@ function setInstrumentPreset(key){
   document.getElementById('settings-tick-size').value = p.tickSize;
   document.getElementById('settings-tick-value').value = p.tickValue;
   var commEl=document.getElementById('settings-commission'); if(commEl) commEl.value=p.commission||'';
+  // Clear any stale custom Yahoo override so the preset's default takes over.
+  var ytEl=document.getElementById('settings-yahoo-ticker'); if(ytEl) ytEl.value='';
   updateInstrumentCalc();
   updatePresetActiveState(key);
   syncTradeFormInstrument();
-  toast(p.name+' preset loaded','ok');
+  refreshFeedSourceLabel();
+  if(typeof restartFeedForInstrument==='function') restartFeedForInstrument();
+  if(typeof onYahooTickerInput==='function') onYahooTickerInput();
+  toast(p.name+' preset loaded · live feed → '+getYahooTicker(),'ok');
+}
+
+// Update the small "~15 min delay · Yahoo Finance" label in the live panel
+// to also surface the active Yahoo symbol so the user can see what's being fetched.
+function refreshFeedSourceLabel(){
+  var el = document.getElementById('priceSourceLabel');
+  if(!el) return;
+  var sym = getYahooTicker();
+  // Don't overwrite the BMBridge active-source text — only update the Yahoo case.
+  if(activeFeedSource === 'yahoo' || feedMode === 'yahoo-only' || feedMode === 'yahoo-fallback'){
+    el.textContent = '~15 min delay · Yahoo Finance · ' + sym;
+  }
+}
+
+// When the user changes their instrument, re-poll the Yahoo feed so the new
+// ticker takes effect on the next tick instead of waiting up to 5 seconds.
+function restartFeedForInstrument(){
+  try{
+    if(typeof fetchPrice === 'function'){
+      setTimeout(function(){ try{ fetchPrice(); }catch(e){} }, 100);
+    } else if(typeof startLiveFeed === 'function'){
+      setTimeout(function(){ try{ startLiveFeed(); }catch(e){} }, 100);
+    }
+  }catch(e){}
 }
 
 function saveBMUrlFromSettings(){
@@ -14367,8 +14435,23 @@ function getIBRange(result) {
   } catch(e) { return { high: null, low: null }; }
 }
 
+// Yahoo ticker resolution: prefer an explicit override on the active instrument,
+// fall back to the preset table, then to <name>=F as a last guess, then to ES=F.
+// This is what makes "Settings → set instrument to NQ" actually drive the Yahoo
+// fallback to NQ data instead of always pulling ES (Mirza's report).
+function getYahooTicker(){
+  try{
+    if(instrumentSettings && instrumentSettings.yahooTicker) return instrumentSettings.yahooTicker;
+    var name = instrumentSettings && instrumentSettings.name;
+    if(name && INSTRUMENT_PRESETS[name] && INSTRUMENT_PRESETS[name].yahooTicker) return INSTRUMENT_PRESETS[name].yahooTicker;
+    if(name) return name + '=F';
+  }catch(e){}
+  return 'ES=F';
+}
+function _yahooEncoded(){ return encodeURIComponent(getYahooTicker()); }
+
 async function tryYahoo() {
-  var r = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/ES%3DF?interval=1m&range=1d', {
+  var r = await fetch('https://query1.finance.yahoo.com/v8/finance/chart/'+_yahooEncoded()+'?interval=1m&range=1d', {
     cache: 'no-store', headers: { 'Accept': 'application/json' }
   });
   var d = await r.json();
@@ -14380,7 +14463,7 @@ async function tryYahoo() {
 }
 
 async function tryAllOrigins() {
-  var url = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://query2.finance.yahoo.com/v8/finance/chart/ES%3DF?interval=1m&range=1d');
+  var url = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://query2.finance.yahoo.com/v8/finance/chart/'+getYahooTicker()+'?interval=1m&range=1d');
   var r = await fetch(url, { cache: 'no-store' });
   var d = await r.json();
   var result = d.chart.result[0];
@@ -14392,7 +14475,7 @@ async function tryAllOrigins() {
 }
 
 async function tryCorsproxy() {
-  var url = 'https://corsproxy.io/?' + encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/ES%3DF?interval=1m&range=1d');
+  var url = 'https://corsproxy.io/?' + encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/'+getYahooTicker()+'?interval=1m&range=1d');
   var r = await fetch(url, { cache: 'no-store' });
   var d = await r.json();
   var result = d.chart.result[0];

@@ -1,5 +1,53 @@
 # TraderLab 101 — Changelog
 
+## v2.3.9 — Live Price Feed Follows Active Instrument (April 2026)
+
+Reported by Mirza in Discord: setting the instrument to NQ in Settings still pulled
+ES data from the Yahoo fallback. Three Yahoo Finance fetch URLs were hardcoded to
+`ES=F`. Now they follow the active instrument.
+
+### FIX: Yahoo Fallback Uses Active Instrument's Ticker
+- New `getYahooTicker()` helper resolves the right Yahoo symbol with this priority:
+  1. `instrumentSettings.yahooTicker` (explicit override)
+  2. `INSTRUMENT_PRESETS[name].yahooTicker` (built-in mapping)
+  3. `name + '=F'` (sensible guess for any custom instrument)
+  4. `ES=F` (final safe fallback)
+- Built-in preset mappings: **MES → ES=F**, **ES → ES=F**, **MNQ → NQ=F**, **NQ → NQ=F**.
+  Micros track their parent contract on Yahoo because Yahoo's micro feeds can be
+  sparse / stale.
+- All three Yahoo fetch helpers (direct, AllOrigins proxy, corsproxy.io) now use the
+  resolved ticker.
+
+### NEW: Yahoo Ticker Override In Settings
+A new optional **Yahoo Symbol** field in **Settings → Instrument & Contract** lets
+you point the live-price fallback at any Yahoo symbol — useful for custom
+instruments outside the four presets (YM=F, RTY=F, CL=F, GC=F, etc.). Leave it blank
+and TraderLab auto-picks based on your selected instrument. A live hint shows which
+ticker will be fetched.
+
+### NEW: Live Feed Re-Polls When Instrument Changes
+Switching presets or saving a custom instrument now triggers an immediate `fetchPrice()`
+call so the new ticker takes effect on the next render instead of waiting for the
+next 5-second poll.
+
+### NEW: Live-Price Status Label Shows Active Symbol
+The "~15 min delay · Yahoo Finance" status text under the price now also surfaces
+the symbol being fetched, e.g. "~15 min delay · Yahoo Finance · NQ=F", so it's
+obvious which contract you're seeing.
+
+### Backwards Data Compatibility
+- `yahooTicker` on `instrumentSettings` is purely additive; absent = auto-pick.
+- No localStorage key renamed or reshaped.
+- All fixes from v2.3.6 / v2.3.7 / v2.3.8 carry forward.
+
+### Verified
+Smoke-tested in a headless preview: each preset resolves to the expected ticker,
+custom-instrument names auto-derive (`YM` → `YM=F`), explicit overrides win, and
+empty / corrupted state safely falls back to `ES=F`. All three Yahoo fetch paths
+were verified to use the resolved ticker via fetch interception.
+
+---
+
 ## v2.3.8 — Persist Commission Per Trade (April 2026)
 
 Quick follow-up to v2.3.7 fixing one more bug from the same review.

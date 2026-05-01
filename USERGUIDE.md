@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 2.3.8 · April 2026**
+**Version 2.3.9 · April 2026**
 
 A complete walkthrough of every panel, every setting, and the full daily workflow.
 
