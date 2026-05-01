@@ -1,6 +1,6 @@
 # TraderLab 101 — Quick Start
 
-**Version 2.3.9 · Get going in about 15 minutes**
+**Version 2.3.10 · Get going in about 15 minutes**
 
 This guide takes you from "first download" to "logged a trade and looked at analytics" without the long-form theory. For everything else, see [USERGUIDE.md](USERGUIDE.md).
 
@@ -51,6 +51,8 @@ Click your preset:
 | **NQ** | 0.25 pt | $5.00 | ~$4.18 |
 
 Adjust the commission to match your broker. That's it for setup.
+
+> **Trading multiple symbols?** TraderLab is cleanest when each log is one instrument. The simplest pattern: one JSON backup per symbol (e.g. `Sean_NQ_2026.json`, `Sean_ES_2026.json`) and switch with Settings → DATA → Export/Import. If you'd rather keep them all in one log, that works too — the Trade Log will show a per-symbol summary chip row and the Analytics tab has an **Instrument filter** that scopes every chart to one symbol at a time.
 
 ---
 

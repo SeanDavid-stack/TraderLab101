@@ -1,5 +1,84 @@
 # TraderLab 101 — Changelog
 
+## v2.3.10 — Multi-Symbol Hardening + Multi-Symbol UX (April 2026)
+
+A follow-on patch bundled with v2.3.9 that hardens the new symbol support against
+custom instruments and gives multi-symbol traders a smoother experience.
+
+### Why
+v2.3.9 made the Yahoo Finance fallback follow the active instrument so users like
+Mirza could trade NQ without the live feed silently pulling ES. While auditing
+related paths, several downstream issues turned up that would break custom-instrument
+trades (RTY, YM, CL, BTC, etc.) — and a separate UX gap for users who keep more
+than one symbol in the same log.
+
+### NEW: Per-Trade Tick Data Persisted
+`saveTradeEntry` and `saveMissedTrade` now stamp the active **commission**, **tickValue**,
+and **tickSize** onto each trade at save time. Without this, custom instruments fell
+through to MES defaults in any analytics or What-If recalculation that recomputed
+risk after the user switched their active instrument away from the symbol the trade
+was made on. Old trades without these fields use the existing preset / active-instrument
+fallback, so the change is purely additive — **no migration needed, no data loss**.
+
+### NEW: ensureInstrumentOption Helper
+When you edit a trade whose instrument isn't currently active (e.g. you traded YM in
+the morning, switched to ES in the afternoon, opened to edit the YM trade), the
+trade form's instrument dropdown now auto-injects YM as an option so the edit doesn't
+silently fall back to whatever was selected. Same fix applied to the Missed Trades
+form. The new option is tagged with class `historical-instr` so it stays distinct
+from active and preset options.
+
+### NEW: Yahoo Ticker Input Sanitization
+The new "Yahoo Symbol" override field strips whitespace, uppercases, and rejects
+characters Yahoo doesn't use (`A–Z 0–9 . - = ^` only). A toast surfaces the cleaned
+value if it changed.
+
+### NEW: Multi-Symbol UX (Trade Log)
+When your log contains 2+ distinct instruments, the Trade Log panel now shows:
+1. A soft **info banner** explaining the situation and pointing at the existing
+   Analytics → Instrument filter (which scopes the entire dashboard to one symbol
+   at a time). Dismissible — and reappears only if your distinct-instrument count
+   later grows.
+2. A **per-symbol summary chip row** above the trade list — `ES 80 · 55% · +$3,400` etc.
+   Click any chip to instantly filter the trade list to that symbol; click "All" to
+   restore.
+
+This deliberately does NOT introduce a "single-symbol mode" toggle. The Instrument
+filter is already strictly more flexible than a binary mode (per-symbol or aggregate
+or any subset), and adding a mode would double the testing surface and hide aggregate
+analytics from users who sometimes want them.
+
+### NEW: Backwards-Compat Round-Trip Verified
+The smoke test for this release imports the old-format demo dataset (220 trades / 61
+sessions / 41 missed — none of which have the new commission/tick/yahoo fields),
+walks every panel, exports the data, wipes localStorage, re-imports from the export,
+and confirms identical state on both sides. Zero data loss across the round-trip,
+zero JS console errors.
+
+### Docs
+USERGUIDE → INSTRUMENT and QUICKSTART → Step 2 now both call out the
+"one log per symbol is simplest, but multi works" guidance with explicit pointers
+to the Analytics Instrument filter for users who keep multiple symbols in one log.
+
+### Backwards Data Compatibility
+- All new fields (`t.commission`, `t.tickValue`, `t.tickSize`, `instrumentSettings.yahooTicker`,
+  `tl_mixed_instr_dismissed_count`) are purely additive.
+- Old trades without the new fields use the existing preset / active-instrument
+  fallback; new trades use the persisted values.
+- No localStorage key renamed or reshaped.
+
+### Verified
+- Demo (old format) loads cleanly: 220 trades, 61 sessions, 41 missed.
+- All 15 panels render without errors.
+- Old NQ trade (no `t.commission`) computes fee as $4.64 (2 × $2.32 NQ preset) — fallback works.
+- New NQ trade saves with `commission: 2.32, tickValue: 5, tickSize: 0.25` — persistence works.
+- Yahoo URLs follow active instrument across all three fetch paths.
+- Edit-trade dropdown auto-injects historical custom symbol when active is different.
+- Banner + summary chips render and dismiss correctly.
+- Round-trip export → wipe → import preserves 100% of trades, sessions, missed.
+
+---
+
 ## v2.3.9 — Live Price Feed Follows Active Instrument (April 2026)
 
 Reported by Mirza in Discord: setting the instrument to NQ in Settings still pulled

@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.9
+  TraderLab 101 v2.3.10
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.9</title>
+<title>TraderLab 101 v2.3.10</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.9</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.10</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -835,7 +835,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.9</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.10</div>
   </nav>
 
   <div class="content">
@@ -2181,6 +2181,24 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         </div>
         <span style="font-size:10px;color:var(--t3);font-family:var(--mono);">Log every trade · track scale-outs · build your edge</span>
       </div>
+
+      <!-- Mixed-instrument soft banner — shown only when tradeLog has 2+ distinct instruments
+           and the user hasn't dismissed it for the current instrument count. -->
+      <div id="tlMixedInstrBanner" style="display:none;padding:10px 16px;background:rgba(91,156,246,.08);border-bottom:1px solid var(--b1);font-family:var(--mono);font-size:11px;color:var(--t2);line-height:1.55;">
+        <div style="display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;">
+          <div style="flex:1;min-width:240px;">
+            <span style="color:var(--blue);font-weight:700;">ⓘ Multiple symbols in this log</span>
+            <span id="tlMixedInstrText" style="color:var(--t3);"></span>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="tl-sf-btn" onclick="goToTab('analytics')" style="font-size:10px;">→ Analytics</button>
+            <button class="tl-sf-btn" onclick="dismissMixedInstrBanner()" style="font-size:10px;">Dismiss</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Per-symbol summary chips — clickable; filter the trade list to that symbol. Shown only when 2+ instruments. -->
+      <div id="tlSymbolSummary" style="display:none;padding:8px 16px;background:var(--s1);border-bottom:1px solid var(--b1);font-family:var(--mono);font-size:11px;color:var(--t2);overflow-x:auto;white-space:nowrap;"></div>
 
       <!-- PERIOD row -->
       <div class="wi-filter-bar">
@@ -3815,7 +3833,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.9'
+    v: 'v2.3.10'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -5681,7 +5699,14 @@ function saveCustomInstrument(){
   if(isNaN(ts)||ts<=0){ toast('Enter a valid tick size',''); return; }
   if(isNaN(tv)||tv<=0){ toast('Enter a valid tick value',''); return; }
   var ytEl = document.getElementById('settings-yahoo-ticker');
-  var yahooTicker = ytEl ? ytEl.value.trim() : '';
+  // Yahoo tickers are uppercase A–Z plus . - = digits (e.g. "ES=F", "BTC-USD", "^GSPC").
+  // Strip whitespace and disallowed chars so we don't ship junk into a URL.
+  var yahooTickerRaw = ytEl ? ytEl.value.trim() : '';
+  var yahooTicker = yahooTickerRaw.toUpperCase().replace(/[^A-Z0-9.=^\-]/g,'');
+  if(yahooTickerRaw && yahooTicker !== yahooTickerRaw.toUpperCase()){
+    if(ytEl) ytEl.value = yahooTicker; // visibly show the cleaned version
+    toast('Yahoo ticker cleaned to "'+yahooTicker+'"','');
+  }
   instrumentSettings = {name:name, tickSize:ts, tickValue:tv, commission:parseFloat(document.getElementById('settings-commission').value)||0};
   if(yahooTicker) instrumentSettings.yahooTicker = yahooTicker;
   _safeSave(KIS, JSON.stringify(instrumentSettings));
@@ -5736,6 +5761,102 @@ function syncTradeFormInstrument(){
   newOpt.value=name; newOpt.textContent=name; newOpt.className='custom-instr';
   sel.insertBefore(newOpt, sel.firstChild);
   sel.value=name;
+}
+
+// Make sure a given symbol exists as an option in a <select> before .value=name.
+// Used when editing a trade whose instrument is a custom symbol that isn't currently
+// active (so syncTradeFormInstrument hasn't injected an option for it). Without this,
+// `select.value = customSymbol` silently fails and the dropdown stays on the wrong
+// instrument, which would re-save the trade against MES tick data.
+function ensureInstrumentOption(selectEl, name){
+  if(!selectEl || !name) return;
+  if(selectEl.querySelector('option[value="'+name+'"]')) return;
+  var opt = document.createElement('option');
+  opt.value = name; opt.textContent = name; opt.className = 'historical-instr';
+  selectEl.insertBefore(opt, selectEl.firstChild);
+}
+
+// ── Multi-symbol UX helpers (v2.3.10) ────────────────────────────────────
+// Goal: surface the existing Instrument filter when a log has 2+ instruments,
+// without forcing users into a "mode" or hiding aggregate analytics.
+
+// Distinct, non-empty instrument names from the current tradeLog, sorted alphabetically.
+function getDistinctTradeInstruments(){
+  var seen = {};
+  (tradeLog||[]).forEach(function(t){ if(t && t.instrument) seen[t.instrument]=true; });
+  return Object.keys(seen).sort();
+}
+
+// Soft banner: shown when log has 2+ instruments AND user hasn't dismissed it for
+// the current count. If the count later grows, the banner reappears.
+function renderMixedInstrumentBanner(){
+  var banner = document.getElementById('tlMixedInstrBanner');
+  if(!banner) return;
+  var instrs = getDistinctTradeInstruments();
+  if(instrs.length < 2){ banner.style.display='none'; return; }
+  var dismissedAt = parseInt(localStorage.getItem('tl_mixed_instr_dismissed_count')||'0',10);
+  if(instrs.length <= dismissedAt){ banner.style.display='none'; return; }
+  var txt = document.getElementById('tlMixedInstrText');
+  if(txt){
+    txt.textContent = ' — ' + instrs.length + ' symbols (' + instrs.join(', ') + '). '
+      + 'Use the Instrument filter in Analytics to scope the dashboard to one symbol at a time, '
+      + 'or check the per-symbol summary above the trade list.';
+  }
+  banner.style.display='';
+}
+function dismissMixedInstrBanner(){
+  var instrs = getDistinctTradeInstruments();
+  localStorage.setItem('tl_mixed_instr_dismissed_count', String(instrs.length));
+  var banner = document.getElementById('tlMixedInstrBanner');
+  if(banner) banner.style.display='none';
+}
+
+// Per-symbol summary chips: clickable. Shown only when 2+ distinct instruments.
+// Click a symbol → filter the trade list. Click "All" → clear filter.
+var tlInstrFilter = 'all';
+function renderSymbolSummary(){
+  var el = document.getElementById('tlSymbolSummary');
+  if(!el) return;
+  var instrs = getDistinctTradeInstruments();
+  if(instrs.length < 2){ el.style.display='none'; el.innerHTML=''; return; }
+  // Compute per-symbol stats from tradeLog. Use net-of-fees if Fees toggle is on.
+  var stats = {};
+  instrs.forEach(function(s){ stats[s] = { n:0, w:0, l:0, pnl:0, fees:0 }; });
+  var globalOverride = (typeof dailyGoals!=='undefined' && dailyGoals && dailyGoals.commission)||0;
+  (tradeLog||[]).forEach(function(t){
+    if(!t || !t.instrument || !stats[t.instrument]) return;
+    var s = stats[t.instrument];
+    s.n++;
+    s.pnl += (t.totalPnlDollars||0);
+    if(t.result==='Win') s.w++;
+    else if(t.result==='Loss') s.l++;
+    if(typeof anShowFees!=='undefined' && anShowFees){
+      var contracts = t.contracts||1;
+      var preset = INSTRUMENT_PRESETS[t.instrument];
+      var comm = globalOverride || (typeof t.commission==='number'?t.commission:(preset?preset.commission:0)) || 0;
+      s.fees += contracts*comm;
+    }
+  });
+  var allBtn = '<button class="tl-sf-btn '+(tlInstrFilter==='all'?'active':'')+'" onclick="filterTradeListByInstrument(\'all\')" style="font-size:10px;margin-right:4px;">All ('+(tradeLog||[]).length+')</button>';
+  var chips = instrs.map(function(s){
+    var st = stats[s];
+    var net = st.pnl - st.fees;
+    var wr = st.n ? Math.round((st.w/st.n)*100) : 0;
+    var color = net>0?'var(--green)':net<0?'var(--red)':'var(--t2)';
+    var sign = net>=0?'+':'';
+    return '<button class="tl-sf-btn '+(tlInstrFilter===s?'active':'')+'" onclick="filterTradeListByInstrument(\''+s+'\')" '
+      + 'style="font-size:10px;margin-right:4px;" '
+      + 'title="'+s+': '+st.n+' trades · '+wr+'% WR · '+sign+'$'+Math.round(net).toLocaleString()+'">'
+      + '<strong>'+s+'</strong> '+st.n+' · '+wr+'% · <span style="color:'+color+'">'+sign+'$'+Math.round(net).toLocaleString()+'</span>'
+      + '</button>';
+  }).join('');
+  el.innerHTML = '<span style="color:var(--t3);margin-right:8px;">By symbol:</span>' + allBtn + chips;
+  el.style.display='';
+}
+function filterTradeListByInstrument(symbol){
+  tlInstrFilter = symbol;
+  renderSymbolSummary();
+  renderTradeLog();
 }
 
 function updateInstrumentCalc(){
@@ -6794,11 +6915,14 @@ function saveTradeEntry(){
     totalR: parseFloat(totalR.toFixed(2)),
     gotRN, result, proc, setupRating, notes,
     instrument: instrData.name,
-    // Capture the per-contract commission active at save time. Lets fee calculations
-    // recover the correct fee even if the user later switches their active instrument
-    // away from a custom (non-preset) symbol — without this, the fallback returned 0
-    // for non-active custom instruments.
+    // Capture the per-contract commission, tick size, and tick value active at save
+    // time. Lets fee + risk + What-If recalculations recover the correct numbers
+    // even if the user later switches their active instrument away from a custom
+    // (non-preset) symbol — without these, fallbacks returned 0 commission, MES
+    // defaults for tick data, and recomputed risk against the wrong contract.
     commission: instrData.commission||0,
+    tickValue: instrData.tickValue||1.25,
+    tickSize: instrData.tickSize||0.25,
     openType: cOT?cOT.type:'',
     bias: getBiasAtTime(time||nowETStr()),
     trendAlign: (function(){
@@ -7146,7 +7270,10 @@ function editTradeEntry(id){
   document.getElementById('tl-stop').value=t.stop||'';
   document.getElementById('tl-contracts').value=t.contracts||1;
   var instrEl=document.getElementById('tl-instrument');
-  if(instrEl&&t.instrument) instrEl.value=t.instrument;
+  if(instrEl&&t.instrument){
+    ensureInstrumentOption(instrEl, t.instrument);
+    instrEl.value=t.instrument;
+  }
   document.getElementById('tl-proc').value=t.proc||'';
   document.getElementById('tl-setup-rating').value=t.setupRating||'';
   document.getElementById('tl-notes').value=t.notes||'';
@@ -7233,6 +7360,9 @@ function cancelEditTrade(){
 }
 
 function renderTradeLog(){
+  // v2.3.10: refresh the multi-symbol UX affordances first so they land before the table.
+  try{ renderMixedInstrumentBanner(); }catch(e){}
+  try{ renderSymbolSummary(); }catch(e){}
   renderTLStats();
   renderGoalsTracker();
   renderTLSetupBreakdown();
@@ -7253,6 +7383,10 @@ function renderTradeLog(){
   }
   if(tlResultFilter!=='all') filtered=filtered.filter(function(t){return t.result===tlResultFilter;});
   if(tlDirFilter!=='all') filtered=filtered.filter(function(t){return (t.dir||'').toLowerCase()===tlDirFilter;});
+  // v2.3.10: per-symbol summary chip filter (multi-symbol UX).
+  if(typeof tlInstrFilter!=='undefined' && tlInstrFilter && tlInstrFilter!=='all'){
+    filtered = filtered.filter(function(t){return t.instrument===tlInstrFilter;});
+  }
   if(!filtered.length){
     if(!tradeLog.length){
       list.innerHTML='<div class="nomsg"><strong>No Trades Logged Yet</strong>Use the form above to log your first trade. Enter the setup, direction, entry/stop prices, and scale-outs. Your trade history, analytics, and journal all build from here.<br><br><span class="an-link" onclick="document.getElementById(\'tlForm\').scrollIntoView({behavior:\'smooth\'})">↑ Go to Trade Form</span></div>';
@@ -9944,8 +10078,10 @@ function saveMissedTrade(){
     notes:notes,
     screenshots:parseMediaUrls(document.getElementById('mt-screenshots').value),
     instrument:instrName,
-    // Capture per-contract commission at save time (see saveTradeEntry).
+    // Capture per-contract commission + tick data at save time (see saveTradeEntry).
     commission:(function(){var p=INSTRUMENT_PRESETS[instrName];return p?p.commission:(instrumentSettings.name===instrName?instrumentSettings.commission:0)||0;})(),
+    tickValue:(function(){var p=INSTRUMENT_PRESETS[instrName];return p?p.tickValue:(instrumentSettings.name===instrName?(instrumentSettings.tickValue||1.25):1.25);})(),
+    tickSize:(function(){var p=INSTRUMENT_PRESETS[instrName];return p?p.tickSize:(instrumentSettings.name===instrName?(instrumentSettings.tickSize||0.25):0.25);})(),
     bias:currentBias,
     openType:cOT?cOT.type:''
   };
@@ -10031,7 +10167,10 @@ function editMissedTrade(id){
   document.getElementById('mt-stop').value=(t.stop!=null)?t.stop:'';
   document.getElementById('mt-contracts').value=t.contracts||2;
   var instrEl=document.getElementById('mt-instrument');
-  if(instrEl&&t.instrument) instrEl.value=t.instrument;
+  if(instrEl&&t.instrument){
+    ensureInstrumentOption(instrEl, t.instrument);
+    instrEl.value=t.instrument;
+  }
   document.getElementById('mt-notes').value=t.notes||'';
 
   // Screenshots
@@ -12564,10 +12703,15 @@ function wiCalcStats(trades, useNetFees){
     dd=peak-running;
     if(dd>maxDD) maxDD=dd;
     totalR+=(t.totalR||0);
-    // Per-trade instrument ptVal for risk calc
+    // Per-trade instrument ptVal for risk calc.
+    // Prefer values persisted on the trade itself (v2.3.10+) so historical risk
+    // numbers are accurate for custom instruments even after the active instrument
+    // is switched away.
     var instrName2=t.instrument||instrumentSettings.name||'MES';
     var preset2=INSTRUMENT_PRESETS[instrName2];
-    var ptVal_t=preset2?(preset2.tickValue/preset2.tickSize):((instrumentSettings.tickValue||1.25)/(instrumentSettings.tickSize||0.25));
+    var ptVal_t=(typeof t.tickValue==='number' && typeof t.tickSize==='number' && t.tickSize>0)
+      ? (t.tickValue/t.tickSize)
+      : (preset2?(preset2.tickValue/preset2.tickSize):((instrumentSettings.tickValue||1.25)/(instrumentSettings.tickSize||0.25)));
     // Net P&L per trade for avg win/loss (fees always subtract)
     if(t.result==='Win'){wins++;winNetSum+=netD;winCount++;netWinTotal+=netD;}
     if(t.result==='Loss'){losses++;lossNetSum+=netD;lossCount++;netLossTotal+=Math.abs(netD);}
@@ -12715,8 +12859,16 @@ function wiSimulate(){
   // ── Apply improvements ──
   var improved=kept.map(function(t){
     var mod=Object.assign({},t);
-    var ptVal_t=5; // default
-    try{var ip=INSTRUMENT_PRESETS[t.instrument||instrumentSettings.name||'MES'];if(ip)ptVal_t=ip.tickValue/ip.tickSize;}catch(e){}
+    // Prefer persisted tick data on the trade (v2.3.10+); fall back to preset.
+    var ptVal_t=5; // safe-ish default if everything else fails
+    try{
+      if(typeof t.tickValue==='number' && typeof t.tickSize==='number' && t.tickSize>0){
+        ptVal_t=t.tickValue/t.tickSize;
+      } else {
+        var ip=INSTRUMENT_PRESETS[t.instrument||instrumentSettings.name||'MES'];
+        if(ip) ptVal_t=ip.tickValue/ip.tickSize;
+      }
+    }catch(e){}
     // full stop reduction — converts full stops to break even
     if(s.fsReduction>0 && (t.totalR||0)<=-0.9 && fsCount<fsTarget){
       fsCount++;

@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 2.3.9 · April 2026**
+**Version 2.3.10 · April 2026**
 
 A complete walkthrough of every panel, every setting, and the full daily workflow.
 
@@ -654,6 +654,12 @@ A sticky header at the top of the panel jumps to each section: **INSTRUMENT · L
 ### INSTRUMENT
 
 Click a preset (MES, ES, MNQ, NQ) or define a custom symbol with tick size, tick value, and round-trip commission. A **global commission override** can be applied across all instruments.
+
+**Yahoo Symbol** (optional) — drives the live-price fallback when BMBridge is unavailable. The four built-in presets auto-pick the right Yahoo ticker (MES/ES → `ES=F`, MNQ/NQ → `NQ=F`). For a custom instrument, leave blank to auto-derive (`<Symbol>=F`) or enter an explicit ticker like `YM=F`, `RTY=F`, `CL=F`, `GC=F`, `BTC-USD`, etc.
+
+**Best practice — one log per instrument.** TraderLab's analytics, win rate, expectancy, and R-multiple math read cleanest when the log is scoped to a single symbol. If you trade multiple instruments, the simplest approach is one JSON backup per symbol — name them `Sean_NQ_2026.json`, `Sean_ES_2026.json`, etc. (Settings → DATA → Log Name) and switch between them with Export/Import.
+
+If you do choose to keep multiple symbols in one log, that works too — TraderLab v2.3.10+ persists each trade's tick value, tick size, and commission at save time so historical numbers stay accurate even if you change your active instrument later. The Trade Log will show a per-symbol summary line and a soft banner pointing you at the **Analytics → Instrument filter** to scope the dashboard one symbol at a time.
 
 ### LABELS & DEFAULTS
 
