@@ -52,7 +52,9 @@ Click your preset:
 
 Adjust the commission to match your broker. That's it for setup.
 
-> **Trading multiple symbols?** TraderLab is cleanest when each log is one instrument. The simplest pattern: one JSON backup per symbol (e.g. `Sean_NQ_2026.json`, `Sean_ES_2026.json`) and switch with Settings → DATA → Export/Import. If you'd rather keep them all in one log, that works too — the Trade Log will show a per-symbol summary chip row and the Analytics tab has an **Instrument filter** that scopes every chart to one symbol at a time.
+> **Trading multiple symbols?** TraderLab is cleanest when each log is one instrument. The simplest pattern: one JSON backup per symbol (e.g. `Sean_NQ_2026.json`, `Sean_ES_2026.json`) and switch with Settings → DATA → Export/Import. If you'd rather keep them all in one log, that works too — the Trade Log will show a per-symbol summary chip row and the Analytics tab has an **Instrument filter** that scopes every chart to one symbol at a time. Full guide: [MULTI_SYMBOL_NOTES.md](MULTI_SYMBOL_NOTES.md) (PDF in repo).
+>
+> **Trading a custom symbol?** (RTY, YM, CL, GC, BTC, etc.) Define it in **Settings → Custom Symbol** with tick size, tick value, AND commission. The commission field is required — the app blocks save without it so analytics never silently use $0 fees. There's also an optional **Yahoo Symbol** field for the live-price fallback (`YM=F`, `RTY=F`, `CL=F`, `BTC-USD`, etc.) — leave blank to auto-derive.
 
 ---
 

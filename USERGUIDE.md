@@ -655,11 +655,15 @@ A sticky header at the top of the panel jumps to each section: **INSTRUMENT · L
 
 Click a preset (MES, ES, MNQ, NQ) or define a custom symbol with tick size, tick value, and round-trip commission. A **global commission override** can be applied across all instruments.
 
-**Yahoo Symbol** (optional) — drives the live-price fallback when BMBridge is unavailable. The four built-in presets auto-pick the right Yahoo ticker (MES/ES → `ES=F`, MNQ/NQ → `NQ=F`). For a custom instrument, leave blank to auto-derive (`<Symbol>=F`) or enter an explicit ticker like `YM=F`, `RTY=F`, `CL=F`, `GC=F`, `BTC-USD`, etc.
+**Custom symbols require a commission.** The four presets auto-fill commission from sensible defaults; for any other symbol the Save button is blocked until you enter your broker's actual round-trip cost. This prevents silent $0 fees from leaking into analytics, daily goals, and What-If math. Other validation errors (missing name, bad tick size, bad tick value) also highlight their fields in red for consistent feedback.
+
+**Yahoo Symbol** (optional) — drives the live-price fallback when BMBridge is unavailable. The four built-in presets auto-pick the right Yahoo ticker (MES/ES → `ES=F`, MNQ/NQ → `NQ=F`). For a custom instrument, leave blank to auto-derive (`<Symbol>=F`) or enter an explicit ticker like `YM=F`, `RTY=F`, `CL=F`, `GC=F`, `BTC-USD`, etc. The status line under the live price shows which symbol is being fetched at a glance.
 
 **Best practice — one log per instrument.** TraderLab's analytics, win rate, expectancy, and R-multiple math read cleanest when the log is scoped to a single symbol. If you trade multiple instruments, the simplest approach is one JSON backup per symbol — name them `Sean_NQ_2026.json`, `Sean_ES_2026.json`, etc. (Settings → DATA → Log Name) and switch between them with Export/Import.
 
-If you do choose to keep multiple symbols in one log, that works too — TraderLab v2.3.10+ persists each trade's tick value, tick size, and commission at save time so historical numbers stay accurate even if you change your active instrument later. The Trade Log will show a per-symbol summary line and a soft banner pointing you at the **Analytics → Instrument filter** to scope the dashboard one symbol at a time.
+If you do choose to keep multiple symbols in one log, that works too — TraderLab v2.3.10+ persists each trade's tick value, tick size, and commission at save time so historical numbers stay accurate even if you change your active instrument later. The Trade Log will show a per-symbol summary chip row and a soft banner pointing you at the **Analytics → Instrument filter** to scope the dashboard one symbol at a time.
+
+> **For the full multi-symbol guide** — including the technical changes that made it possible, a map for anyone modifying the source, and the data-compatibility guarantees — see [MULTI_SYMBOL_NOTES.md](MULTI_SYMBOL_NOTES.md) (PDF version also in the repo).
 
 ### LABELS & DEFAULTS
 
