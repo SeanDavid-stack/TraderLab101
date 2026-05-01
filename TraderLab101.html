@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.11
+  TraderLab 101 v2.3.12
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.11</title>
+<title>TraderLab 101 v2.3.12</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -723,7 +723,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.11</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.12</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -772,6 +772,13 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
       <button class="btn btn-g" onclick="confirmBiasChange()">Confirm Change</button>
     </div>
   </div>
+</div>
+
+<!-- Update notification banner (v2.3.12+). Single element, swapped between two modes
+     by JS: the one-time intro for first-run after upgrade, and the update-available
+     mode when a newer release exists on GitHub. -->
+<div id="updateBanner" style="display:none;background:var(--s2);border-bottom:1px solid var(--gold2);padding:10px 20px;font-family:var(--mono);font-size:11px;color:var(--text);">
+  <div id="updateBannerInner" style="display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;"></div>
 </div>
 
 <div class="banner" id="banner">
@@ -835,7 +842,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.11</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.12</div>
   </nav>
 
   <div class="content">
@@ -1819,6 +1826,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         <span class="set-jump" onclick="scrollToSetting('set-journal')">JOURNAL</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-feeds')">FEEDS</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-ai')">AI COACH</span> ·
+        <span class="set-jump" onclick="scrollToSetting('set-updates')">UPDATES</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-data')">DATA</span>
       </p></div>
 
@@ -2069,6 +2077,26 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         </div>
         <div style="font-size:10px;color:var(--t4);font-family:var(--mono);line-height:1.6;">
           🔒 Default: your API key is stored in <code>localStorage</code> on this device only. It is never sent anywhere except directly to Anthropic's API. With Session-only mode on, the key is held in <code>sessionStorage</code> and disappears when you close the browser tab.
+        </div>
+      </div>
+
+      <!-- ── UPDATES ── -->
+      <div id="set-updates" class="set-section">UPDATES</div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="ct"><span class="dot" style="background:var(--gold)"></span>GitHub Update Notifications <span style="font-size:10px;color:var(--t3);font-weight:400;font-family:var(--mono);margin-left:6px;">— optional check on app start</span></div>
+        <div style="font-size:11px;color:var(--t2);margin-bottom:12px;line-height:1.7;">
+          When enabled, TraderLab makes one anonymous request to <code>api.github.com</code> on startup (max once per 6 hours) to see if a new release tag exists for this app. If a newer version is available, a small dismissible banner appears under the header. <strong style="color:var(--text);">No data about you or your trades is sent</strong> — just the API call itself.
+        </div>
+        <div class="fg" style="margin-bottom:6px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:400;font-size:11px;color:var(--t2);">
+            <input type="checkbox" id="settings-update-toggle" onchange="settingsToggleUpdateChecks()" style="cursor:pointer;">
+            <span><strong style="color:var(--text)">Check for updates on startup</strong> — recommended; one request per session, fails silently if offline</span>
+          </label>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn-o" onclick="settingsCheckForUpdatesNow()" style="font-size:11px;padding:6px 12px;">Check now</button>
+          <span id="settings-update-last-checked" style="font-size:10px;color:var(--t3);font-family:var(--mono);"></span>
         </div>
       </div>
 
@@ -3836,7 +3864,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.11'
+    v: 'v2.3.12'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -3990,6 +4018,9 @@ var fullStopMode=false;
 // instrument is active. Micros (MES/MNQ) track their parent contract on Yahoo because
 // Yahoo's micro feeds can be sparse / stale.
 var INSTRUMENT_PRESETS={MES:{name:'MES',tickSize:0.25,tickValue:1.25,commission:0.62,yahooTicker:'ES=F'},ES:{name:'ES',tickSize:0.25,tickValue:12.50,commission:2.32,yahooTicker:'ES=F'},MNQ:{name:'MNQ',tickSize:0.25,tickValue:0.50,commission:0.62,yahooTicker:'NQ=F'},NQ:{name:'NQ',tickSize:0.25,tickValue:5.00,commission:2.32,yahooTicker:'NQ=F'}};
+// Single source of truth for the version — used by the GitHub update checker, not user-facing.
+var TL_VERSION = 'v2.3.12';
+var TL_GITHUB_REPO = 'SeanDavid-stack/TraderLab101';
 var SETUP_LABELS={opening:'Opening Trade',cont:'IBC Continuation',mr:'Mean Reversion',ibf:'IBF',vpoc:'VPOC Shift',bar:'BAR',midvpoc:'MID>VWAP>VPOC',vhvn:'VHVN>VPOC'};
 var TRIGGER_LABELS={'1':'Type 1 — Break High ↑','2':'Type 2 — Break Low ↓','3':'Type 3 — Sweep Low → Long ↑','4':'Type 4 — Sweep High → Short ↓'};
 var customLabels=_safeParse(KCL,{errors:{hidden:[],added:[]},emotions:{hidden:[],added:[]},reasons:{hidden:[],added:[]},triggers:{hidden:[],added:[]},setups:{hidden:[],added:[]}});
@@ -4130,6 +4161,9 @@ function getBMFieldsWithCustom(){
   try{updTBadge();}catch(e){console.error('init updTBadge:',e);}
   if(!journalDropdowns) journalDropdowns = JSON.parse(JSON.stringify(DEFAULT_JOURNAL_DROPDOWNS));
   try{applyJournalDropdowns();}catch(e){console.error('init applyJournalDropdowns:',e);}
+  // v2.3.12: bootstrap the GitHub release checker (delayed inside the function so the
+  // main UI renders first). Wrapped in its own try so a checker hiccup never breaks init.
+  try{ if(typeof initUpdateChecker==='function') initUpdateChecker(); }catch(e){console.error('init updateChecker:',e);}
   } catch(initErr) { console.error('INIT IIFE crashed — some features may not work until reload:', initErr); try{logError('init','IIFE crash: '+initErr.message, initErr.stack?initErr.stack.substring(0,300):'');}catch(ignore){} }
 })();
 
@@ -5458,6 +5492,8 @@ function clearSTChecks(){
 
 
 function loadSettings(){
+  // v2.3.12: refresh the Updates section UI on every Settings open.
+  try{ if(typeof settingsLoadUpdateUI==='function') settingsLoadUpdateUI(); }catch(e){}
   // Instrument
   document.getElementById('settings-instrument').value = instrumentSettings.name || 'MES';
   document.getElementById('settings-tick-size').value = instrumentSettings.tickSize || 0.25;
@@ -5715,7 +5751,7 @@ function saveCustomInstrument(){
     var tvEl=document.getElementById('settings-tick-value'); if(tvEl){tvEl.style.borderColor='var(--red)';tvEl.focus();}
     toast('Enter a valid tick value',''); return;
   }
-  // v2.3.11: require commission for non-preset (custom) symbols. The four built-in
+  // v2.3.12: require commission for non-preset (custom) symbols. The four built-in
   // presets (MES/ES/MNQ/NQ) ship with sensible defaults; for any other symbol the
   // user must enter their broker's actual RT cost so analytics, daily goals, and
   // What-If math don't silently use $0 fees.
@@ -5804,7 +5840,7 @@ function ensureInstrumentOption(selectEl, name){
   selectEl.insertBefore(opt, selectEl.firstChild);
 }
 
-// ── Multi-symbol UX helpers (v2.3.11) ────────────────────────────────────
+// ── Multi-symbol UX helpers (v2.3.12) ────────────────────────────────────
 // Goal: surface the existing Instrument filter when a log has 2+ instruments,
 // without forcing users into a "mode" or hiding aggregate analytics.
 
@@ -7388,7 +7424,7 @@ function cancelEditTrade(){
 }
 
 function renderTradeLog(){
-  // v2.3.11: refresh the multi-symbol UX affordances first so they land before the table.
+  // v2.3.12: refresh the multi-symbol UX affordances first so they land before the table.
   try{ renderMixedInstrumentBanner(); }catch(e){}
   try{ renderSymbolSummary(); }catch(e){}
   renderTLStats();
@@ -7411,7 +7447,7 @@ function renderTradeLog(){
   }
   if(tlResultFilter!=='all') filtered=filtered.filter(function(t){return t.result===tlResultFilter;});
   if(tlDirFilter!=='all') filtered=filtered.filter(function(t){return (t.dir||'').toLowerCase()===tlDirFilter;});
-  // v2.3.11: per-symbol summary chip filter (multi-symbol UX).
+  // v2.3.12: per-symbol summary chip filter (multi-symbol UX).
   if(typeof tlInstrFilter!=='undefined' && tlInstrFilter && tlInstrFilter!=='all'){
     filtered = filtered.filter(function(t){return t.instrument===tlInstrFilter;});
   }
@@ -11811,6 +11847,185 @@ function updJBadge(){const b=document.getElementById('jbadge');if(sessions.lengt
 //
 // SCHEMA_VERSION defined at top of STATE section (near line 3453)
 
+// ══════════════════════════════════════════
+// UPDATE CHECKER (v2.3.12+)
+// ══════════════════════════════════════════
+// Polls the GitHub releases API once per session (max 1× per 6h) to see if a newer
+// release tag exists. Notifies the user via a dismissible banner. Fully opt-out via
+// Settings, fully fail-silent on network errors, and shows a one-time intro banner
+// to existing users on first upgrade so consent is explicit.
+//
+// localStorage keys (all additive — older versions ignore them):
+//   tl_update_intro_seen          — '1' once user has acknowledged the feature
+//   tl_updates_disabled           — '1' if user opted out
+//   tl_last_update_check          — ms timestamp of last successful check
+//   tl_update_dismissed_version   — last release tag the user dismissed
+//   tl_last_known_latest_version  — last release tag we saw (for "Check now" UI)
+
+function compareSemver(a, b){
+  var ap = String(a||'').replace(/^v/i,'').split(/[.\-]/).map(function(s){return parseInt(s,10)||0;});
+  var bp = String(b||'').replace(/^v/i,'').split(/[.\-]/).map(function(s){return parseInt(s,10)||0;});
+  for(var i=0; i<Math.max(ap.length, bp.length); i++){
+    var av = ap[i]||0, bv = bp[i]||0;
+    if(av < bv) return -1;
+    if(av > bv) return 1;
+  }
+  return 0;
+}
+
+function _hideUpdateBanner(){
+  var b = document.getElementById('updateBanner');
+  if(b) b.style.display='none';
+}
+
+function _renderUpdateBanner(html, accent){
+  var b = document.getElementById('updateBanner');
+  var inner = document.getElementById('updateBannerInner');
+  if(!b || !inner) return;
+  // Optional accent override (defaults to gold border).
+  b.style.borderBottomColor = accent || 'var(--gold2)';
+  inner.innerHTML = html;
+  b.style.display = '';
+}
+
+// First-run introduction — explicit accept/decline for the new auto-update check.
+function showUpdateIntroBanner(){
+  var html =
+    '<div style="flex:1;min-width:240px;line-height:1.5;">'+
+      '<strong style="color:var(--gold);">🆕 New in v2.3.12 — Update notifications</strong><br>'+
+      '<span style="color:var(--t2);font-size:10.5px;">TraderLab can check GitHub for new releases on startup. One unauthenticated request per session, no data about you or your trades is sent. You can change this anytime in Settings → Updates.</span>'+
+    '</div>'+
+    '<div style="display:flex;gap:6px;flex-shrink:0;">'+
+      '<button class="btn btn-g" onclick="acceptUpdateIntro()" style="font-size:11px;padding:6px 12px;">Keep on (recommended)</button>'+
+      '<button class="btn-o" onclick="declineUpdateIntro()" style="font-size:11px;padding:6px 12px;">Turn off</button>'+
+    '</div>';
+  _renderUpdateBanner(html);
+}
+
+function acceptUpdateIntro(){
+  localStorage.setItem('tl_update_intro_seen','1');
+  localStorage.removeItem('tl_updates_disabled');
+  _hideUpdateBanner();
+  // Run the first check now that consent is explicit.
+  runUpdateCheck(true);
+}
+
+function declineUpdateIntro(){
+  localStorage.setItem('tl_update_intro_seen','1');
+  localStorage.setItem('tl_updates_disabled','1');
+  _hideUpdateBanner();
+  try{ toast('Update checks disabled. Re-enable any time in Settings → Updates.',''); }catch(e){}
+}
+
+// Update-available banner — shown when a newer tag exists than TL_VERSION.
+function showUpdateAvailableBanner(latestTag, releaseUrl){
+  var safeTag = String(latestTag||'').replace(/[^a-zA-Z0-9.\-]/g,'');
+  var safeUrl = String(releaseUrl||'').replace(/[<>"']/g,'');
+  var html =
+    '<div style="flex:1;min-width:240px;line-height:1.5;">'+
+      '<strong style="color:var(--gold);">🔔 TraderLab 101 '+safeTag+' is available</strong>'+
+      '<span style="color:var(--t3);"> — you\'re on '+TL_VERSION+'.</span><br>'+
+      '<span style="color:var(--t2);font-size:10.5px;">Download the new HTML from the release page below — your existing data stays untouched.</span>'+
+    '</div>'+
+    '<div style="display:flex;gap:6px;flex-shrink:0;">'+
+      '<a class="btn btn-g" href="'+safeUrl+'" target="_blank" rel="noopener" style="font-size:11px;padding:6px 12px;text-decoration:none;">View release →</a>'+
+      '<button class="btn-o" onclick="dismissUpdateNotification(\''+safeTag+'\')" style="font-size:11px;padding:6px 12px;">Dismiss</button>'+
+    '</div>';
+  _renderUpdateBanner(html);
+}
+
+function dismissUpdateNotification(tag){
+  if(tag) localStorage.setItem('tl_update_dismissed_version', tag);
+  _hideUpdateBanner();
+}
+
+// Core check: hits the GitHub API once. Returns a result object or null on any
+// failure (network, rate limit, parse error). Never throws into the caller.
+async function checkForUpdatesNow(){
+  try{
+    var r = await fetch('https://api.github.com/repos/'+TL_GITHUB_REPO+'/releases/latest', {
+      cache: 'no-store',
+      headers: { 'Accept': 'application/vnd.github+json' }
+    });
+    if(!r.ok) return null;
+    var data = await r.json();
+    if(!data || !data.tag_name) return null;
+    localStorage.setItem('tl_last_known_latest_version', data.tag_name);
+    return { tag: data.tag_name, url: data.html_url || ('https://github.com/'+TL_GITHUB_REPO+'/releases/tag/'+data.tag_name) };
+  }catch(e){
+    return null;
+  }
+}
+
+// Wraps the core check with throttling, opt-out, and banner side-effects.
+async function runUpdateCheck(force){
+  if(localStorage.getItem('tl_updates_disabled')==='1' && !force) return null;
+  var now = Date.now();
+  var last = parseInt(localStorage.getItem('tl_last_update_check')||'0',10);
+  if(!force && (now - last) < 6*60*60*1000) return null; // 6h throttle
+  var res = await checkForUpdatesNow();
+  if(!res) return null;
+  localStorage.setItem('tl_last_update_check', String(now));
+  var dismissed = localStorage.getItem('tl_update_dismissed_version');
+  if(res.tag === dismissed && !force) return res;
+  if(compareSemver(TL_VERSION, res.tag) < 0){
+    showUpdateAvailableBanner(res.tag, res.url);
+  } else if(force){
+    try{ toast('You\'re on the latest version ('+TL_VERSION+').','ok'); }catch(e){}
+  }
+  return res;
+}
+
+// Settings page handlers.
+function settingsToggleUpdateChecks(){
+  var el = document.getElementById('settings-update-toggle');
+  if(!el) return;
+  if(el.checked){
+    localStorage.removeItem('tl_updates_disabled');
+    try{ toast('Update checks enabled.','ok'); }catch(e){}
+  } else {
+    localStorage.setItem('tl_updates_disabled','1');
+    try{ toast('Update checks disabled.',''); }catch(e){}
+  }
+}
+function settingsCheckForUpdatesNow(){
+  // Force a check regardless of throttle/opt-out flags so the user can verify on demand.
+  runUpdateCheck(true).then(function(res){
+    if(!res){
+      try{ toast('Couldn\'t reach GitHub. Try again later.',''); }catch(e){}
+    }
+  });
+}
+function settingsLoadUpdateUI(){
+  var tog = document.getElementById('settings-update-toggle');
+  if(tog) tog.checked = localStorage.getItem('tl_updates_disabled') !== '1';
+  var lastEl = document.getElementById('settings-update-last-checked');
+  var lastTs = parseInt(localStorage.getItem('tl_last_update_check')||'0',10);
+  var lastKnown = localStorage.getItem('tl_last_known_latest_version') || '';
+  if(lastEl){
+    if(!lastTs){
+      lastEl.textContent = 'Never checked. Click Check Now to verify.';
+    } else {
+      var dt = new Date(lastTs);
+      var line = 'Last checked '+dt.toLocaleString();
+      if(lastKnown) line += ' · Latest seen: '+lastKnown;
+      lastEl.textContent = line;
+    }
+  }
+}
+
+// Bootstrap — called from the init IIFE. First run shows the intro; subsequent
+// runs run the throttled check (if not opted out).
+function initUpdateChecker(){
+  setTimeout(function(){
+    try{
+      var introSeen = localStorage.getItem('tl_update_intro_seen') === '1';
+      if(!introSeen){ showUpdateIntroBanner(); return; }
+      runUpdateCheck(false);
+    }catch(e){}
+  }, 1500);
+}
+
 // ── Startup migration — runs every load on localStorage data ──
 // This ensures users who update the HTML file (without import/export)
 // still get their data migrated properly.
@@ -12732,7 +12947,7 @@ function wiCalcStats(trades, useNetFees){
     if(dd>maxDD) maxDD=dd;
     totalR+=(t.totalR||0);
     // Per-trade instrument ptVal for risk calc.
-    // Prefer values persisted on the trade itself (v2.3.11+) so historical risk
+    // Prefer values persisted on the trade itself (v2.3.12+) so historical risk
     // numbers are accurate for custom instruments even after the active instrument
     // is switched away.
     var instrName2=t.instrument||instrumentSettings.name||'MES';
@@ -12887,7 +13102,7 @@ function wiSimulate(){
   // ── Apply improvements ──
   var improved=kept.map(function(t){
     var mod=Object.assign({},t);
-    // Prefer persisted tick data on the trade (v2.3.11+); fall back to preset.
+    // Prefer persisted tick data on the trade (v2.3.12+); fall back to preset.
     var ptVal_t=5; // safe-ish default if everything else fails
     try{
       if(typeof t.tickValue==='number' && typeof t.tickSize==='number' && t.tickSize>0){

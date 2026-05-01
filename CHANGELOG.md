@@ -1,5 +1,53 @@
 # TraderLab 101 — Changelog
 
+## v2.3.12 — GitHub Update Notifications (May 2026)
+
+TraderLab now checks GitHub for new releases on startup and surfaces a small
+dismissible banner if a newer version is available. Existing users get a one-time
+explicit consent prompt on first run after upgrading.
+
+### NEW: Update notification system
+- On app boot (after a 1.5s delay), TraderLab makes one unauthenticated GET to
+  `api.github.com/repos/SeanDavid-stack/TraderLab101/releases/latest`.
+- Throttled to once every 6 hours per browser session.
+- If the returned tag is newer than `TL_VERSION` (and not previously dismissed),
+  a small banner appears below the header. Dismiss to suppress for that release.
+- All network failures (offline, rate limit, parse error) fail silently.
+- **No data about the user, their trades, or anything in localStorage is sent.**
+  Just the API call itself.
+
+### NEW: Explicit consent on first run after upgrade
+Existing users (and fresh installs) see a one-time intro banner with
+**Keep on (recommended)** / **Turn off** buttons before any check runs. The
+choice is stored so it never re-prompts. If the user picks Turn Off, no further
+checks happen until they manually re-enable in Settings.
+
+### NEW: Settings → Updates section
+- Toggle: *"Check for updates on startup"*.
+- **Check now** button — bypasses throttle and opt-out for an on-demand check.
+- Last-checked timestamp + last-known latest-version surfaced for transparency.
+- New entry in the sticky-jump nav: INSTRUMENT · LABELS · GOALS · JOURNAL · FEEDS
+  · AI COACH · **UPDATES** · DATA.
+
+### Backwards Data Compatibility
+- Five new localStorage keys are purely additive: `tl_update_intro_seen`,
+  `tl_updates_disabled`, `tl_last_update_check`, `tl_update_dismissed_version`,
+  `tl_last_known_latest_version`.
+- No localStorage key renamed or reshaped. Existing data untouched.
+
+### Verified
+- App boots cleanly with all helpers + UI elements present.
+- 8/8 semver comparison edge cases pass (`v2.3.11 < v2.3.12`, `v2.3.0 < v2.3.10`,
+  beta tags, missing input, etc.).
+- 12-case mocked-fetch matrix: fresh-install intro, decline opt-out, force-check
+  bypass, newer-version banner, dismiss persists, throttle blocks recheck,
+  newer-than-dismissed re-shows, equal-version no banner, 403/network failure
+  silent, fetch-throws silent.
+- Isolated opt-out test confirms `runUpdateCheck(false)` with
+  `tl_updates_disabled='1'` returns `null` and never calls fetch.
+
+---
+
 ## v2.3.11 — Commission Required For Custom Instruments (April 2026)
 
 Small UX safeguard following on from v2.3.10's multi-symbol work.
