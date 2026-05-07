@@ -1,5 +1,61 @@
 # TraderLab 101 — Changelog
 
+## v2.3.13 — Hit-Pill Themes (Accessibility) (May 2026)
+
+Reported by Willerz: the "Targets Tagged" pills in the Journal session summary
+were hard to read at a glance — low contrast against the dark background and the
+two states (live vs reconciled) used similar greenish/cyan colors that blur
+together for older eyes and red-green colorblind users (~8% of men).
+
+### NEW: Three pill themes — Settings → Display → Hit-Pill Theme
+- **Default** — existing green / cyan look, with bumped contrast (background
+  opacity 7%→14%, border opacity 30%→45%). Subtle but more readable on dim
+  monitors.
+- **High Contrast** — bold neutral gray / white, larger font, thicker border.
+  For low-vision users.
+- **Yellow Highlight** — gold for reconciled (Willerz's specific request) /
+  dim gray for live. The gold/gray pair is **distinguishable across all major
+  color blindness types** (deuteranopia, protanopia, tritanopia, monochromacy).
+
+The active theme is applied via a body class so switching it propagates instantly
+to every rendered pill in the DOM with no re-render needed.
+
+### NEW: Theme-independent leading glyph
+Every pill now starts with a leading glyph regardless of theme:
+- **●** (filled circle) = reconciled — tagged from session range
+- **○** (open circle) = live — tagged at the moment
+
+The glyphs differentiate the two states **without relying on color alone**, so
+the distinction holds for color-blind users and anyone who prints the journal in
+grayscale.
+
+### Settings UI
+- New **DISPLAY** section in Settings, with the sticky-jump nav updated:
+  INSTRUMENT · LABELS · GOALS · JOURNAL · FEEDS · AI COACH · **DISPLAY** ·
+  UPDATES · DATA.
+- Three preset buttons render a live preview of how each theme looks. Click any
+  preset to apply instantly.
+- Active preset is highlighted (`active` class) every time Settings opens.
+
+### Backwards Data Compatibility
+- One new localStorage key (`tl_hipill_theme`) — purely additive.
+  Absent = default = the existing v2.3.12 visual.
+- No localStorage key renamed or reshaped. Existing user data, sessions, hit
+  snapshots — all preserved untouched.
+- Invalid theme values stored by hand-editing fall back to 'default' safely.
+
+### Verified
+- 8-stage backwards-compat regression: cold-start, theme switching (default →
+  high → yellow → default), invalid-theme fallback, demo (old v2.3 format)
+  load (220 trades / 61 sessions / 41 missed), all 15 panels render, hit pills
+  render with leading glyph (`● ONL @ 5871.00` confirmed in DOM), theme
+  switch restyles existing pills instantly via CSS (color confirmed changing
+  to `#fff5cc` after switching to yellow theme), round-trip export → wipe →
+  import preserves 220→220 trades with matching first-ID.
+- Zero JS console errors across the entire test suite.
+
+---
+
 ## v2.3.12 — GitHub Update Notifications (May 2026)
 
 TraderLab now checks GitHub for new releases on startup and surfaces a small

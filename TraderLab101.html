@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.12
+  TraderLab 101 v2.3.13
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.12</title>
+<title>TraderLab 101 v2.3.13</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -338,8 +338,23 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 .align-na   { background:var(--s3);color:var(--t3);border:1px solid var(--b2); }
 /* Journal hit pills */
 .jhits { display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--b1); }
-.jhit-pill { font-size:9px;font-family:var(--mono);padding:2px 7px;border-radius:3px;border:1px solid rgba(54,215,154,.3);background:rgba(54,215,154,.07);color:var(--green); }
-.jhit-pill.reconciled { border-color:rgba(100,180,255,.3);background:rgba(100,180,255,.07);color:var(--cyan); }
+/* Hit pills — three themes, switched via body class so the change propagates
+   instantly to every rendered pill in the DOM (no re-render needed):
+     • default          — green (live) / cyan (reconciled), bumped contrast
+     • hipill-theme-high   — bold neutral gray/white, larger, accessibility-friendly
+     • hipill-theme-yellow — gold for reconciled (Willerz's request), dim gray for live;
+                              gold/gray is distinguishable across all major color
+                              blindness types
+   Each pill carries a leading glyph (● = reconciled, ○ = live) regardless of theme,
+   so the two states are differentiable without relying on color alone. */
+.jhit-pill { font-size:9px;font-family:var(--mono);padding:2px 7px;border-radius:3px;border:1px solid rgba(54,215,154,.45);background:rgba(54,215,154,.14);color:var(--green); }
+.jhit-pill.reconciled { border-color:rgba(100,180,255,.45);background:rgba(100,180,255,.14);color:var(--cyan); }
+
+body.hipill-theme-high .jhit-pill { font-size:10px;font-weight:600;padding:3px 9px;border-width:1.5px;border-color:rgba(200,200,200,.6);background:rgba(160,160,160,.22);color:#e8e8e8; }
+body.hipill-theme-high .jhit-pill.reconciled { border-color:#ffffff;background:rgba(255,255,255,.18);color:#ffffff; }
+
+body.hipill-theme-yellow .jhit-pill { font-size:10px;padding:3px 9px;border:1px solid rgba(180,180,180,.4);background:rgba(120,120,120,.15);color:#bdbdbd; }
+body.hipill-theme-yellow .jhit-pill.reconciled { font-weight:700;border-color:var(--gold);background:rgba(245,166,35,.32);color:#fff5cc; }
 .sct{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
 .scd{font-family:var(--sans);font-size:14px;font-weight:800;}
 .scr{display:flex;gap:6px;align-items:center;}
@@ -723,7 +738,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.12</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.13</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -774,7 +789,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
   </div>
 </div>
 
-<!-- Update notification banner (v2.3.12+). Single element, swapped between two modes
+<!-- Update notification banner (v2.3.13+). Single element, swapped between two modes
      by JS: the one-time intro for first-run after upgrade, and the update-available
      mode when a newer release exists on GitHub. -->
 <div id="updateBanner" style="display:none;background:var(--s2);border-bottom:1px solid var(--gold2);padding:10px 20px;font-family:var(--mono);font-size:11px;color:var(--text);">
@@ -842,7 +857,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.12</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.13</div>
   </nav>
 
   <div class="content">
@@ -1826,6 +1841,7 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         <span class="set-jump" onclick="scrollToSetting('set-journal')">JOURNAL</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-feeds')">FEEDS</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-ai')">AI COACH</span> ·
+        <span class="set-jump" onclick="scrollToSetting('set-display')">DISPLAY</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-updates')">UPDATES</span> ·
         <span class="set-jump" onclick="scrollToSetting('set-data')">DATA</span>
       </p></div>
@@ -2077,6 +2093,36 @@ tr.stat-hit td.sn::after { content:' ✓'; font-size:10px; color:var(--green); o
         </div>
         <div style="font-size:10px;color:var(--t4);font-family:var(--mono);line-height:1.6;">
           🔒 Default: your API key is stored in <code>localStorage</code> on this device only. It is never sent anywhere except directly to Anthropic's API. With Session-only mode on, the key is held in <code>sessionStorage</code> and disappears when you close the browser tab.
+        </div>
+      </div>
+
+      <!-- ── DISPLAY (v2.3.13) ── -->
+      <div id="set-display" class="set-section">DISPLAY</div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="ct"><span class="dot" style="background:var(--gold)"></span>Hit-Pill Theme <span style="font-size:10px;color:var(--t3);font-weight:400;font-family:var(--mono);margin-left:6px;">— readability of "Targets Tagged" pills in the Journal</span></div>
+        <div style="font-size:11px;color:var(--t2);margin-bottom:14px;line-height:1.7;">
+          Each pill is tagged with a leading glyph (<strong>●</strong> reconciled / <strong>○</strong> live) regardless of theme — the glyphs differentiate the two states without relying on color alone, so the distinction holds for color-blind users and anyone with reduced contrast sensitivity.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <button id="hipill-theme-default" class="btn-o" onclick="setHitPillTheme('default')" style="padding:10px;text-align:left;line-height:1.5;cursor:pointer;">
+            <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;">Default</div>
+            <div style="font-size:9px;color:var(--t3);margin-bottom:6px;">Subtle green / cyan</div>
+            <span class="jhit-pill reconciled">● VPOC</span> <span class="jhit-pill">○ pHigh</span>
+          </button>
+          <button id="hipill-theme-high" class="btn-o" onclick="setHitPillTheme('high')" style="padding:10px;text-align:left;line-height:1.5;cursor:pointer;">
+            <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;">High Contrast</div>
+            <div style="font-size:9px;color:var(--t3);margin-bottom:6px;">Bold neutral · low-vision</div>
+            <span class="jhit-pill reconciled" style="font-size:10px;font-weight:600;padding:3px 9px;border:1.5px solid #ffffff;background:rgba(255,255,255,.18);color:#ffffff;">● VPOC</span> <span class="jhit-pill" style="font-size:10px;font-weight:600;padding:3px 9px;border:1.5px solid rgba(200,200,200,.6);background:rgba(160,160,160,.22);color:#e8e8e8;">○ pHigh</span>
+          </button>
+          <button id="hipill-theme-yellow" class="btn-o" onclick="setHitPillTheme('yellow')" style="padding:10px;text-align:left;line-height:1.5;cursor:pointer;">
+            <div style="font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;">Yellow Highlight</div>
+            <div style="font-size:9px;color:var(--t3);margin-bottom:6px;">Gold · color-blind safe</div>
+            <span class="jhit-pill reconciled" style="font-size:10px;font-weight:700;padding:3px 9px;border:1px solid var(--gold);background:rgba(245,166,35,.32);color:#fff5cc;">● VPOC</span> <span class="jhit-pill" style="font-size:10px;padding:3px 9px;border:1px solid rgba(180,180,180,.4);background:rgba(120,120,120,.15);color:#bdbdbd;">○ pHigh</span>
+          </button>
+        </div>
+        <div style="font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:10px;line-height:1.6;">
+          Click any preset above. The change applies instantly across the Journal (no reload needed). Default is the existing v2.3.13 look. Yellow Highlight is gold/gray — distinguishable across all major color blindness types.
         </div>
       </div>
 
@@ -3864,7 +3910,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.12'
+    v: 'v2.3.13'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -4019,7 +4065,7 @@ var fullStopMode=false;
 // Yahoo's micro feeds can be sparse / stale.
 var INSTRUMENT_PRESETS={MES:{name:'MES',tickSize:0.25,tickValue:1.25,commission:0.62,yahooTicker:'ES=F'},ES:{name:'ES',tickSize:0.25,tickValue:12.50,commission:2.32,yahooTicker:'ES=F'},MNQ:{name:'MNQ',tickSize:0.25,tickValue:0.50,commission:0.62,yahooTicker:'NQ=F'},NQ:{name:'NQ',tickSize:0.25,tickValue:5.00,commission:2.32,yahooTicker:'NQ=F'}};
 // Single source of truth for the version — used by the GitHub update checker, not user-facing.
-var TL_VERSION = 'v2.3.12';
+var TL_VERSION = 'v2.3.13';
 var TL_GITHUB_REPO = 'SeanDavid-stack/TraderLab101';
 var SETUP_LABELS={opening:'Opening Trade',cont:'IBC Continuation',mr:'Mean Reversion',ibf:'IBF',vpoc:'VPOC Shift',bar:'BAR',midvpoc:'MID>VWAP>VPOC',vhvn:'VHVN>VPOC'};
 var TRIGGER_LABELS={'1':'Type 1 — Break High ↑','2':'Type 2 — Break Low ↓','3':'Type 3 — Sweep Low → Long ↑','4':'Type 4 — Sweep High → Short ↓'};
@@ -4161,7 +4207,9 @@ function getBMFieldsWithCustom(){
   try{updTBadge();}catch(e){console.error('init updTBadge:',e);}
   if(!journalDropdowns) journalDropdowns = JSON.parse(JSON.stringify(DEFAULT_JOURNAL_DROPDOWNS));
   try{applyJournalDropdowns();}catch(e){console.error('init applyJournalDropdowns:',e);}
-  // v2.3.12: bootstrap the GitHub release checker (delayed inside the function so the
+  // v2.3.13: apply chosen hit-pill theme (default if not set — purely additive).
+  try{ if(typeof applyHitPillTheme==='function') applyHitPillTheme(); }catch(e){console.error('init applyHitPillTheme:',e);}
+  // v2.3.13: bootstrap the GitHub release checker (delayed inside the function so the
   // main UI renders first). Wrapped in its own try so a checker hiccup never breaks init.
   try{ if(typeof initUpdateChecker==='function') initUpdateChecker(); }catch(e){console.error('init updateChecker:',e);}
   } catch(initErr) { console.error('INIT IIFE crashed — some features may not work until reload:', initErr); try{logError('init','IIFE crash: '+initErr.message, initErr.stack?initErr.stack.substring(0,300):'');}catch(ignore){} }
@@ -5492,8 +5540,10 @@ function clearSTChecks(){
 
 
 function loadSettings(){
-  // v2.3.12: refresh the Updates section UI on every Settings open.
+  // v2.3.13: refresh the Updates section UI on every Settings open.
   try{ if(typeof settingsLoadUpdateUI==='function') settingsLoadUpdateUI(); }catch(e){}
+  // v2.3.13: highlight the active hit-pill theme preset.
+  try{ if(typeof loadHitPillThemeUI==='function') loadHitPillThemeUI(); }catch(e){}
   // Instrument
   document.getElementById('settings-instrument').value = instrumentSettings.name || 'MES';
   document.getElementById('settings-tick-size').value = instrumentSettings.tickSize || 0.25;
@@ -5751,7 +5801,7 @@ function saveCustomInstrument(){
     var tvEl=document.getElementById('settings-tick-value'); if(tvEl){tvEl.style.borderColor='var(--red)';tvEl.focus();}
     toast('Enter a valid tick value',''); return;
   }
-  // v2.3.12: require commission for non-preset (custom) symbols. The four built-in
+  // v2.3.13: require commission for non-preset (custom) symbols. The four built-in
   // presets (MES/ES/MNQ/NQ) ship with sensible defaults; for any other symbol the
   // user must enter their broker's actual RT cost so analytics, daily goals, and
   // What-If math don't silently use $0 fees.
@@ -5840,7 +5890,7 @@ function ensureInstrumentOption(selectEl, name){
   selectEl.insertBefore(opt, selectEl.firstChild);
 }
 
-// ── Multi-symbol UX helpers (v2.3.12) ────────────────────────────────────
+// ── Multi-symbol UX helpers (v2.3.13) ────────────────────────────────────
 // Goal: surface the existing Instrument filter when a log has 2+ instruments,
 // without forcing users into a "mode" or hiding aggregate analytics.
 
@@ -7424,7 +7474,7 @@ function cancelEditTrade(){
 }
 
 function renderTradeLog(){
-  // v2.3.12: refresh the multi-symbol UX affordances first so they land before the table.
+  // v2.3.13: refresh the multi-symbol UX affordances first so they land before the table.
   try{ renderMixedInstrumentBanner(); }catch(e){}
   try{ renderSymbolSummary(); }catch(e){}
   renderTLStats();
@@ -7447,7 +7497,7 @@ function renderTradeLog(){
   }
   if(tlResultFilter!=='all') filtered=filtered.filter(function(t){return t.result===tlResultFilter;});
   if(tlDirFilter!=='all') filtered=filtered.filter(function(t){return (t.dir||'').toLowerCase()===tlDirFilter;});
-  // v2.3.12: per-symbol summary chip filter (multi-symbol UX).
+  // v2.3.13: per-symbol summary chip filter (multi-symbol UX).
   if(typeof tlInstrFilter!=='undefined' && tlInstrFilter && tlInstrFilter!=='all'){
     filtered = filtered.filter(function(t){return t.instrument===tlInstrFilter;});
   }
@@ -10909,8 +10959,12 @@ function loadJDate(){
     } else if(bias==='neutral') alignInfo={cls:'align-na',icon:'—',text:'Neutral'};
     var hitPills='';
     if(e.hitsSnap&&e.hitsSnap.length){
+      // Theme is applied via the body class (see hipill-theme-* in CSS).
+      // The leading glyph (● = reconciled, ○ = live) is theme-independent and
+      // differentiates the two states without relying on color alone.
       hitPills=e.hitsSnap.map(function(h){
-        return `<span class="jhit-pill${h.reconciled?' reconciled':''}">${h.label}</span>`;
+        var _glyph = h.reconciled ? '●' : '○';
+        return `<span class="jhit-pill${h.reconciled?' reconciled':''}" title="${h.reconciled?'Tagged from session range':'Tagged live'}">${_glyph} ${h.label}</span>`;
       }).join('');
     }
     var banner=document.createElement('div');
@@ -11402,7 +11456,8 @@ function showJournalReview(e){
   var hitsHtml='<span class="rv-no-data">No targets tagged this session.</span>';
   if(e.hitsSnap&&e.hitsSnap.length){
     hitsHtml='<div style="display:flex;flex-wrap:wrap;gap:5px;">'+e.hitsSnap.map(function(h){
-      return '<span class="jhit-pill'+(h.reconciled?' reconciled':'')+'" title="'+(h.reconciled?'Tagged from session range':'Tagged live')+'">'+h.label+(typeof h.level==='number'?' @ '+h.level.toFixed(2):h.level||'')+'</span>';
+      var _glyph = h.reconciled ? '●' : '○';
+      return '<span class="jhit-pill'+(h.reconciled?' reconciled':'')+'" title="'+(h.reconciled?'Tagged from session range':'Tagged live')+'">'+_glyph+' '+h.label+(typeof h.level==='number'?' @ '+h.level.toFixed(2):h.level||'')+'</span>';
     }).join('')+'</div>';
   }
 
@@ -11729,9 +11784,10 @@ function renderSessions(){
     // ── Tagged hits pills ─────────────────────────────────────────────────
     let hitsHtml = '';
     if (s.hitsSnap && s.hitsSnap.length) {
-      const pills = s.hitsSnap.map(h =>
-        `<span class="jhit-pill${h.reconciled?' reconciled':''}" title="${h.reconciled?'Tagged from session range':'Tagged live'}">${h.label} @ ${typeof h.level==='number'?h.level.toFixed(2):h.level}</span>`
-      ).join('');
+      const pills = s.hitsSnap.map(h => {
+        const glyph = h.reconciled ? '●' : '○';
+        return `<span class="jhit-pill${h.reconciled?' reconciled':''}" title="${h.reconciled?'Tagged from session range':'Tagged live'}">${glyph} ${h.label} @ ${typeof h.level==='number'?h.level.toFixed(2):h.level}</span>`;
+      }).join('');
       hitsHtml = `<div class="jhits"><span style="font-size:9px;color:var(--t3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;align-self:center;white-space:nowrap;">Targets Tagged</span>${pills}</div>`;
     }
 
@@ -11848,7 +11904,41 @@ function updJBadge(){const b=document.getElementById('jbadge');if(sessions.lengt
 // SCHEMA_VERSION defined at top of STATE section (near line 3453)
 
 // ══════════════════════════════════════════
-// UPDATE CHECKER (v2.3.12+)
+// HIT-PILL THEMES (v2.3.13+)
+// ══════════════════════════════════════════
+// Three presets switched via a body class so the change propagates instantly to
+// every rendered pill in the DOM (no re-render needed). Default theme is the
+// existing green/cyan; "high" is bold neutral gray/white for low-vision users;
+// "yellow" is gold/gray, distinguishable across all major color blindness types.
+//
+// localStorage key: tl_hipill_theme — values: 'default' | 'high' | 'yellow'.
+// Absent = default (backwards-compat: zero impact for prior versions).
+
+function applyHitPillTheme(){
+  var theme = localStorage.getItem('tl_hipill_theme') || 'default';
+  if(!document.body) return;
+  document.body.classList.remove('hipill-theme-high','hipill-theme-yellow');
+  if(theme === 'high') document.body.classList.add('hipill-theme-high');
+  else if(theme === 'yellow') document.body.classList.add('hipill-theme-yellow');
+  // 'default' = no class
+}
+function setHitPillTheme(theme){
+  if(['default','high','yellow'].indexOf(theme) < 0) theme = 'default';
+  localStorage.setItem('tl_hipill_theme', theme);
+  applyHitPillTheme();
+  if(typeof loadHitPillThemeUI==='function') loadHitPillThemeUI();
+  try{ toast('Hit-pill theme: '+theme,'ok'); }catch(e){}
+}
+function loadHitPillThemeUI(){
+  var current = localStorage.getItem('tl_hipill_theme') || 'default';
+  ['default','high','yellow'].forEach(function(t){
+    var btn = document.getElementById('hipill-theme-'+t);
+    if(btn) btn.classList.toggle('active', current === t);
+  });
+}
+
+// ══════════════════════════════════════════
+// UPDATE CHECKER (v2.3.13+)
 // ══════════════════════════════════════════
 // Polls the GitHub releases API once per session (max 1× per 6h) to see if a newer
 // release tag exists. Notifies the user via a dismissible banner. Fully opt-out via
@@ -11892,7 +11982,7 @@ function _renderUpdateBanner(html, accent){
 function showUpdateIntroBanner(){
   var html =
     '<div style="flex:1;min-width:240px;line-height:1.5;">'+
-      '<strong style="color:var(--gold);">🆕 New in v2.3.12 — Update notifications</strong><br>'+
+      '<strong style="color:var(--gold);">🆕 New in v2.3.13 — Update notifications</strong><br>'+
       '<span style="color:var(--t2);font-size:10.5px;">TraderLab can check GitHub for new releases on startup. One unauthenticated request per session, no data about you or your trades is sent. You can change this anytime in Settings → Updates.</span>'+
     '</div>'+
     '<div style="display:flex;gap:6px;flex-shrink:0;">'+
@@ -12947,7 +13037,7 @@ function wiCalcStats(trades, useNetFees){
     if(dd>maxDD) maxDD=dd;
     totalR+=(t.totalR||0);
     // Per-trade instrument ptVal for risk calc.
-    // Prefer values persisted on the trade itself (v2.3.12+) so historical risk
+    // Prefer values persisted on the trade itself (v2.3.13+) so historical risk
     // numbers are accurate for custom instruments even after the active instrument
     // is switched away.
     var instrName2=t.instrument||instrumentSettings.name||'MES';
@@ -13102,7 +13192,7 @@ function wiSimulate(){
   // ── Apply improvements ──
   var improved=kept.map(function(t){
     var mod=Object.assign({},t);
-    // Prefer persisted tick data on the trade (v2.3.12+); fall back to preset.
+    // Prefer persisted tick data on the trade (v2.3.13+); fall back to preset.
     var ptVal_t=5; // safe-ish default if everything else fails
     try{
       if(typeof t.tickValue==='number' && typeof t.tickSize==='number' && t.tickSize>0){
