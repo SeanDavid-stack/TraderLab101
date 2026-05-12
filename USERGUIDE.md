@@ -45,7 +45,7 @@ There is no installation. TraderLab 101 is a single HTML file that runs entirely
 3. Double-click to open in Chrome (recommended), or any modern browser
 4. On first launch you will see two one-time splash screens:
    - **Welcome splash** — read it, click **Let's Get to Work →**
-   - **Service & Support Terms** — read carefully. Tick the agreement checkbox to enable the **Continue** button. This screen covers bug-fix policy (at the developer's discretion); the fact that while TraderLab itself is free, the developer's time is not — so custom requests / add-ons carry a **$100.00 USD per-request minimum service fee** to compensate that time (each fee covers one request only — not future versions, ongoing maintenance, or priority support); and the standard "trading decisions are your own" notice. You only agree once per browser; the full terms appear in-app and are summarized in [README.md](README.md).
+   - **Service & Support Terms** — read carefully. Tick the agreement checkbox to enable the **Continue** button. This screen covers bug-fix policy (at the developer's discretion); the fact that the developer alone decides whether something is a bug, an enhancement, or a feature request — and that classification governs whether the work is free or billable; the fact that while TraderLab itself is free, the developer's time is not — so custom requests / add-ons carry a **$100.00 USD per-request minimum service fee** to compensate that time (each fee covers one request only — not future versions, ongoing maintenance, or priority support); and the standard "trading decisions are your own" notice. You only agree once per browser; the full terms appear in-app and are summarized in [README.md](README.md).
 
 ### First-Time Setup
 

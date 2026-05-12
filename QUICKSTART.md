@@ -36,7 +36,7 @@ This guide takes you from "first download" to "logged a trade and looked at anal
 On first launch you will see two one-time splash screens:
 
 1. **Welcome splash** — read it, click **Let's Get to Work →**
-2. **Service & Support Terms** — read carefully. Tick the agreement checkbox to enable the **I Understand and Agree — Continue →** button. In short: bug fixes are at the developer's discretion (no obligation); the tool itself is free but the developer's time is not, so any custom request or add-on built for you specifically carries a **minimum service fee of $100.00 USD per request** to compensate the developer's time (scope-dependent, agreed in writing first). **Each fee covers that single request only** — not future versions, ongoing maintenance, or priority support. Standard releases remain free under the existing license.
+2. **Service & Support Terms** — read carefully. Tick the agreement checkbox to enable the **I Understand and Agree — Continue →** button. In short: bug fixes are at the developer's discretion (no obligation); **what counts as a bug, an enhancement, or a feature request is solely the developer's call** (and that classification decides whether it's free or billable); the tool itself is free but the developer's time is not, so any custom request or add-on built for you specifically carries a **minimum service fee of $100.00 USD per request** to compensate the developer's time (scope-dependent, agreed in writing first). **Each fee covers that single request only** — not future versions, ongoing maintenance, or priority support. Standard releases remain free under the existing license.
 
 You only need to agree once per browser.
 

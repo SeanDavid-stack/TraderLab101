@@ -18,6 +18,7 @@ The data model (`trade.scales[]`) was already a variable-length array on disk in
 A one-time disclaimer screen that gates the app on first load. Three sections:
 
 - **Bug Fixes Are at the Developer's Discretion** — reviewed and addressed at the developer's sole discretion. No obligation to fix any specific issue, respond on a defined timeline, or guarantee continued maintenance.
+- **Classification Is at the Developer's Discretion** — what counts as a bug, an enhancement, or a feature request is determined solely by the developer. The classification is final and governs whether work is free (standard release) or billable (custom request).
 - **Custom Requests & Add-Ons Require a Service Fee** — TraderLab itself is free, but the developer's time is not. Custom work carries a **minimum service fee of $100.00 USD per request**. **Each fee covers that one request only** — it does not include future versions, ongoing maintenance, priority support, free fixes to unrelated areas, or credit toward future requests. Scope, price, and timeline are agreed in writing before any work begins. Standard releases (versions, bug fixes, and improvements made at the developer's own initiative) remain free under the existing PolyForm Noncommercial license.
 - **Your Trading Decisions Are Your Own** — standard "not advice" framing.
 
