@@ -29,9 +29,10 @@ All five replaced with class-based DOM walks via `#tl-scales-list .tl-scale-row`
 
 #### 2. Mandatory Service & Support Terms splash
 
-New one-time disclaimer splash that gates the app on first load. Three sections:
+New one-time disclaimer splash that gates the app on first load. Four sections:
 
 - **Bug Fixes Are at the Developer's Discretion** — reviewed/fixed at sole discretion, no obligation, no timeline guarantee.
+- **Classification Is at the Developer's Discretion** *(added later in v2.3.14 as a text-only amendment — commit `7fefadf`)* — what counts as a bug, an enhancement, or a feature request is determined solely by the developer. The classification is final and governs whether work is free (standard release) or billable (custom request). Closes the gray area between "I think this is a bug, fix it free" vs "I consider this a feature request, $100".
 - **Custom Requests & Add-Ons Require a Service Fee** — the tool itself is free; the developer's time is not. **Minimum $100.00 USD per request.** Each fee covers that one request only (no future versions, ongoing maintenance, priority support, or credit toward future requests). Scope agreed in writing first.
 - **Your Trading Decisions Are Your Own** — standard "not advice" framing.
 
