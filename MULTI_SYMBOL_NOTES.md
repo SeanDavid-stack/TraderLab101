@@ -139,6 +139,6 @@ Verified by a 6-stage smoke test against the v2.3 demo dataset (220 trades / 61 
 
 ---
 
-*If you have questions or hit something unexpected, open an issue on the [GitHub repository](https://github.com/SeanDavid-stack/TraderLab101) or reach out via the Traders Lab Discord.*
+*If you have questions or hit something unexpected, open an issue on the [GitHub repository](https://github.com/SeanDavid-stack/TraderLab101), reach out via the Traders Lab Discord, or contact the developer at [sdes.dev](https://sdes.dev) / [sean@sdes.dev](mailto:sean@sdes.dev).*
 
-— SeanDavid
+— SeanDavid · [sdes.dev](https://sdes.dev) · [sean@sdes.dev](mailto:sean@sdes.dev)

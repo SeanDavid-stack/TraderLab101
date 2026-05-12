@@ -1,5 +1,5 @@
 <!--
-  TraderLab 101 v2.3.13
+  TraderLab 101 v2.3.14
   Copyright (c) 2026 SeanDavid E. All rights reserved.
 
   Licensed under the PolyForm Noncommercial License 1.0.0
@@ -23,7 +23,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="tl101-sd26e">
 <meta name="application-name" content="TraderLab101">
-<title>TraderLab 101 v2.3.13</title>
+<title>TraderLab 101 v2.3.14</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -738,7 +738,7 @@ body.hipill-theme-yellow .jhit-pill.reconciled { font-weight:700;border-color:va
 <!-- SPLASH SCREEN — shows once on first visit -->
 <div class="splash-overlay" id="splashOverlay">
   <div class="splash-card">
-    <h1>Welcome to TraderLab 101. <span>v2.3.13</span></h1>
+    <h1>Welcome to TraderLab 101. <span>v2.3.14</span></h1>
     <p>TraderLab 101 was designed to be an all-in-one tool to help you track everything that matters — your trading sessions, your methodology, your psychology, your errors, your wins, and the lessons between them. From preflight research to open context, from structured trade setups to journaling and performance review — it's all here, in one place.</p>
     <p>Now, I'm not going to sugarcoat it. It may seem like a lot of information to keep track of... and that's because it is. You are engaging in the greatest financial game on earth. You are sitting at the same table as institutional desks, algorithmic systems, and some of the sharpest minds in global finance. This is not a casual hobby — this is a battlefield of preparation.</p>
     <p>They say 90 to 95 percent of retail traders fail. And there are many reasons why — undercapitalization, emotional decision-making, chasing setups they don't understand. But a massive reason, maybe the biggest reason, is simple: they don't put in the work. They want the results without the process. They want the P&L without the journal. They want the edge without the reps.</p>
@@ -750,10 +750,54 @@ body.hipill-theme-yellow .jhit-pill.reconciled { font-weight:700;border-color:va
       <p style="color:var(--t3);margin:4px 0 0;font-size:11px;">— Charles Bukowski</p>
     </div>
     <p style="font-weight:700;color:var(--text);margin-bottom:0;">Welcome to the work. Welcome to TraderLab 101.</p>
-    <div class="splash-sig">Created by SeanDavid E. · Based on Tom B.'s Traders Lab methodology</div>
+    <div class="splash-sig">Created by SeanDavid E. · <a href="https://sdes.dev" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">sdes.dev</a> · <a href="mailto:sean@sdes.dev" style="color:var(--gold);text-decoration:none;">sean@sdes.dev</a> · Based on Tom B.'s Traders Lab methodology</div>
     <div style="font-size:9px;color:var(--t4);font-family:var(--mono);margin-top:4px;">© 2026 SeanDavid E. All rights reserved.</div>
     <div class="splash-close">
       <button class="btn btn-g" onclick="dismissSplash()" style="padding:10px 40px;font-size:13px;font-weight:700;">Let's Get to Work →</button>
+    </div>
+  </div>
+</div>
+
+<!-- DISCLAIMER SPLASH (v2.3.14) — must be agreed to before continuing.
+     Keyed off tl_disclaimer_agreed in localStorage. Purely additive — no
+     existing data is touched. Appears once per browser; resets if the user
+     uses Settings → Clear Everything. -->
+<div class="splash-overlay" id="disclaimerOverlay">
+  <div class="splash-card">
+    <h1>Service &amp; Support Terms <span>v2.3.14</span></h1>
+    <p style="color:var(--t3);font-size:11px;margin-bottom:18px;">Please read carefully before continuing.</p>
+
+    <div style="border-left:3px solid var(--gold);padding-left:14px;margin-bottom:16px;">
+      <p style="color:var(--gold);font-weight:700;font-size:13px;margin-bottom:6px;">Bug Fixes Are at the Developer's Discretion</p>
+      <p>TraderLab 101 is provided as-is under the PolyForm Noncommercial License. When you report a bug, it will be reviewed and addressed at the developer's sole discretion. Every reasonable effort is made to keep TraderLab 101 stable and working — however, the developer is <strong style="color:var(--text);">under no obligation</strong> to fix any specific issue, respond on a defined timeline, or guarantee continued maintenance.</p>
+    </div>
+
+    <div style="border-left:3px solid var(--gold);padding-left:14px;margin-bottom:16px;">
+      <p style="color:var(--gold);font-weight:700;font-size:13px;margin-bottom:6px;">Custom Requests &amp; Add-Ons Require a Service Fee</p>
+      <p>TraderLab 101 itself is <strong style="color:var(--text);">free</strong> to download and use. The developer's time, however, is not. Any special request, custom feature, workflow add-on, or change made specifically at a user's request requires a service fee. This fee compensates the developer for the time spent on design, implementation, and the testing required to ensure the change does not break existing functionality for other users.</p>
+      <ul style="font-size:12px;color:var(--t2);line-height:1.8;margin:0 0 8px;padding-left:20px;">
+        <li><strong style="color:var(--text);">Minimum service fee: $100.00 USD per request</strong></li>
+        <li>The final price depends on the scope and complexity of the work</li>
+        <li>Scope, price, and timeline will be agreed in writing before any work begins</li>
+        <li><strong style="color:var(--text);">Each fee covers that one request only.</strong> It does not include future versions, ongoing maintenance, priority support, free fixes to unrelated areas, or credit toward future requests. Any additional work — or any change in scope beyond what was originally agreed — requires a new agreement and a separate fee.</li>
+        <li>Standard releases — versions, bug fixes, and improvements made at the developer's own initiative — remain free under the existing license</li>
+      </ul>
+      <p style="font-size:11px;color:var(--t3);margin-top:6px;">To discuss a custom request, reach out via <a href="https://sdes.dev" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:700;">sdes.dev</a> or email <a href="mailto:sean@sdes.dev" style="color:var(--gold);text-decoration:none;font-weight:700;">sean@sdes.dev</a>.</p>
+    </div>
+
+    <div style="border-left:3px solid var(--gold);padding-left:14px;margin-bottom:20px;">
+      <p style="color:var(--gold);font-weight:700;font-size:13px;margin-bottom:6px;">Your Trading Decisions Are Your Own</p>
+      <p>TraderLab 101 is a journaling and analytics tool. It does not provide trading advice, signals, recommendations, or guarantees of profitability. Every trading decision you make is yours alone, and you accept full responsibility for the outcomes of those decisions.</p>
+    </div>
+
+    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;padding:12px;background:var(--s3);border:1px solid var(--b2);border-radius:6px;margin-bottom:6px;">
+      <input type="checkbox" id="disclaimerAgreeCheck" onchange="toggleDisclaimerAgree()" style="margin-top:2px;cursor:pointer;width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;">
+      <span style="font-size:12px;color:var(--t2);line-height:1.6;">I have read and agree to the Service &amp; Support Terms above. I understand that bug fixes are at the developer's discretion and that custom requests carry a minimum service fee of $100.00 USD.</span>
+    </label>
+
+    <div class="splash-sig">Created by SeanDavid E. · <a href="https://sdes.dev" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">sdes.dev</a> · <a href="mailto:sean@sdes.dev" style="color:var(--gold);text-decoration:none;">sean@sdes.dev</a> · © 2026 All rights reserved.</div>
+    <div class="splash-close">
+      <button class="btn btn-g" id="disclaimerAgreeBtn" onclick="agreeDisclaimer()" disabled style="padding:10px 40px;font-size:13px;font-weight:700;opacity:.45;cursor:not-allowed;">I Understand and Agree — Continue →</button>
     </div>
   </div>
 </div>
@@ -857,7 +901,7 @@ body.hipill-theme-yellow .jhit-pill.reconciled { font-weight:700;border-color:va
     <div class="ni" onclick="go('aicoach',this)"><span class="ic">🧠</span> AI Coach</div>
     <div class="ns">Config</div>
     <div class="ni" onclick="go('settings',this)"><span class="ic">⚙</span> Settings</div>
-    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.13</div>
+    <div style="margin-top:auto;padding:12px 16px;font-size:9px;color:var(--t4);font-family:var(--mono);letter-spacing:.05em;">TraderLab 101 · v2.3.14</div>
   </nav>
 
   <div class="content">
@@ -2240,7 +2284,7 @@ body.hipill-theme-yellow .jhit-pill.reconciled { font-weight:700;border-color:va
           <div style="font-size:10px;color:var(--t3);margin-top:2px;">— Charles Bukowski</div>
         </div>
         <div style="font-size:11px;font-family:var(--mono);color:var(--t3);border-top:1px solid var(--b1);padding-top:10px;">
-          Created by <strong style="color:var(--text);">SeanDavid</strong> · Based on <strong style="color:var(--text);">Tom B.</strong>'s Traders Lab methodology<br>
+          Created by <strong style="color:var(--text);">SeanDavid</strong> · <a href="https://sdes.dev" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">sdes.dev</a> · <a href="mailto:sean@sdes.dev" style="color:var(--gold);text-decoration:none;">sean@sdes.dev</a> · Based on <strong style="color:var(--text);">Tom B.</strong>'s Traders Lab methodology<br>
           <span style="font-size:10px;">Single-file browser app · All data stored locally · Zero dependencies</span><br>
           <button class="btn-o" onclick="showSplash()" style="margin-top:8px;font-size:10px;padding:4px 12px;">Show Welcome Screen Again</button>
         </div>
@@ -2459,32 +2503,35 @@ body.hipill-theme-yellow .jhit-pill.reconciled { font-weight:700;border-color:va
 
         <!-- Scale entries (hidden when full stop active) -->
         <div id="tl-scales-panel">
-        <div class="tl-scale">
-          <div class="tl-scale-hdr"><span style="color:var(--green)">Scale 1 — Risk Neutral</span></div>
+        <div id="tl-scales-list">
+        <div class="tl-scale tl-scale-row" data-scale-role="rn">
+          <div class="tl-scale-hdr"><span class="tl-scale-label" style="color:var(--green)">Scale 1 — Risk Neutral</span></div>
           <div class="tl-row r3">
-            <div class="fg"><label>Exit Price</label><input type="number" id="tl-s1-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>
-            <div class="fg"><label>Contracts</label><input type="number" id="tl-s1-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>
-            <div class="fg"><label>R Achieved</label><input type="text" id="tl-s1-r" readonly style="color:var(--t3);background:var(--s3);"></div>
+            <div class="fg"><label>Exit Price</label><input type="number" class="tl-scale-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>
+            <div class="fg"><label>Contracts</label><input type="number" class="tl-scale-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>
+            <div class="fg"><label>R Achieved</label><input type="text" class="tl-scale-r" readonly style="color:var(--t3);background:var(--s3);"></div>
           </div>
         </div>
 
-        <div class="tl-scale">
-          <div class="tl-scale-hdr"><span style="color:var(--cyan)">Scale 2 — Target</span></div>
+        <div class="tl-scale tl-scale-row" data-scale-role="target">
+          <div class="tl-scale-hdr"><span class="tl-scale-label" style="color:var(--cyan)">Scale 2 — Target</span></div>
           <div class="tl-row r3">
-            <div class="fg"><label>Exit Price</label><input type="number" id="tl-s2-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>
-            <div class="fg"><label>Contracts</label><input type="number" id="tl-s2-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>
-            <div class="fg"><label>R Achieved</label><input type="text" id="tl-s2-r" readonly style="color:var(--t3);background:var(--s3);"></div>
+            <div class="fg"><label>Exit Price</label><input type="number" class="tl-scale-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>
+            <div class="fg"><label>Contracts</label><input type="number" class="tl-scale-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>
+            <div class="fg"><label>R Achieved</label><input type="text" class="tl-scale-r" readonly style="color:var(--t3);background:var(--s3);"></div>
           </div>
         </div>
 
-        <div class="tl-scale">
-          <div class="tl-scale-hdr"><span style="color:var(--purple)">Runner / Final Exit</span></div>
+        <div class="tl-scale tl-scale-row" data-scale-role="runner">
+          <div class="tl-scale-hdr"><span class="tl-scale-label" style="color:var(--purple)">Runner / Final Exit</span></div>
           <div class="tl-row r3">
-            <div class="fg"><label>Exit Price</label><input type="number" id="tl-s3-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>
-            <div class="fg"><label>Contracts</label><input type="number" id="tl-s3-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>
-            <div class="fg"><label>R Achieved</label><input type="text" id="tl-s3-r" readonly style="color:var(--t3);background:var(--s3);"></div>
+            <div class="fg"><label>Exit Price</label><input type="number" class="tl-scale-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>
+            <div class="fg"><label>Contracts</label><input type="number" class="tl-scale-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>
+            <div class="fg"><label>R Achieved</label><input type="text" class="tl-scale-r" readonly style="color:var(--t3);background:var(--s3);"></div>
           </div>
         </div>
+        </div><!-- /tl-scales-list -->
+        <button type="button" class="btn-o" onclick="addScaleRow()" style="font-size:10px;padding:4px 10px;margin-top:8px;border-color:var(--cyan);color:var(--cyan);">+ Add Scale</button>
         </div><!-- /tl-scales-panel -->
 
         <!-- Trade Targets — Plan vs Execution -->
@@ -3910,7 +3957,7 @@ function logError(category, message, detail){
     msg: message,
     detail: detail || '',
     url: location.href.split('/').pop(),
-    v: 'v2.3.13'
+    v: 'v2.3.14'
   };
   _errorLog.push(entry);
   if(_errorLog.length > 200) _errorLog = _errorLog.slice(-200);
@@ -4065,7 +4112,7 @@ var fullStopMode=false;
 // Yahoo's micro feeds can be sparse / stale.
 var INSTRUMENT_PRESETS={MES:{name:'MES',tickSize:0.25,tickValue:1.25,commission:0.62,yahooTicker:'ES=F'},ES:{name:'ES',tickSize:0.25,tickValue:12.50,commission:2.32,yahooTicker:'ES=F'},MNQ:{name:'MNQ',tickSize:0.25,tickValue:0.50,commission:0.62,yahooTicker:'NQ=F'},NQ:{name:'NQ',tickSize:0.25,tickValue:5.00,commission:2.32,yahooTicker:'NQ=F'}};
 // Single source of truth for the version — used by the GitHub update checker, not user-facing.
-var TL_VERSION = 'v2.3.13';
+var TL_VERSION = 'v2.3.14';
 var TL_GITHUB_REPO = 'SeanDavid-stack/TraderLab101';
 var SETUP_LABELS={opening:'Opening Trade',cont:'IBC Continuation',mr:'Mean Reversion',ibf:'IBF',vpoc:'VPOC Shift',bar:'BAR',midvpoc:'MID>VWAP>VPOC',vhvn:'VHVN>VPOC'};
 var TRIGGER_LABELS={'1':'Type 1 — Break High ↑','2':'Type 2 — Break Low ↓','3':'Type 3 — Sweep Low → Long ↑','4':'Type 4 — Sweep High → Short ↓'};
@@ -4179,6 +4226,10 @@ function getBMFieldsWithCustom(){
     // Show splash screen on first visit
     if(!localStorage.getItem('tl_splash_seen')){
       setTimeout(showSplash, 300);
+    } else if(!localStorage.getItem('tl_disclaimer_agreed')){
+      // v2.3.14: existing users skip past the welcome splash but still need
+      // to agree to the new Service & Support Terms once.
+      setTimeout(showDisclaimer, 300);
     }
     // ── Startup persistence diagnostic ──
     setTimeout(function(){
@@ -6382,7 +6433,7 @@ function clearMissedTrades(){
 function clearEverything(){
   if(!confirm('⚠ DELETE EVERYTHING? All sessions, trades, missed trades, settings, goals — everything. This cannot be undone.')) return;
   if(!confirm('LAST CHANCE — are you absolutely sure? Export a backup first if you have not already.')) return;
-  var keys=['tl_sessions','tl_checks','tl_pm','tl_preflight','tl_st_checks','tl_bmurl','tl_bmurl_price','tl_rth_buffer','tl_trades','tl_custom_setups','tl_instrument','tl_journal_dropdowns','tl_bmmap','tl_missed','tl_goals','tl_an_toggles','tl_an_collapse','tl_an_order','tl_hits','tl_splash_seen','tl_an_card_toggles','tl_an_card_order','tl_tl_card_toggles','tl_tl_card_order','tl_schema_version','tl_an_fees','tl_custom_labels','tl_thresholds','tl_error_log'];
+  var keys=['tl_sessions','tl_checks','tl_pm','tl_preflight','tl_st_checks','tl_bmurl','tl_bmurl_price','tl_rth_buffer','tl_trades','tl_custom_setups','tl_instrument','tl_journal_dropdowns','tl_bmmap','tl_missed','tl_goals','tl_an_toggles','tl_an_collapse','tl_an_order','tl_hits','tl_splash_seen','tl_disclaimer_agreed','tl_an_card_toggles','tl_an_card_order','tl_tl_card_toggles','tl_tl_card_order','tl_schema_version','tl_an_fees','tl_custom_labels','tl_thresholds','tl_error_log'];
   keys.forEach(function(k){localStorage.removeItem(k);});
   toast('All data cleared — reloading...','');
   setTimeout(function(){location.reload();},1000);
@@ -6853,17 +6904,16 @@ function calcTrade(){
   var totalExited = 0;
   var gotRN = false;
 
-  // Calculate each scale
-  var scales = [
-    {priceId:'tl-s1-price', qtyId:'tl-s1-qty', rId:'tl-s1-r', label:'Scale 1'},
-    {priceId:'tl-s2-price', qtyId:'tl-s2-qty', rId:'tl-s2-r', label:'Scale 2'},
-    {priceId:'tl-s3-price', qtyId:'tl-s3-qty', rId:'tl-s3-r', label:'Runner'},
-  ];
-
-  scales.forEach(function(sc, idx){
-    var px  = parseFloat(document.getElementById(sc.priceId).value);
-    var qty = parseInt(document.getElementById(sc.qtyId).value)||0;
-    var rEl = document.getElementById(sc.rId);
+  // Walk every scale row in DOM order. First row = RN check.
+  // Variable length (v2.3.14): user can add/remove scales via + Add Scale.
+  var scaleRows = document.querySelectorAll('#tl-scales-list .tl-scale-row');
+  scaleRows.forEach(function(row, idx){
+    var priceEl = row.querySelector('.tl-scale-price');
+    var qtyEl   = row.querySelector('.tl-scale-qty');
+    var rEl     = row.querySelector('.tl-scale-r');
+    if(!priceEl||!qtyEl||!rEl) return;
+    var px  = parseFloat(priceEl.value);
+    var qty = parseInt(qtyEl.value)||0;
     if(isNaN(px)||qty===0){ rEl.value=''; return; }
     var pnlPts = isLong ? (px - entry) : (entry - px);
     var rMultiple = rPts > 0 ? (pnlPts / rPts) : 0;
@@ -6892,6 +6942,58 @@ function calcTrade(){
     `Total P&L: <strong style="color:${resColor}">${totalPnlPts>=0?'+':''}${totalPnlPts.toFixed(2)} pts  /  $${totalPnlDollars>=0?'+':''}${totalPnlDollars.toFixed(0)}</strong>` +
     `  ·  <strong style="color:${resColor}">${totalR>=0?'+':''}${totalR.toFixed(2)}R</strong>` +
     (gotRN ? `  ·  <span style="color:var(--green)">✓ Risk Neutral reached</span>` : `  ·  <span style="color:var(--red)">✗ RN not reached</span>`);
+}
+
+// ── Dynamic scale rows (v2.3.14) ─────────────────────────────────────────
+// Users can add as many intermediate Target legs as they need via "+ Add Scale".
+// Added rows live BETWEEN the Target row and the Runner row so the Runner stays
+// the final exit semantically. Labels auto-renumber on add/remove. The data
+// model (trade.scales[]) was already an array — old 3-scale trades remain
+// fully compatible with no migration.
+function addScaleRow(){
+  var list = document.getElementById('tl-scales-list');
+  if(!list) return;
+  var runnerRow = list.querySelector('[data-scale-role="runner"]');
+  var row = document.createElement('div');
+  row.className = 'tl-scale tl-scale-row';
+  row.setAttribute('data-scale-role','extra');
+  row.innerHTML =
+    '<div class="tl-scale-hdr" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">'+
+      '<span class="tl-scale-label" style="color:var(--cyan)">Scale — Target</span>'+
+      '<button type="button" class="btn-o" onclick="removeScaleRow(this)" style="font-size:9px;padding:2px 8px;border-color:var(--red);color:var(--red);">✕ Remove</button>'+
+    '</div>'+
+    '<div class="tl-row r3">'+
+      '<div class="fg"><label>Exit Price</label><input type="number" class="tl-scale-price" step="0.25" placeholder="0.00" oninput="calcTrade()"></div>'+
+      '<div class="fg"><label>Contracts</label><input type="number" class="tl-scale-qty" step="1" min="0" placeholder="0" oninput="calcTrade()"></div>'+
+      '<div class="fg"><label>R Achieved</label><input type="text" class="tl-scale-r" readonly style="color:var(--t3);background:var(--s3);"></div>'+
+    '</div>';
+  if(runnerRow) list.insertBefore(row, runnerRow);
+  else list.appendChild(row);
+  renumberScaleLabels();
+  calcTrade();
+}
+
+function removeScaleRow(btn){
+  var row = btn.closest('.tl-scale-row');
+  if(!row) return;
+  row.remove();
+  renumberScaleLabels();
+  calcTrade();
+}
+
+function renumberScaleLabels(){
+  var rows = document.querySelectorAll('#tl-scales-list .tl-scale-row');
+  var targetCount = 0;
+  rows.forEach(function(row, idx){
+    var lblEl = row.querySelector('.tl-scale-label');
+    if(!lblEl) return;
+    var role = row.getAttribute('data-scale-role');
+    var n = idx + 1;
+    if(role==='rn')           lblEl.textContent = 'Scale '+n+' — Risk Neutral';
+    else if(role==='target'){ lblEl.textContent = 'Scale '+n+' — Target'; targetCount = 1; }
+    else if(role==='extra'){  targetCount++; lblEl.textContent = 'Scale '+n+' — Target '+targetCount; }
+    else if(role==='runner')  lblEl.textContent = 'Runner / Final Exit';
+  });
 }
 
 function saveTradeEntry(){
@@ -6964,22 +7066,45 @@ function saveTradeEntry(){
       totalExited=contracts;
     }
   } else {
-  [[1,'Scale 1 (RN)'],[2,'Scale 2'],[3,'Runner']].forEach(function(sc){
-    var n=sc[0], lbl=sc[1];
-    var px  = parseFloat(document.getElementById('tl-s'+n+'-price').value);
-    var qty = parseInt(document.getElementById('tl-s'+n+'-qty').value)||0;
-    if(isNaN(px)||qty===0) return;
-    // Validate: price entered but qty missing, or qty entered but price missing
-    var hasPrice = !isNaN(px) && document.getElementById('tl-s'+n+'-price').value!=='';
+  // v2.3.14: walk every scale row in DOM order (user can add/remove via + Add Scale)
+  function markErrorEl(el, msg){
+    if(!el) return;
+    var wrap = el.closest('.fg') || el.parentElement;
+    wrap.classList.add('field-error');
+    if(msg){
+      var m = document.createElement('div');
+      m.className='field-error-msg';
+      m.textContent=msg;
+      wrap.appendChild(m);
+    }
+  }
+  var scaleRows = document.querySelectorAll('#tl-scales-list .tl-scale-row');
+  scaleRows.forEach(function(row, idx){
+    var priceEl = row.querySelector('.tl-scale-price');
+    var qtyEl   = row.querySelector('.tl-scale-qty');
+    if(!priceEl||!qtyEl) return;
+    var role    = row.getAttribute('data-scale-role') || '';
+    var n       = idx+1;
+    // Saved label format preserves the same role markers older versions wrote,
+    // so anything that filters scales by name (e.g. Missed Trades' 'Stop' check)
+    // keeps working unchanged.
+    var lbl;
+    if(role==='rn')           lbl='Scale 1 (RN)';
+    else if(role==='runner')  lbl='Runner';
+    else                      lbl='Scale '+n;
+    var px       = parseFloat(priceEl.value);
+    var qty      = parseInt(qtyEl.value)||0;
+    var hasPrice = !isNaN(px) && priceEl.value!=='';
     var hasQty   = qty > 0;
-    if(hasPrice && !hasQty){ markError('tl-s'+n+'-qty','Enter contracts'); errors.push('Scale '+n+': contracts missing'); return; }
-    if(!hasPrice && hasQty){ markError('tl-s'+n+'-price','Enter exit price'); errors.push('Scale '+n+': exit price missing'); return; }
+    if(!hasPrice && !hasQty) return;
+    if(hasPrice && !hasQty){ markErrorEl(qtyEl,'Enter contracts'); errors.push('Scale '+n+': contracts missing'); return; }
+    if(!hasPrice && hasQty){ markErrorEl(priceEl,'Enter exit price'); errors.push('Scale '+n+': exit price missing'); return; }
     var pnlPts = isLong?(px-entry):(entry-px);
     var rMult  = rPts>0?pnlPts/rPts:0;
     scales.push({label:lbl, price:px, qty:qty, pnlPts:pnlPts, r:rMult});
     totalPnlPts += pnlPts*qty;
     totalExited += qty;
-    if(n===1 && rMult>=0.9) gotRN=true;
+    if(idx===0 && rMult>=0.9) gotRN=true;
   });
   } // end fullStopMode else
 
@@ -7304,11 +7429,14 @@ function clearTradeForm(){
   // Reset instrument to current global setting (handles custom symbols)
   syncTradeFormInstrument();
   document.getElementById('tl-contracts').value='2';
-  [1,2,3].forEach(function(n){
-    document.getElementById('tl-s'+n+'-price').value='';
-    document.getElementById('tl-s'+n+'-qty').value='';
-    document.getElementById('tl-s'+n+'-r').value='';
+  // v2.3.14: drop any user-added scale rows, then clear inputs in the 3 defaults
+  document.querySelectorAll('#tl-scales-list [data-scale-role="extra"]').forEach(function(r){ r.remove(); });
+  document.querySelectorAll('#tl-scales-list .tl-scale-row').forEach(function(row){
+    var p=row.querySelector('.tl-scale-price'); if(p) p.value='';
+    var q=row.querySelector('.tl-scale-qty');   if(q) q.value='';
+    var r=row.querySelector('.tl-scale-r');     if(r) r.value='';
   });
+  if(typeof renumberScaleLabels==='function') renumberScaleLabels();
   selectedTrigger='';
   buildTriggerChips();
   // Reset execution errors
@@ -7422,14 +7550,20 @@ function editTradeEntry(id){
   selectedTrigger=t.triggerType||'';
   buildTriggerChips();
 
-  // Scales
+  // Scales — v2.3.14: variable-length. Add extra rows beyond the 3 defaults
+  // (RN / Target / Runner) when an older trade had more legs.
   if(t.scales&&t.scales.length){
+    var defaultRows = 3; // RN, Target, Runner
+    var extras = Math.max(0, t.scales.length - defaultRows);
+    for(var i=0; i<extras; i++){ if(typeof addScaleRow==='function') addScaleRow(); }
+    var rows = document.querySelectorAll('#tl-scales-list .tl-scale-row');
     t.scales.forEach(function(s,i){
-      var n=i+1;
-      var pEl=document.getElementById('tl-s'+n+'-price');
-      var qEl=document.getElementById('tl-s'+n+'-qty');
+      var row = rows[i];
+      if(!row) return;
+      var pEl = row.querySelector('.tl-scale-price');
+      var qEl = row.querySelector('.tl-scale-qty');
       if(pEl&&s.price) pEl.value=s.price;
-      if(qEl&&s.qty) qEl.value=s.qty;
+      if(qEl&&s.qty)   qEl.value=s.qty;
     });
   }
 
@@ -14258,6 +14392,49 @@ function dismissSplash(){
   var el=document.getElementById('splashOverlay');
   if(el) el.classList.remove('show');
   _safeSave('tl_splash_seen','1');
+  // v2.3.14: chain into the Service & Support Terms disclaimer if not yet agreed.
+  if(!localStorage.getItem('tl_disclaimer_agreed')){
+    setTimeout(showDisclaimer, 200);
+  }
+}
+
+// ── Disclaimer splash (v2.3.14) ──────────────────────────────────────────
+// Mandatory one-time agreement. Cannot be ESC-dismissed; checkbox must be
+// ticked to enable the Continue button.
+function showDisclaimer(){
+  var el=document.getElementById('disclaimerOverlay');
+  if(!el) return;
+  // Always re-open in the locked state — checkbox cleared, button disabled.
+  // Covers the case where the disclaimer is re-shown without a page reload
+  // (e.g. user did Settings → Clear Everything in the same session).
+  var chk=document.getElementById('disclaimerAgreeCheck');
+  if(chk) chk.checked=false;
+  toggleDisclaimerAgree();
+  el.classList.add('show');
+}
+function toggleDisclaimerAgree(){
+  var chk=document.getElementById('disclaimerAgreeCheck');
+  var btn=document.getElementById('disclaimerAgreeBtn');
+  if(!chk||!btn) return;
+  if(chk.checked){
+    btn.disabled=false;
+    btn.style.opacity='1';
+    btn.style.cursor='pointer';
+  } else {
+    btn.disabled=true;
+    btn.style.opacity='.45';
+    btn.style.cursor='not-allowed';
+  }
+}
+function agreeDisclaimer(){
+  var chk=document.getElementById('disclaimerAgreeCheck');
+  if(!chk||!chk.checked){
+    if(typeof toast==='function') toast('Please tick the checkbox to agree before continuing.','');
+    return;
+  }
+  var el=document.getElementById('disclaimerOverlay');
+  if(el) el.classList.remove('show');
+  _safeSave('tl_disclaimer_agreed','1');
 }
 
 // Determine initial feed mode based on whether BMBridge URL is set

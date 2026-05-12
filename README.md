@@ -4,7 +4,7 @@
 
 Single HTML file. Zero dependencies. Runs locally in your browser. Your data never leaves your computer.
 
-![Version](https://img.shields.io/badge/version-1.0-gold)
+![Version](https://img.shields.io/badge/version-2.3.14-gold)
 ![License](https://img.shields.io/badge/license-PolyForm_Noncommercial_1.0.0-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-green)
 
@@ -37,7 +37,8 @@ That's it. No install. No server. No account. No subscription.
 - **Level Tracker** — monitors which pre-market levels get hit during the session
 
 ### Trade Log
-- 3 scale-outs with R-multiple calculation (Risk Neutral + Target + Runner)
+- Variable-length scale-outs (RN + Target + Runner by default; **+ Add Scale** for additional intermediate target legs — any number)
+- R-multiple auto-calculated per scale
 - 8 built-in setups + custom setups
 - Target tracker with 17 level chips + custom targets, price, outcome (Hit/Bailed/Missed), and bail reasons
 - Exit time + auto-calculated trade duration
@@ -106,7 +107,7 @@ Tested in Chrome. Works in Firefox, Edge, and Safari. Designed for desktop — f
 ## Attribution
 
 - **Traders Lab** is Tom B.'s trading community and methodology
-- **TraderLab 101** is this tool, created by SeanDavid
+- **TraderLab 101** is this tool, created by SeanDavid — [sdes.dev](https://sdes.dev) · [sean@sdes.dev](mailto:sean@sdes.dev)
 - Built on Auction Market Theory principles as taught by Tom B.
 - Statistical data sourced from Tom B.'s published research
 
@@ -124,8 +125,16 @@ Licensed under the **[PolyForm Noncommercial License 1.0.0](https://polyformproj
 - ❌ **Not** free to use any portion of the source/layout/logic in a commercial product, paid course, paid template, paid plugin, paid indicator, paid SaaS, or commercial AI training set
 - ❌ **Not** free to remove or alter the copyright notice, embedded build identifiers, or version metadata — these are used to identify unauthorized copies
 
-For commercial licensing, open an issue or reach out via the Traders Lab Discord. See [LICENSE](LICENSE) for the full legal terms and the Required Notice that must travel with every copy.
+For commercial licensing, open an issue, reach out via the Traders Lab Discord, or contact the developer at [sdes.dev](https://sdes.dev) / [sean@sdes.dev](mailto:sean@sdes.dev). See [LICENSE](LICENSE) for the full legal terms and the Required Notice that must travel with every copy.
 
-## Feedback
+## Feedback & Service Terms
 
-This is v1.0 — the first public release. If you find bugs or have feature ideas, open an issue on this repo or reach out via the Traders Lab Discord.
+If you find bugs or have feature ideas, open an issue on this repo, reach out via the Traders Lab Discord, or contact the developer at [sdes.dev](https://sdes.dev) / [sean@sdes.dev](mailto:sean@sdes.dev).
+
+On first launch the app shows a one-time **Service & Support Terms** disclaimer that you must agree to before continuing. In short:
+
+- **Bug fixes are at the developer's sole discretion** — every reported issue is reviewed and addressed at the developer's discretion. No obligation, no defined timeline, no guarantee of continued maintenance.
+- **Custom requests and add-ons require a per-request service fee** — TraderLab 101 itself is free, but the developer's time is not. Anything built specifically at a user's request carries a **minimum service fee of $100.00 USD per request** that compensates the developer for the time spent on design, implementation, and testing. Final price depends on scope and complexity; scope, price, and timeline are agreed in writing before any work begins. **Each fee covers that one request only** — it does not include future versions, ongoing maintenance, priority support, free fixes to unrelated areas, or credit toward future requests. Any additional work, or a change in scope beyond what was originally agreed, requires a new agreement and a separate fee.
+- **Standard releases remain free** under the existing PolyForm Noncommercial license — bug fixes and improvements made at the developer's own initiative are not billed.
+
+The full terms appear in-app and only need to be agreed to once per browser.

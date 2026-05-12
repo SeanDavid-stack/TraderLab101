@@ -1,201 +1,150 @@
 # TraderLab 101 — Quick Reference
 
-**v2.2 · Keep this open alongside the tool**
+**v2.3.14 · Keep this open alongside the tool**
 
 ---
 
-## Daily Workflow (7-Step Stepper)
+## Daily Workflow
 
 ```
-1. PREFLIGHT    → Answer 8 questions → ✅ Complete (↺ Reset & Redo if needed)
-2. PRE-MARKET   → Import or enter levels → Add custom levels → Set bias → Map fuel
-3. OPEN CONTEXT → Opening print auto-detects or use ⚡ estimate → Confirm open type → Follow tree
-4. LIVE PRICE   → Monitor levels → Review tag log → IB auto-fills at 10:30
-5. TRADE        → Log entries → Tag targets, errors, emotions → 📎 Attach media
-6. MISSED       → Log trades you didn't take → Edit later if needed
-7. JOURNAL      → Edit preflight answers → Save session → Notes, lessons, media
+1. PREFLIGHT    → Answer 8 questions → Click ✅ Complete Preflight
+2. PRE-MARKET   → Import or enter levels → Set bias (Long/Short/Neutral)
+3. OPEN CONTEXT → Confirm open type → Follow decision tree
+4. TRADE        → Log entries in Trade Log → Tag targets, errors, emotions
+5. MISSED       → Log trades you didn't take with reasons
+6. JOURNAL      → Save session → Notes, lessons, screenshots
+7. REVIEW       → Analytics → Filter by date/instrument → Study your edge
 ```
 
 ---
 
-## Opening Print
+## Keyboard Shortcuts
 
-| Context | Button | What Happens |
-|---------|--------|-------------|
-| Pre-RTH, no estimate | ⚡ Use [price] as Estimate | Gold preview — OT preview active, not committed |
-| Pre-RTH, has estimate | ⚡ Update Estimate | Refreshes with current price |
-| RTH, no real open | 📌 Set Opening Print | Captures live price as confirmed |
-| RTH, has estimate | 📌 Confirm Opening Print | Replaces estimate with real value |
-| Feed delivers open | Auto | Replaces estimate silently (alerts if OT changed) |
-| Manual entry | Type in field | Overrides everything, clears estimate |
-
-Live Tracking header shows: ⚡ live · 📌 captured · manual
+| Action | How |
+|--------|-----|
+| Add custom target | Type name → Enter |
+| Add custom setup | Type name → Enter (in Settings) |
+| Quick date nav | ◄ ► buttons in Journal |
+| Save trade | Click "Log Trade" button |
 
 ---
 
-## Pre-Market Levels
+## Trade Form Fields
 
-| Field | Section |
-|-------|---------|
-| pHigh, pLow, pClose, pVPOC, Settlement | Prior Day |
-| pVAH, pVAL | Value Area |
-| ONH, ONL, ON/VPOC, Today's Open | Overnight |
-| Any name + price | Custom Levels (purple card) |
-
-### Custom Levels
-- Name only → Enter (fill price later, gold border = needs price)
-- CSV import auto-adds unmapped labels as custom levels
-- Settings → CSV Column Mapping → ★ Custom targets + ★ + New Custom Level
-
----
-
-## Preflight Checklist
-
-| Action | What Happens |
-|--------|-------------|
-| ✅ Complete Preflight | Locks answers, snapshots to journal, shows ↺ Reset |
-| ↺ Reset & Redo | Keeps answers, unlocks form for editing |
-| Edit after completing | Answers update live, completion preserved |
-| 📋 Journal section | Same answers editable in Journal form, syncs both ways |
+| Field | What to Enter |
+|-------|---------------|
+| Setup | Opening, IBC, IBF, MR, VPOC Shift, BAR, MID>VWAP>VPOC, VHVN>VPOC, or custom |
+| Direction | Long or Short |
+| Entry/Stop | Price levels (0.25 increments for ES/MES) |
+| Scale 1 | Risk Neutral exit — price + contracts |
+| Scale 2 | Target exit — price + contracts |
+| Runner | Final exit or trail — price + contracts |
+| **+ Add Scale** | Click to add extra Target legs between Scale 2 and Runner (any number; each added row has its own ✕ Remove button) |
+| Targets | Click chips → set price → mark Hit/Bailed/Missed |
+| Process | A = perfect, B = minor deviation, C = off plan, F = broke rules |
+| Exit Time | Optional — enables duration tracking |
 
 ---
 
-## Media Attachments
+## Analytics Cards
 
-- 📎 Media section in trade form, missed trade form, and journal (after Notes)
-- Paste URLs or local file paths — one per line, supports multiple
-- **Image URLs** (`.png/.jpg/.gif/.webp/.svg`, imgur) → thumbnails
-- **Local file paths** — auto-strips quotes, encodes `#` and spaces, converts to `file:///`
-- **Video/other URLs** → 🎬 clickable links with domain preview
-- Smart badge: 📷 2 🎬 1 for mixed media
-- Populated when editing trades or missed trades
-- Local file display works best when TraderLab is opened as a local HTML file
-
----
-
-## Custom Labels
-
-Settings → Labels. Five categories:
-
-| Category | Default Count | Used In |
-|----------|--------------|---------|
-| Trade Setups | 7 | Trade form, missed trades, journal, analytics, What-If, AI Coach |
-| Trigger Types | 4 | Trade form, analytics, What-If |
-| Execution Errors | 12 | Trade form, analytics, What-If, AI Coach |
-| Emotional States | 10 | Trade form, analytics, What-If, AI Coach |
-| Missed Trade Reasons | 10 | Missed trade form, reason breakdown |
-
-- 👁 Hide defaults you don't use (unhide anytime)
-- \+ Add your own custom items
-- Hidden items still appear in analytics for historical trades
-- Nothing is ever deleted — hide/show only
-- "↺ Reset" button per category — unhides defaults, removes custom items
-
----
-
-## Level Tracker
-
-| Badge | Source |
-|-------|--------|
-| ✓ tagged | Live detection (~5s checks) |
-| ✓ tagged ◈ | Reconciled from session range |
-| ✓ tagged ✎ | Manual (⊕ button, cyan badge) |
-
-IB auto-fills from session range at 10:30 ET. Manual entry pauses auto-fill. Click Clear to resume.
-
----
-
-## Fee Toggle
-
-One button syncs: Analytics ↔ Trade Log ↔ Missed Trades ↔ What-If Lab.
-Daily goals tracker is **immune** — always shows real fees.
-
----
-
-## Analytics Cards (Configurable in Settings → Goals)
-
-| Card | Default Green | Your Strategy May Differ |
-|------|--------------|------------------------|
-| Win Rate | >55% | A 30% WR with 3:1 R is profitable |
-| Profit Factor | >1.5 | Depends on R:R and win rate |
-| Risk Neutral Rate | >50% | Scale plan dependent |
-| Full Stop Rate | <20% | Lower = better risk management |
-| A-Process Win Rate | >60% | Measures process, not P&L |
-| Break Even Rate | <15% | High BE may indicate hesitation |
+| Card | What It Measures | Good |
+|------|-----------------|------|
+| Win Rate | Wins ÷ total trades | >55% |
+| Net P&L | Total profit/loss after fees | Green |
+| Profit Factor | Gross wins ÷ gross losses | >1.5 |
+| Expectancy | Avg $ per trade | Positive |
+| Avg R | Average R-multiple | >0.2R |
+| Risk Neutral Rate | % reaching RN | >50% |
+| Full Stop Rate | % taking full -1R loss | <20% |
+| Recovery Factor | Net P&L ÷ max drawdown | >2.0 |
+| First Trade WR | Win rate on 1st trade of day | Above overall WR |
+| After Loss WR | Win rate following a loss | Near overall WR |
+| Break Even Rate | % scratch trades | <10% |
 
 ---
 
 ## Open Types
 
-| Code | Meaning |
-|------|---------|
-| HOR | Gap up — above prior high |
-| LOR | Gap down — below prior low |
-| HIR | Higher open, in range |
-| LIR | Lower open, in range |
-| IR-IV | In value area |
+| Code | Meaning | Market State |
+|------|---------|-------------|
+| HOR | High Out of Range | Gap up — above prior high |
+| LOR | Low Out of Range | Gap down — below prior low |
+| HIR | High In Range | Higher open, inside prior range |
+| LIR | Low In Range | Lower open, inside prior range |
+| IR-IV | In Range, In Value | Opened inside prior value area |
 
 ---
 
-## Terminology
+## Alignment Badges
 
-| Term | Context |
-|------|---------|
-| **Tagged** | Level detection — price touched a pre-market level |
-| **Hit** | Trade target outcome — your target was reached |
+| Badge | Meaning |
+|-------|---------|
+| ▶ In Play (green) | Setup conditions met |
+| ◆ Waiting (gold) | Partial conditions, needs confirmation |
+| ⚠ Not In Play (red) | Conditions not met |
+
+---
+
+## Target Outcomes
+
+| Outcome | When to Use |
+|---------|-------------|
+| ✓ Hit | Price reached your target level |
+| ↩ Bailed | Exited before target — select a reason |
+| ✗ Missed | Target was valid but never reached |
+
+**Bail Reasons:** Price Action Change · Market Structure Shift · News · Fear/Emotion · Protecting P&L · Time · Other
+
+---
+
+## Import Levels
+
+| Source | Steps |
+|--------|-------|
+| BMBridge | Enter URL → Click Import |
+| CSV File | Click Choose CSV File → select file |
+| Google Sheet | Publish sheet as CSV → paste content in textarea |
+
+Column format: Level name in column 1, price in column 2 or 3. Configure mapping in Settings → CSV Column Mapping.
 
 ---
 
 ## Process Ratings
 
-| Grade | Meaning |
-|-------|---------|
-| A | Perfect — followed every rule |
-| B | Minor deviation |
-| C | Off plan |
-| F | Broke the rules |
+| Grade | Meaning | Use When |
+|-------|---------|----------|
+| A | Perfect process | Followed every rule, regardless of outcome |
+| B | Good, minor deviation | Mostly followed plan, small adjustment |
+| C | Off plan | Significant deviation from methodology |
+| F | Broke the rules | Revenge trade, no setup, ignored stops |
 
 ---
 
-## BMBridge Setup
+## Emotional States
 
-| Feed | Purpose |
-|------|---------|
-| ◎ Levels Feed | Pre-market level imports |
-| ⚡ Live Price Feed | Near real-time price data |
+😎 Confident · 🧘 Patient · 🎯 Focused · 😰 Anxious · 😤 Frustrated · 🤑 Greedy · 😨 Fearful · 🔥 Revenge · 😴 Bored · 😐 Neutral
 
-Fallback chain: Price feed → Levels feed → Yahoo Finance
-
----
-
-## Import Sources
-
-| Source | How |
-|--------|-----|
-| BMBridge | Settings → Levels Feed URL → Import |
-| CSV File | Choose file → auto-maps + auto-adds custom |
-| Google Sheet | Publish as CSV → paste URL |
-| Manual | Type into fields |
+Multi-select — tag all that apply to a trade.
 
 ---
 
 ## Data Safety
 
-- Export regularly: Settings → Export Backup
-- Old backups (v1.x, v2.0, v2.1, v2.1.x) import cleanly — auto-migrated
-- Schema v5 — migrations only ADD, never delete
-- Always export before updating to a new version
+- **Export regularly:** Settings → Export Backup → saves JSON file
+- **Import to restore:** Settings → Import Backup → merges with existing data
+- Data lives in browser localStorage — cleared if you clear browser data
+- No cloud sync, no server, no accounts
 
 ---
 
 ## Settings Checklist
 
-- [ ] Instrument preset selected
-- [ ] Commission set
-- [ ] BMBridge URLs configured (if using)
-- [ ] CSV column mapping set up for your source
-- [ ] Custom Labels reviewed — hide unused, add your own
-- [ ] Daily goals configured
+- [ ] Instrument preset selected (MES/ES/MNQ/NQ/custom)
+- [ ] Commission set per instrument
+- [ ] BMBridge URL configured (if using Sierra Chart)
+- [ ] CSV column mapping matches your data source
+- [ ] Daily goals set (max loss, max trades, min process)
 - [ ] First backup exported
 
 ---

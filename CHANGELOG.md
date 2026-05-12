@@ -1,5 +1,62 @@
 # TraderLab 101 — Changelog
 
+## v2.3.14 — Dynamic Scale-Outs + Service & Support Terms (May 2026)
+
+### NEW: Variable-length scale-outs in the Trade Log
+
+The Trade Log form opens with the familiar three default rows — Scale 1 (Risk Neutral), Scale 2 (Target), Runner / Final Exit — but now exposes a **+ Add Scale** button that inserts additional intermediate Target legs between Scale 2 and the Runner.
+
+- Click **+ Add Scale** as many times as the trade needs. Labels auto-renumber (`Scale 3 — Target 2`, `Scale 4 — Target 3`, …).
+- Each user-added row carries its own **✕ Remove** button. Removing also auto-renumbers.
+- Runner always stays as the final exit, visually and structurally — regardless of how many extras are inserted above it.
+- No upper limit on the number of scales per trade.
+
+The data model (`trade.scales[]`) was already a variable-length array on disk in every prior release, so old 3-scale trades load and render unchanged with no migration. The hard-coded "3" only lived in the form HTML and a handful of UI helpers (`calcTrade`, `saveTradeEntry`, `clearTradeForm`, `editTradeEntry`) — all replaced with class-based DOM walks via `#tl-scales-list .tl-scale-row`. New helpers added: `addScaleRow()`, `removeScaleRow()`, `renumberScaleLabels()`.
+
+### NEW: Mandatory Service & Support Terms splash
+
+A one-time disclaimer screen that gates the app on first load. Three sections:
+
+- **Bug Fixes Are at the Developer's Discretion** — reviewed and addressed at the developer's sole discretion. No obligation to fix any specific issue, respond on a defined timeline, or guarantee continued maintenance.
+- **Custom Requests & Add-Ons Require a Service Fee** — TraderLab itself is free, but the developer's time is not. Custom work carries a **minimum service fee of $100.00 USD per request**. **Each fee covers that one request only** — it does not include future versions, ongoing maintenance, priority support, free fixes to unrelated areas, or credit toward future requests. Scope, price, and timeline are agreed in writing before any work begins. Standard releases (versions, bug fixes, and improvements made at the developer's own initiative) remain free under the existing PolyForm Noncommercial license.
+- **Your Trading Decisions Are Your Own** — standard "not advice" framing.
+
+UX:
+- Mandatory checkbox + disabled-by-default Continue button. The button only enables once the checkbox is ticked. Cannot be ESC-dismissed.
+- `showDisclaimer()` resets the checkbox state every time it opens, so a same-session re-show (e.g. after Settings → Clear Everything) never appears pre-ticked.
+- New additive localStorage key `tl_disclaimer_agreed`. Existing users see the disclaimer once on next load (chain from the welcome splash for brand-new users). Clearing all data via Settings re-prompts.
+
+### NEW: Contact info added throughout
+
+- Website: **https://sdes.dev**
+- Email: **sean@sdes.dev** (rendered as `mailto:` links)
+
+Now appears in both splash signatures, the Settings credits footer, the disclaimer's custom-request contact line, and across `README.md`, `USERGUIDE.md`, `QUICKSTART.md`, and `MULTI_SYMBOL_NOTES.md`.
+
+### Backwards Data Compatibility
+- One new localStorage key (`tl_disclaimer_agreed`) — purely additive.
+- No localStorage key renamed or reshaped.
+- Old 3-scale trades load and render identically to before. Editing an old trade shows exactly 3 rows; editing a new 5-scale trade auto-expands the form to 5 rows.
+- Saved scale labels preserve the historical format (`Scale 1 (RN)`, `Scale 2`, `Runner`, plus `Scale N` for user-added extras) so anything that filters scales by label (e.g. Missed Trades' `Stop` check) keeps working unchanged.
+
+### Verified
+- Full end-to-end via a local server + headless Chrome harness.
+- Demo dataset (v1.0-era `schemaVersion: 2`, 220 trades / 61 sessions / 41 missed) migrates schema v2 → v6 cleanly and renders without errors.
+- Trade Log, Analytics, What-If Lab, Journal, and Missed Trades all rebuild from the migrated data with no JS console errors.
+- Save → edit → export round-trip of a 5-scale trade: all five scales, labels, prices, qtys, R-multiples, total P&L, `gotRN`, and persisted commission preserved.
+- Editing an old 3-scale demo trade: exactly 3 rows in the form, no spurious extras, R values recalculated correctly.
+- Disclaimer flow: welcome → chain → disclaimer; premature agree blocked; tick → enable → agree → key stored; re-open resets checkbox state.
+- Zero JS console errors across the entire test run.
+
+### Files updated
+- `TraderLab101.html` (v2.3.13 → v2.3.14, 6 in-file version refs)
+- `README.md`, `USERGUIDE.md`, `QUICKSTART.md`, `QUICKREF.md`, `MULTI_SYMBOL_NOTES.md`
+- `USERGUIDE.pdf`, `QUICKSTART.pdf`, `MULTI_SYMBOL_NOTES.pdf` (regenerated)
+- `CHANGELOG.md` — this entry
+- `SESSION_LOG.md` — new rolling chronological work log
+
+---
+
 ## v2.3.13 — Hit-Pill Themes (Accessibility) (May 2026)
 
 Reported by Willerz: the "Targets Tagged" pills in the Journal session summary

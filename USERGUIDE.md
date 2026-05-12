@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 2.3.13 · May 2026**
+**Version 2.3.14 · May 2026**
 
 A complete walkthrough of every panel, every setting, and the full daily workflow.
 
@@ -43,7 +43,9 @@ There is no installation. TraderLab 101 is a single HTML file that runs entirely
 1. Download `TraderLab101.html` from the [GitHub repository](https://github.com/SeanDavid-stack/TraderLab101)
 2. Save it anywhere on your computer
 3. Double-click to open in Chrome (recommended), or any modern browser
-4. On first launch you will see a one-time welcome splash — read it, then click **Let's Go**
+4. On first launch you will see two one-time splash screens:
+   - **Welcome splash** — read it, click **Let's Get to Work →**
+   - **Service & Support Terms** — read carefully. Tick the agreement checkbox to enable the **Continue** button. This screen covers bug-fix policy (at the developer's discretion); the fact that while TraderLab itself is free, the developer's time is not — so custom requests / add-ons carry a **$100.00 USD per-request minimum service fee** to compensate that time (each fee covers one request only — not future versions, ongoing maintenance, or priority support); and the standard "trading decisions are your own" notice. You only agree once per browser; the full terms appear in-app and are summarized in [README.md](README.md).
 
 ### First-Time Setup
 
@@ -334,14 +336,19 @@ A row of stat cards summarizing your trades. Cards are draggable (reorder) and t
 #### Row 2 — Prices
 - **Entry Price**, **Stop Price**, **Trigger Type** (Limit / Market / Stop)
 
-#### Scale-Outs (3 scales)
+#### Scale-Outs (variable length, v2.3.14+)
+
+The form opens with three default scale rows:
+
 | Scale | Purpose |
 |-------|---------|
 | Scale 1 — Risk Neutral | Buy back your stop |
 | Scale 2 — Target | Primary profit target |
-| Scale 3 — Runner | Trail or final exit |
+| Runner / Final Exit | Trail or final exit |
 
-R-multiple is auto-calculated for each scale. The summary line shows total P&L in points, dollars, and R.
+Need more partials? Click **+ Add Scale** below the Runner row to insert an additional intermediate Target leg *between Scale 2 and the Runner* — any number. Each added row carries its own ✕ Remove button, and labels auto-renumber as you add or remove (e.g. **Scale 3 — Target 2**, **Scale 4 — Target 3**). The Runner row always stays as the final exit. R-multiple is auto-calculated for each scale, and the summary line shows total P&L in points, dollars, and R.
+
+> **Backwards compatibility:** Old 3-scale trades load and display exactly as before — `trade.scales[]` was already a variable-length array on disk, so nothing about historical trades changes. Edit an old trade and you'll see the same 3 rows you saved; edit a new 5-scale trade and you'll see all 5 rows pre-populated.
 
 #### Targets
 
@@ -788,11 +795,11 @@ TraderLab 101 is licensed under the **[PolyForm Noncommercial License 1.0.0](htt
 
 **You may not** sell it, sublicense it, build any commercial product / paid course / paid plugin / paid SaaS / commercial AI training set from any portion of it, or remove the embedded build identifiers used to detect unauthorized copies.
 
-For commercial licensing, reach out via the [GitHub repository](https://github.com/SeanDavid-stack/TraderLab101).
+For commercial licensing, reach out via the [GitHub repository](https://github.com/SeanDavid-stack/TraderLab101) or contact the developer at [sdes.dev](https://sdes.dev) / [sean@sdes.dev](mailto:sean@sdes.dev).
 
 See `LICENSE` for the full legal terms and the Required Notice that must travel with every copy.
 
 ---
 
-*TraderLab 101 was created by SeanDavid, built on Tom B.'s Traders Lab methodology and Auction Market Theory.*
+*TraderLab 101 was created by SeanDavid — [sdes.dev](https://sdes.dev) · [sean@sdes.dev](mailto:sean@sdes.dev) — built on Tom B.'s Traders Lab methodology and Auction Market Theory.*
 *"If this — then that. If not — then what?"*

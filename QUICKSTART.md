@@ -1,6 +1,6 @@
 # TraderLab 101 — Quick Start
 
-**Version 2.3.13 · Get going in about 15 minutes**
+**Version 2.3.14 · Get going in about 15 minutes**
 
 This guide takes you from "first download" to "logged a trade and looked at analytics" without the long-form theory. For everything else, see [USERGUIDE.md](USERGUIDE.md).
 
@@ -33,7 +33,12 @@ This guide takes you from "first download" to "logged a trade and looked at anal
 
 > No installation. No accounts. No server. Your data stays on your machine.
 
-You will see a one-time welcome splash. Read it, click **Let's Go**.
+On first launch you will see two one-time splash screens:
+
+1. **Welcome splash** — read it, click **Let's Get to Work →**
+2. **Service & Support Terms** — read carefully. Tick the agreement checkbox to enable the **I Understand and Agree — Continue →** button. In short: bug fixes are at the developer's discretion (no obligation); the tool itself is free but the developer's time is not, so any custom request or add-on built for you specifically carries a **minimum service fee of $100.00 USD per request** to compensate the developer's time (scope-dependent, agreed in writing first). **Each fee covers that single request only** — not future versions, ongoing maintenance, or priority support. Standard releases remain free under the existing license.
+
+You only need to agree once per browser.
 
 ---
 
@@ -120,13 +125,14 @@ Click **◉ Live Price** to see the live feed. If BMBridge isn't configured, the
 When you take a trade, click **◈ Trade Log** and fill in:
 
 1. **Date / Time / Setup / Direction / Entry / Stop**
-2. **Scale 1 (Risk Neutral)** — exit price + contracts
-3. **Scale 2 (Target)** — exit price + contracts
-4. **Scale 3 (Runner)** — final exit + contracts
-5. Click any **target chip** (DVPOC, VWAP, MID, etc.) and mark the outcome — ✓ Hit, ↩ Bailed, or ✗ Missed
-6. **Process Rating** — A / B / C / F (be honest)
-7. **Exit Time** — for duration tracking
-8. Optional: tag any **execution errors** and **emotional state** chips
+2. **Scale 1 — Risk Neutral** — exit price + contracts
+3. **Scale 2 — Target** — exit price + contracts
+4. **Runner / Final Exit** — final exit + contracts
+5. *(Optional)* Click **+ Add Scale** to insert extra intermediate Target legs between Scale 2 and the Runner — any number. Each added row has its own ✕ Remove button and labels auto-renumber.
+6. Click any **target chip** (DVPOC, VWAP, MID, etc.) and mark the outcome — ✓ Hit, ↩ Bailed, or ✗ Missed
+7. **Process Rating** — A / B / C / F (be honest)
+8. **Exit Time** — for duration tracking
+9. Optional: tag any **execution errors** and **emotional state** chips
 
 Click **Log Trade**. You'll see:
 
@@ -198,6 +204,7 @@ Saves a timestamped JSON file. Do this **at least weekly**. If you ever clear br
 | Get personalized AI coaching from your trade history | **🧠 AI Coach** (free copy-prompt mode, or in-app via Anthropic API key) |
 | See the changelog and known issues | [CHANGELOG.md](CHANGELOG.md) |
 | Report a bug or request a feature | [GitHub Issues](https://github.com/SeanDavid-stack/TraderLab101/issues) |
+| Discuss a custom request / add-on (service fee, $100 USD min **per request**) | [sdes.dev](https://sdes.dev) · [sean@sdes.dev](mailto:sean@sdes.dev) |
 
 ---
 
