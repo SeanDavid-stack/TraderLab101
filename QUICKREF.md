@@ -1,6 +1,6 @@
 # TraderLab 101 — Quick Reference
 
-**v2.3.14 · Keep this open alongside the tool**
+**v2.3.15 · Keep this open alongside the tool**
 
 ---
 

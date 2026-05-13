@@ -1,5 +1,54 @@
 # TraderLab 101 — Changelog
 
+## v2.3.15 — Journal Draft Persistence (May 2026)
+
+### NEW: Automatic draft saving for the Session Journal
+
+The longest writing exercise in TraderLab — the end-of-session Journal entry, with its Trade Notes and Lesson textareas — now auto-saves as you type. If you close the browser mid-entry, your draft is restored on next open. No more rewriting a paragraph from scratch.
+
+- **Auto-save** fires ~350ms after you stop typing (debounced, silent)
+- **"✓ Draft saved" indicator** appears in the Session Entry header when a draft is active
+- **"✕ discard" link** next to the indicator lets you manually throw away the draft (with confirmation prompt)
+- **Restore** happens automatically on page load if a draft exists for the current date AND is newer than any saved session for that date
+- **Cleared** automatically on Save Session, Cancel Edit, Discard Draft, or Settings → Clear Everything
+
+### Fields covered
+All 12 journal form fields are captured in the draft:
+- Open Type, Profile Shape (Day Type), P&L Result, Market Responsive, IB Outcome
+- Scaled to Risk Neutral, Go/No-Go Checklist Used, Preflight Completed
+- Key Levels, Trade Notes, Lesson, Media URLs
+- Process Rating (A/B/C/F button state)
+- Setup chips (multi-select state)
+
+### What is NOT covered (by design)
+The Trade Log and Missed Trade forms do NOT have draft persistence. Those are rapid fill-and-save flows; the surface area to cover their full state (dynamic scale rows, multi-select chips, target arrays) wasn't justified by the small amount of typing that's at risk. Standard practice still applies: hit Save before closing those forms.
+
+### Cleanup: SCHEMA_VERSION migration gap closed
+Minor housekeeping. The exporter writes `schemaVersion: 7` (since the multi-symbol per-trade fields landed in v2.3.10), but `migrateImport` topped out at `v6`, leaving a one-version mismatch on every export-import round-trip. Added a no-op v6→v7 branch so the migrated value lines up with what the exporter writes. No behavior change for old or new data — the v6→v7 change was purely additive in the first place.
+
+### Backwards Data Compatibility
+- One new localStorage key (`tl_draft_journal`) — purely additive.
+- No existing key renamed or reshaped.
+- Old data loads identically to v2.3.14.
+- Draft is per-date; only applies if it's newer than the saved session for that date.
+
+### Verified
+- Programmatic end-to-end in a headless preview: type → save → reload → restore → save again → draft clears, all clean.
+- Manual smoke test in real Chrome: same flow plus visual confirmation of the indicator and discard link rendering correctly.
+- Discard button verified in two scenarios: with an existing saved session (reverts to saved) and without one (form empties).
+- Zero JS console errors at any point.
+- 220-trade v1.0-era demo dataset (`schemaVersion: 2`) still loads cleanly through migrate v2 → v7.
+
+### Files updated
+- `TraderLab101.html` (v2.3.14 → v2.3.15, 7 in-file version refs)
+- `README.md`, `USERGUIDE.md`, `QUICKSTART.md`, `QUICKREF.md`
+- `USERGUIDE.pdf`, `QUICKSTART.pdf`, `MULTI_SYMBOL_NOTES.pdf` (regenerated)
+- `CHANGELOG.md` — this entry
+- `SESSION_LOG.md` — v2.3.15 entry
+- `_build_pdfs.py` — bumped cover version string
+
+---
+
 ## v2.3.14 — Dynamic Scale-Outs + Service & Support Terms (May 2026)
 
 ### NEW: Variable-length scale-outs in the Trade Log

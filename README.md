@@ -4,7 +4,7 @@
 
 Single HTML file. Zero dependencies. Runs locally in your browser. Your data never leaves your computer.
 
-![Version](https://img.shields.io/badge/version-2.3.14-gold)
+![Version](https://img.shields.io/badge/version-2.3.15-gold)
 ![License](https://img.shields.io/badge/license-PolyForm_Noncommercial_1.0.0-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-green)
 
@@ -61,6 +61,7 @@ That's it. No install. No server. No account. No subscription.
 - Full preflight snapshot saved to each session
 - Screenshots, notes, lessons
 - Review mode for past sessions with complete data
+- **Auto-save drafts (v2.3.15)** — your in-progress Trade Notes and Lesson are auto-saved as you type; if the browser closes mid-entry, the draft restores on next open. A "✓ Draft saved" indicator (with a "✕ discard" link) appears in the form header whenever a draft is active.
 
 ### Analytics Dashboard
 - **13 overview cards** — Win Rate, Net P&L (with commission), Profit Factor, Expectancy, Avg R, Risk Neutral Rate, Full Stop Rate, Avg Win/Loss, Recovery Factor, First Trade WR, Win Rate After Loss, Break Even Rate, Trading Days

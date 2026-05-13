@@ -1,6 +1,6 @@
 # TraderLab 101 — Quick Start
 
-**Version 2.3.14 · Get going in about 15 minutes**
+**Version 2.3.15 · Get going in about 15 minutes**
 
 This guide takes you from "first download" to "logged a trade and looked at analytics" without the long-form theory. For everything else, see [USERGUIDE.md](USERGUIDE.md).
 
@@ -162,6 +162,8 @@ Add the human-context fields:
 - **Lesson** — one sentence you want to remember
 
 Click **Save Session**. You can always come back later — past dates open in **review mode** with a clean read-only summary.
+
+> **Draft auto-save (v2.3.15):** As you type into the journal, every field auto-saves silently. A small **"✓ Draft saved"** indicator appears in the Session Entry header when a draft is active. If you close the browser before hitting Save Session, your draft restores automatically the next time you open the journal. Click the **"✕ discard"** link next to the indicator to throw away the in-progress draft and start fresh. (This protection covers the Journal only — the Trade Log and Missed Trade forms still need an explicit Save click before closing.)
 
 ---
 

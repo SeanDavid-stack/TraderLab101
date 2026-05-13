@@ -1,6 +1,6 @@
 # TraderLab 101 — User Guide
 
-**Version 2.3.14 · May 2026**
+**Version 2.3.15 · May 2026**
 
 A complete walkthrough of every panel, every setting, and the full daily workflow.
 
@@ -468,6 +468,34 @@ Editable in the journal — keeps the snapshot in sync with the latest answers.
 ### Bug fix in v2.3.6
 
 Switching tabs away from the Journal and back **no longer resets your in-progress fields**. Your typed text is preserved until you save, change the date, or refresh.
+
+### Draft auto-save (new in v2.3.15)
+
+The journal is the longest writing exercise in TraderLab, so it now auto-saves your in-progress entry as you type. If you close the browser before clicking Save Session, your draft restores on next open.
+
+**How it works**
+
+- Every field change in the Session Entry form triggers a debounced save to `localStorage` under the additive key `tl_draft_journal` (~350ms after you stop typing).
+- All 12 form fields are captured: Open Type, Profile Shape, P&L Result, Market Responsive, IB Outcome, Risk Neutral, Checklist Used, Preflight Done, Key Levels, Trade Notes, Lesson, Media URLs. Process Rating (A/B/C/F) and Setup chip selections are also captured.
+- The **"✓ Draft saved"** indicator appears in the Session Entry header whenever a draft is active.
+- A **"✕ discard"** link sits next to the indicator. Click it to throw away the in-progress draft (with a confirmation prompt). Discard reverts the form to the last saved version of that session, or to a blank state if no saved session exists.
+- The draft is automatically cleared on **Save Session**, **Cancel Edit**, **Discard Draft**, or **Settings → Clear Everything**.
+
+**When the draft applies**
+
+The draft is keyed by date. On page load, after the form is populated from any saved session, the draft is overlaid on top **only if** the draft is newer than the saved session for the same date. This means:
+
+- Brand-new entry (no saved session yet) → draft restores cleanly
+- Editing a saved session → draft restores the in-progress edits
+- Re-opening a previously-saved session you haven't touched today → no draft applied
+
+**What is NOT covered (by design)**
+
+The Trade Log and Missed Trade forms do NOT have draft persistence. Those are rapid fill-and-save flows. Click Save before closing those forms.
+
+**Backwards compatibility**
+
+One new additive localStorage key (`tl_draft_journal`). Nothing existing was renamed or reshaped. Old data loads identically.
 
 ---
 
