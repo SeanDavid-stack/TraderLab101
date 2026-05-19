@@ -1,5 +1,42 @@
 # TraderLab 101 — Changelog
 
+## v2.3.16 — Intraday Trade-Ordering Bug Fix (May 2026)
+
+### FIX: First Trade of Day, equity curve, and drawdown were intraday-mis-ordered
+
+Six analytics code paths sorted trades by `date + time` as a **text string**. Clock time compared as text mis-orders intraday trades: `"1:10 PM"` text-sorts *before* `"9:30 AM"` because the character `'1'` is less than `'9'` (and `localeCompare` collation makes it worse). Consequences:
+
+- **"First Trade Win Rate"** sometimes picked an *afternoon* trade as the day's "first" trade, skewing that stat and its P&L.
+- The **equity curve**, **Drawdown** section, **Streaks**, and the **What-If lab** walked trades in the wrong intraday sequence, distorting max-drawdown and recovery factor.
+
+### The fix
+
+Added one chronological comparator, `tradeChrono(a,b)`, that compares the ISO `date` as text (correct, since `YYYY-MM-DD` sorts correctly as text) and the clock `time` as actual parsed minutes (AM/PM aware). Replaced all **6** identical buggy `(a.date+a.time).localeCompare(...)` sorts with `sort(tradeChrono)`.
+
+**No P&L, R-multiple, recovery, or win-rate formula was changed** — only the sort key. The equity curve and Drawdown section now reflect the correct intraday order (they had the same bug).
+
+### Verified
+
+Against the bundled `traderlab-sample-300.json` fixture (300 trades / 79 sessions / 40 missed, slightly-profitable, schema v7, zero-migration):
+
+- First Trade Win Rate → **63% (50 of 79), +$4,923** (was mis-computed)
+- Recovery Factor → **2.57**, Max Drawdown → **$3,625** (corrected order)
+- All 11 order-independent overview cards **unchanged**: Win Rate 55%, Net +$8,297, Profit Factor 1.26, Expectancy +$28, Avg R +0.08R, Risk Neutral 5%, Full Stop 29%, Avg Win/Loss $275/$295, Win Rate After Loss 57%, Break Even 4%, Trading Days 79
+- Zero JS console errors
+
+### Also included
+
+- `traderlab-sample-300.json` — a fresh, slightly-profitable 300-trade demo backup (multi-instrument, 6 months, schema v7, imports with zero migration recalculation) usable as a test fixture or hand-off dataset.
+- `_gen_sample_dataset.py` — deterministic generator (fixed seed) for that dataset.
+
+### Files updated
+- `TraderLab101.html` (v2.3.15 → v2.3.16, 7 in-file version refs; +`tradeChrono`; 6 sorts replaced)
+- `CHANGELOG.md`, `SESSION_LOG.md`
+- `_build_pdfs.py` (cover version), regenerated `USERGUIDE.pdf` / `QUICKSTART.pdf` / `MULTI_SYMBOL_NOTES.pdf`
+- `traderlab-sample-300.json`, `_gen_sample_dataset.py` (new)
+
+---
+
 ## v2.3.15 — Journal Draft Persistence (May 2026)
 
 ### NEW: Automatic draft saving for the Session Journal

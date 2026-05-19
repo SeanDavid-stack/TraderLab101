@@ -4,6 +4,59 @@ A rolling, chronological log of substantive work sessions. Newest at the top. Us
 
 ---
 
+## 2026-05-19 — v2.3.15 → v2.3.16
+
+### What shipped
+
+**One bug fix plus a reusable demo dataset.**
+
+#### 1. Intraday trade-ordering bug fix
+
+External task spec handed in by Sean. Six analytics paths sorted trades with
+`(a.date+a.time).localeCompare(b.date+b.time)` — text-sorting clock time
+mis-orders intraday trades (`"1:10 PM"` < `"9:30 AM"` because `'1'`<`'9'`).
+Broke "First Trade of Day" (picked afternoon trades) and walked the equity
+curve / drawdown / streaks / What-If in the wrong intraday order.
+
+Fix: added `tradeChrono(a,b)` (ISO date as text — correct; clock time parsed
+to minutes, AM/PM aware) next to `parseTradeHour`; replaced all 6 sorts with
+`sort(tradeChrono)`. No P&L/R/recovery/win-rate formula touched — sort key only.
+
+#### 2. `traderlab-sample-300.json` + `_gen_sample_dataset.py`
+
+Generated earlier this session and used as the acceptance fixture: 300 trades
+/ 79 sessions / 40 missed, slightly-profitable (PF 1.26, +$8,297 net after
+fees, 55% WR), multi-instrument, schema v7, imports with **zero migration
+recalculation** (verified by byte-comparing every data array before/after
+`migrateImport`). Deterministic generator with fixed seed.
+
+### Verification (clean-room, against the fixture)
+
+- First Trade WR → **63% (50/79), +$4,923** ✓ matches spec exactly
+- Recovery Factor → **2.57**, Max DD → **$3,625** ✓ matches spec exactly
+- All 11 order-independent overview cards unchanged ✓
+- 13/13 cards rendered exactly as the spec's acceptance table required
+- Zero JS console errors
+
+### Process note (Rule 12)
+
+First verification pass showed First Trade WR as 43/79/+$575 — a **false
+negative caused by a stale analytics date-filter** left in memory by a prior
+`buildStats()` call in the same eval session, not by the fix. Caught it by
+re-running clean (page reload + filter reset) and by computing directly from
+the raw imported `tradeLog` with the real in-file `window.tradeChrono`, which
+produced the exact spec numbers. Lesson: when verifying a render path in the
+headless harness, reload to a clean state first — residual module-level filter
+state silently scopes the data and produces misleading readings.
+
+### Files changed
+- `TraderLab101.html` (v2.3.15 → v2.3.16, 7 version refs; +`tradeChrono`; 6 sorts)
+- `CHANGELOG.md`, `SESSION_LOG.md`, `_build_pdfs.py`
+- `USERGUIDE.pdf` / `QUICKSTART.pdf` / `MULTI_SYMBOL_NOTES.pdf` regenerated
+- `traderlab-sample-300.json`, `_gen_sample_dataset.py` (new — bundled as fixture)
+
+---
+
 ## 2026-05-13 — v2.3.14 → v2.3.15
 
 ### What shipped
