@@ -29,6 +29,8 @@ Against the bundled `traderlab-sample-300.json` fixture (300 trades / 79 session
 - `traderlab-sample-300.json` — a fresh, slightly-profitable 300-trade demo backup (multi-instrument, 6 months, schema v7, imports with zero migration recalculation) usable as a test fixture or hand-off dataset.
 - `_gen_sample_dataset.py` — deterministic generator (fixed seed) for that dataset.
 
+> **Fixture amendment (same v2.3.16 — no app code change):** the first cut of `traderlab-sample-300.json` had unrealistic missed trades — every missed trade was a winner ("money left on the table"), implying you never correctly skipped a bad setup. Regenerated so missed-trade outcomes follow a realistic mix (~48% would have won, ~7% scratch, ~45% would have lost / correctly dodged), with reasons correlated to outcome and app-faithful missed-trade math (totals across all contracts, R-multiple, tickValue/tickSize dollars). Trades and sessions are byte-identical to the original cut (missed trades generate last), so every acceptance number above is unchanged. Re-verified zero-migration on all arrays including the new negative `missedR` values.
+
 ### Files updated
 - `TraderLab101.html` (v2.3.15 → v2.3.16, 7 in-file version refs; +`tradeChrono`; 6 sorts replaced)
 - `CHANGELOG.md`, `SESSION_LOG.md`

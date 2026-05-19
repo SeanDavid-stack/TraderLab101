@@ -55,6 +55,34 @@ state silently scopes the data and produces misleading readings.
 - `USERGUIDE.pdf` / `QUICKSTART.pdf` / `MULTI_SYMBOL_NOTES.pdf` regenerated
 - `traderlab-sample-300.json`, `_gen_sample_dataset.py` (new — bundled as fixture)
 
+### Post-ship fixture amendment (same v2.3.16, no app code change)
+
+Sean flagged the bundled `traderlab-sample-300.json` as unrealistic: every
+missed trade was a winner — zero missed trades would have lost money, so the
+"What If" analysis was a fantasy and the missed-reason win/loss split was
+meaningless. Also found a latent math inconsistency in the original
+`build_missed` (stored per-contract pts but divided R by contracts).
+
+Fix in `_gen_sample_dataset.py` `build_missed` only:
+- Realistic outcome roll: ~48% would-win / ~7% scratch / ~45% would-lose
+  (~65% of losers = full stop, rest partial bleed).
+- Reasons correlated to outcome (missed winner → fear/hesitation/didnt-see;
+  correctly-skipped loser → conditions/overtrading/recent-loss).
+- App-faithful math: totals across all contracts, missedR = R-multiple,
+  dollars via tickValue/tickSize.
+
+Because missed trades are generated AFTER all trades+sessions, the trade RNG
+stream is untouched → tradeLog and sessions are **byte-identical** to the
+shipped cut. Re-verified: all 13 acceptance cards still exact (First Trade
+63%/50/79/+$4,923, Recovery 2.57/$3,625, etc.); zero-migration holds on every
+array including the new negative `missedR`/`missedPnlDollars` values; zero JS
+console errors. New missed split: 21 would-win / 18 would-lose / 1 scratch,
+net-if-all-taken +$5,596 (believable, not a windfall).
+
+No version bump — the app build is identical to v2.3.16. Handled as a
+same-version asset amendment (mirrors the v2.3.14 classification-clause
+pattern): repo files updated + the v2.3.16 release asset re-uploaded.
+
 ---
 
 ## 2026-05-13 — v2.3.14 → v2.3.15

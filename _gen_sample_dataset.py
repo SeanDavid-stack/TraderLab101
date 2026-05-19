@@ -311,11 +311,39 @@ def build_missed(tid, d, instr):
     entry = round_tick(price_region(instr, d))
     stop = round_tick(entry - rpts) if is_long else round_tick(entry + rpts)
     rpts = abs(entry - stop) or tick
-    move_r = round(random.uniform(0.6, 3.2), 2)
-    target = round_tick(entry + rpts * move_r) if is_long else round_tick(entry - rpts * move_r)
-    pnl_pts = (target - entry) if is_long else (entry - target)
-    pnl_pts = round(pnl_pts, 2)
-    rs = random.sample(REASONS, random.randint(1, 2))
+
+    # A missed trade is a setup you didn't take — its hypothetical outcome must
+    # follow a realistic distribution, NOT always a winner. Mix:
+    #   ~48% would have won  (regret — should have taken it)
+    #   ~7%  scratch / near-flat
+    #   ~45% would have lost (good skip — dodged a stop-out)
+    roll = random.random()
+    if roll < 0.48:                       # missed a WINNER
+        outcome_r = max(0.2, random.gauss(0.85, 0.45))
+        if random.random() < 0.10:        # rare runner you missed
+            outcome_r += random.uniform(0.5, 1.8)
+        outcome_r = round(min(outcome_r, 4.0), 2)
+        reason_pool = ["fear", "uncertainty", "hesitation", "distraction",
+                       "not-at-desk", "didnt-see", "other"]
+    elif roll < 0.55:                     # scratch
+        outcome_r = round(random.uniform(-0.12, 0.15), 2)
+        reason_pool = REASONS
+    else:                                 # missed a LOSER (correctly skipped)
+        if random.random() < 0.65:        # would have hit full stop
+            outcome_r = -1.0
+        else:                             # would have bled out partially
+            outcome_r = round(random.uniform(-0.85, -0.4), 2)
+        reason_pool = ["conditions", "overtrading", "recent-loss",
+                       "uncertainty", "other"]
+
+    # App-faithful missed-trade math (saveMissedTrade): totals are across ALL
+    # contracts; missedR is the R-multiple; dollars use tickValue/tickSize.
+    per_contract_pts = rpts * outcome_r
+    target = (round_tick(entry + per_contract_pts) if is_long
+              else round_tick(entry - per_contract_pts))
+    per_contract_pts = (target - entry) if is_long else (entry - target)
+    total_pts = round(per_contract_pts * n, 2)
+    rs = random.sample(reason_pool, min(random.randint(1, 2), len(reason_pool)))
     hh = random.choice([9, 10, 10, 11, 13, 14])
     mm = random.randint(0, 59)
     ampm = "AM" if hh < 12 else "PM"
@@ -331,9 +359,9 @@ def build_missed(tid, d, instr):
         "stop": round(stop, 2),
         "contracts": n,
         "scales": None,
-        "missedPnlPts": pnl_pts,
-        "missedPnlDollars": round(pnl_pts * dollar_per_pt),
-        "missedR": round(pnl_pts / (rpts * n), 2) if rpts else 0.0,
+        "missedPnlPts": total_pts,
+        "missedPnlDollars": round(total_pts * dollar_per_pt),
+        "missedR": round(total_pts / (rpts * n), 2) if rpts else 0.0,
         "reason": rs[0],
         "reasons": rs,
         "notes": "",
@@ -506,6 +534,12 @@ def main():
     print(f"instrument mix: {instr_mix}")
     print(f"date span: {trades[0]['date']} -> {trades[-1]['date']}")
     print(f"unique ids: {len(set(t['id'] for t in trades))}/{len(trades)}")
+    mw = sum(1 for m in missed if m["missedPnlDollars"] > 0)
+    ml = sum(1 for m in missed if m["missedPnlDollars"] < 0)
+    ms = len(missed) - mw - ml
+    mnet = sum(m["missedPnlDollars"] for m in missed)
+    print(f"missed: would-win={mw} would-lose={ml} scratch={ms}  "
+          f"net-if-all-taken=${mnet:,.0f}")
 
 
 if __name__ == "__main__":
