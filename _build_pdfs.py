@@ -26,7 +26,7 @@ DOCS = [
         "out": ROOT / "USERGUIDE.pdf",
         "title": "TraderLab 101",
         "subtitle": "User Guide",
-        "version": "v2.3.16 · May 2026",
+        "version": "v2.3.17 · May 2026",
         "header_text": "TraderLab 101 — User Guide",
     },
     {
@@ -34,7 +34,7 @@ DOCS = [
         "out": ROOT / "QUICKSTART.pdf",
         "title": "TraderLab 101",
         "subtitle": "Quick Start",
-        "version": "v2.3.16 · May 2026",
+        "version": "v2.3.17 · May 2026",
         "header_text": "TraderLab 101 — Quick Start",
     },
     {
@@ -42,7 +42,7 @@ DOCS = [
         "out": ROOT / "MULTI_SYMBOL_NOTES.pdf",
         "title": "TraderLab 101",
         "subtitle": "Multi-Symbol Notes",
-        "version": "v2.3.16 · May 2026",
+        "version": "v2.3.17 · May 2026",
         "header_text": "TraderLab 101 — Multi-Symbol Notes",
     },
 ]

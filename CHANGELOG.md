@@ -1,5 +1,41 @@
 # TraderLab 101 — Changelog
 
+## v2.3.17 — Lock Levels (May 2026)
+
+### NEW: protect imported and hand-typed levels from being overwritten
+
+A re-import could silently overwrite your pre-market levels. This matters most for Investor/RT users: IRT's VAH and VAL fields are session relative, so a CSV imported before the RTH open carries the prior completed session's value area, but one imported (or re-imported) after 9:30 carries the current developing session. Re-importing mid-session would quietly corrupt your open-context read.
+
+Two protections, both checked by every import path (BMBridge, CSV file, Google Sheet, paste):
+
+- **Lock Levels toggle** — after a clean import, click **🔓 Lock Levels** in the Import Levels card. While locked, no import can overwrite any level field. Click again to unlock for a fresh pull.
+- **Per-field auto-lock** — any level you type by hand is automatically protected from import overwrite. Clear the field and the protection releases. No toggle needed.
+
+When an import skips locked fields, the result line and toast say so ("N skipped (locked) — unlock to overwrite"), so it's never silent.
+
+This extends the override-protection pattern that already existed for the IBH/IBL fields to all level fields.
+
+### USERGUIDE
+Added an "IRT Import Timing" note in the CSV import section: import before the RTH open, and do not re-import mid-session unless you have locked your levels first.
+
+### Backwards Data Compatibility
+- Two new additive `pmData` fields (`levelsLocked`, `lockedFields`). Old backups without them load unchanged (absent = nothing locked).
+- No localStorage key renamed or reshaped.
+- The lock only governs level *imports*. The live price feed is a separate path and is unaffected.
+
+### Verified
+- Per-field: typing a value locks that field, clearing it unlocks; a locked field survives an import that targets it while unlocked fields still update.
+- Global: locked blocks every field across all four import paths; unlock restores normal import.
+- Toggle button flips state, persists to localStorage, and updates its label.
+- Zero JS console errors.
+
+### Files updated
+- `TraderLab101.html` (v2.3.16 → v2.3.17, 7 in-file version refs; Lock Levels button, lock state + functions, both importers guarded)
+- `USERGUIDE.md`, `CHANGELOG.md`, `SESSION_LOG.md`, `_build_pdfs.py`
+- `USERGUIDE.pdf`, `QUICKSTART.pdf`, `MULTI_SYMBOL_NOTES.pdf` (regenerated)
+
+---
+
 ## v2.3.16 — Intraday Trade-Ordering Bug Fix (May 2026)
 
 ### FIX: First Trade of Day, equity curve, and drawdown were intraday-mis-ordered

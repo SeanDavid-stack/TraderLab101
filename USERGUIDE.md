@@ -134,6 +134,24 @@ The hub for the entire session. Enter your levels, set bias, map the fuel, and c
 
 All three paths share the same **CSV Column Mapping** — configure once in Settings.
 
+### IRT Import Timing (important for Investor/RT users)
+
+In Investor/RT, the **VAH and VAL fields are session relative** — they mean different things depending on when you export the CSV:
+
+- **Before the 9:30 AM RTH open:** VAH/VAL reflect the **prior completed RTH session** ✅ — this is what you want mapped to Prior VAH / Prior VAL.
+- **After 9:30 AM:** VAH/VAL reflect the **current developing session** ❌ — importing then puts developing values into your Prior VAH/VAL fields and corrupts your open-context read.
+
+**Rule of thumb:** import your CSV **before the RTH open**, and do not re-import mid-session. If you do need to re-import after the open, **lock your levels first** (see below) so the good pre-open values are protected.
+
+### Lock Levels (new in v2.3.17)
+
+Two protections stop a later import from overwriting good levels:
+
+- **Lock Levels toggle** — in the Import Levels card, after a clean import click **🔓 Lock Levels**. While locked, no import (BMBridge, CSV file, or Google Sheet) can overwrite any level field. Click **🔒 Unlock Levels** to allow a fresh import again.
+- **Per-field auto-lock** — any level you **type by hand** is automatically protected from import overwrite. Clear the field and the protection releases. No button needed.
+
+When an import skips locked fields, the result line and toast tell you ("N skipped (locked) — unlock to overwrite"), so it is never silent. The lock affects level imports only; the live price feed is unaffected.
+
 ### Manual Entry Sections
 
 - **Prior Day** — pHigh, pLow, pClose, pVPOC

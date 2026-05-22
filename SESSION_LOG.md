@@ -4,6 +4,34 @@ A rolling, chronological log of substantive work sessions. Newest at the top. Us
 
 ---
 
+## 2026-05-19 (later) — v2.3.16 → v2.3.17
+
+### What shipped: Lock Levels
+
+Triggered by an Investor/RT user report: IRT's VAH/VAL are session relative, so a mid-session CSV re-import silently overwrites pre-market levels mapped to Prior VAH/VAL and corrupts the open-context read. Found during investigation that every level field is a normal editable input, and CSV import does a blind `el.value = price` — except IBH/IBL, which already had override-protection (`ibManualOverride` + skip-if-filled). The fix extends that protection pattern to all level fields, two ways (Sean confirmed both, "B + C"):
+
+- **B — global Lock Levels toggle.** Button in the Import Levels card. `pmData.levelsLocked` blocks all level fields on import.
+- **C — per-field auto-lock.** Delegated `input` listener on `#panel-pm`: typing a value into a lockable field adds it to `pmData.lockedFields`; clearing it removes it. A programmatic import set of `.value` does not fire `input`, so the listener only ever reacts to genuine manual edits.
+
+Both `pmData` fields are additive. `isLevelImportBlocked(fieldId)` is the single gate, called by both importers (`applyCSVText` for file/sheet/paste, and `importFromBMBridge`'s own parser). Skipped fields are reported in the result line and toast, never silent.
+
+Scope boundary: the lock governs level *imports* only. The live price feed (`fetchPrice`) is a separate code path and is intentionally untouched.
+
+### Verified (preview)
+- C: type pVAH → locked; clear → unlocked; locked pVAH survives an import while unlocked pHigh still updates.
+- B: locked blocks all fields; unlock restores import.
+- Toggle button: flips label, persists `levelsLocked` to localStorage.
+- Zero JS console errors.
+
+### Also
+- USERGUIDE: added "IRT Import Timing" note.
+- This was a free-core change, justified as data-safety (prevents silent corruption) rather than a customization knob. The deeper "pre-market vs RTH remapping toggle" the same user asked for was routed to the paid .NET version in the reply, not built here.
+
+### Files
+- `TraderLab101.html` (v2.3.16 → v2.3.17), `USERGUIDE.md`, `CHANGELOG.md`, `SESSION_LOG.md`, `_build_pdfs.py`, 3 PDFs regenerated.
+
+---
+
 ## 2026-05-19 — v2.3.15 → v2.3.16
 
 ### What shipped
